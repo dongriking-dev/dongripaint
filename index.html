@@ -830,7 +830,7 @@
 </head>
 <body>
 
-<!-- ================= ログイン画面 ================= -->
+<!-- ログイン画面 -->
 <div id="loginScreen">
   <div class="login-box">
     <h1>
@@ -851,7 +851,7 @@
   </div>
 </div>
 
-<!-- ================= ホーム画面 ================= -->
+<!-- ホーム画面 -->
 <div id="homeScreen" class="hidden">
   <div class="home-header">
     <h1>
@@ -860,7 +860,6 @@
     </h1>
     <p>あなたの作品を描いて、保存して、いつでも続きから</p>
   </div>
-
   <div class="home-actions">
     <div class="home-action-btn" id="newArtBtn">
       <svg class="big-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -879,7 +878,6 @@
       <div class="sublabel">画像を読み込んで編集</div>
     </div>
   </div>
-
   <div class="home-section-title">
     <span>自分の作品</span>
     <span class="count" id="galleryCount"></span>
@@ -887,17 +885,17 @@
   <div class="gallery" id="gallery"></div>
 </div>
 
-<!-- ================= エディタ ================= -->
+<!-- エディタ画面 -->
 <div id="editorScreen">
   <div class="top-bar">
     <button class="top-btn" id="backHomeBtn" title="作品一覧へ">
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     </button>
     <div class="top-group">
-      <button class="top-btn" id="undoBtn" title="元に戻す (Ctrl+Z)" disabled>
+      <button class="top-btn" id="undoBtn" title="元に戻す" disabled>
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 00-4-4H4"/></svg>
       </button>
-      <button class="top-btn" id="redoBtn" title="やり直す (Ctrl+Shift+Z)" disabled>
+      <button class="top-btn" id="redoBtn" title="やり直す" disabled>
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 014-4h12"/></svg>
       </button>
     </div>
@@ -921,7 +919,6 @@
   </div>
 
   <div class="editor-body">
-
     <div class="left-toolbar">
       <button class="tool-btn active" id="brushToggleBtn" title="ブラシ">
         <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
@@ -1062,7 +1059,6 @@
     </div>
 
     <div class="right-panels">
-
       <div class="panel">
         <div class="panel-title">カラー</div>
         <div class="color-section">
@@ -1084,66 +1080,33 @@
               </svg>
             </button>
           </div>
-
           <div class="picker-tabs">
             <button class="picker-tab active" data-tab="rgb">RGB</button>
             <button class="picker-tab" data-tab="hsl">HSL</button>
           </div>
-
           <div class="picker-panel active" data-panel="rgb">
-            <div class="chan-row">
-              <div class="chan-label">R</div>
-              <input type="range" id="sliderR" min="0" max="255" value="30">
-              <div class="chan-value" id="valR">30</div>
-            </div>
-            <div class="chan-row">
-              <div class="chan-label">G</div>
-              <input type="range" id="sliderG" min="0" max="255" value="43">
-              <div class="chan-value" id="valG">43</div>
-            </div>
-            <div class="chan-row">
-              <div class="chan-label">B</div>
-              <input type="range" id="sliderB" min="0" max="255" value="60">
-              <div class="chan-value" id="valB">60</div>
-            </div>
+            <div class="chan-row"><div class="chan-label">R</div><input type="range" id="sliderR" min="0" max="255" value="30"><div class="chan-value" id="valR">30</div></div>
+            <div class="chan-row"><div class="chan-label">G</div><input type="range" id="sliderG" min="0" max="255" value="43"><div class="chan-value" id="valG">43</div></div>
+            <div class="chan-row"><div class="chan-label">B</div><input type="range" id="sliderB" min="0" max="255" value="60"><div class="chan-value" id="valB">60</div></div>
           </div>
-
           <div class="picker-panel" data-panel="hsl">
-            <div class="chan-row">
-              <div class="chan-label">H</div>
-              <input type="range" id="sliderH" min="0" max="360" value="215">
-              <div class="chan-value" id="valH">215</div>
-            </div>
-            <div class="chan-row">
-              <div class="chan-label">S</div>
-              <input type="range" id="sliderS" min="0" max="100" value="33">
-              <div class="chan-value" id="valS">33</div>
-            </div>
-            <div class="chan-row">
-              <div class="chan-label">L</div>
-              <input type="range" id="sliderL" min="0" max="100" value="18">
-              <div class="chan-value" id="valL">18</div>
-            </div>
+            <div class="chan-row"><div class="chan-label">H</div><input type="range" id="sliderH" min="0" max="360" value="215"><div class="chan-value" id="valH">215</div></div>
+            <div class="chan-row"><div class="chan-label">S</div><input type="range" id="sliderS" min="0" max="100" value="33"><div class="chan-value" id="valS">33</div></div>
+            <div class="chan-row"><div class="chan-label">L</div><input type="range" id="sliderL" min="0" max="100" value="18"><div class="chan-value" id="valL">18</div></div>
           </div>
-
           <div class="preset-title">プリセット</div>
           <div class="color-presets" id="colorPresets"></div>
         </div>
-
         <div class="panel-title" style="margin-top:14px;">ブラシ設定</div>
         <div class="slider-row">
           <div class="slider-label">サイズ</div>
           <input type="range" id="sizeSlider" min="1" max="120" value="10" step="1">
-          <div class="size-preview">
-            <canvas id="sizePreviewCanvas" width="44" height="36"></canvas>
-          </div>
+          <div class="size-preview"><canvas id="sizePreviewCanvas" width="44" height="36"></canvas></div>
         </div>
         <div class="slider-row">
           <div class="slider-label">不透明度</div>
           <input type="range" id="opacitySlider" min="1" max="100" value="100" step="1">
-          <div class="size-preview">
-            <canvas id="opacityPreviewCanvas" width="44" height="36"></canvas>
-          </div>
+          <div class="size-preview"><canvas id="opacityPreviewCanvas" width="44" height="36"></canvas></div>
         </div>
         <div class="slider-row tolerance-row" id="toleranceRow" style="display:none;">
           <div class="slider-label">許容値</div>
@@ -1191,14 +1154,12 @@
           </button>
         </div>
       </div>
-
     </div>
   </div>
 
   <input type="file" id="fileInput" accept="image/*" style="display:none">
 </div>
 
-<!-- モーダル群 -->
 <div class="modal-overlay" id="inviteModal">
   <div class="modal">
     <h3>友達を招待</h3>
@@ -1242,7 +1203,6 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signO
 import { getDatabase, ref, set, get, update, push, onValue, onChildAdded, remove }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// ===== Firebase設定 =====
 const firebaseConfig = {
   apiKey: "AIzaSyBZhZTrcRmz6syRL8V1qc5UzYgT9wjy5ck",
   authDomain: "dockgam-9fe2c.firebaseapp.com",
@@ -1258,7 +1218,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// ===== 基本定数 =====
 const STORAGE_KEY_INDEX = 'drawingApp_works_index_v10';
 const STORAGE_KEY_WORK_PREFIX = 'drawingApp_work_v10_';
 const BASE_W = 900, BASE_H = 675;
@@ -1361,7 +1320,6 @@ const logoutModal = $('logoutModal');
 const logoutCancelBtn = $('logoutCancelBtn');
 const logoutConfirmBtn = $('logoutConfirmBtn');
 
-// ===== 状態 =====
 let currentUser = null;
 let layers = [];
 let activeLayerId = null;
@@ -1410,31 +1368,27 @@ let imageEditState = null;
 let friends = {};
 let pendingRequests = {};
 let activeSessionId = null;
-let activeSessionOwnerId = null;   // ★ セッションの作成者ID（キャンバスの保存先）
+let activeSessionOwnerId = null;
 let sessionRole = null;
 let sessionUnsubscribe = null;
 let strokesUnsubscribe = null;
 let invitesUnsubscribe = null;
 let requestsUnsubscribe = null;
 let friendsUnsubscribe = null;
-let resendRequestUnsubscribe = null;   // 再送要求監視
+let resendRequestUnsubscribe = null;
+let snapshotAutoUpdateTimer = null;
 
-// リモートストローク
 let remoteStrokesById = {};
-
-// 送信側
 let myCurrentStrokeId = null;
 let myCurrentStrokeSeed = null;
 let myLastSentPoint = null;
 
 const STROKE_MIN_DIST = 3;
 
-// 招待管理
 const shownInviteIds = new Set();
 let incomingInviteQueue = [];
 let isShowingInviteModal = false;
 
-// 乱数（シード）
 function mulberry32(seed) {
   return function() {
     seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
@@ -1451,16 +1405,13 @@ const PRESET_COLORS = [
   '#e91e63', '#00bcd4', '#4caf50', '#ff5722'
 ];
 
-// ===== ユーティリティ =====
 function showToast(msg, type = '') {
   toastEl.textContent = msg;
   toastEl.className = 'toast show ' + type;
   clearTimeout(showToast._t);
   showToast._t = setTimeout(() => { toastEl.className = 'toast ' + type; }, 2500);
 }
-function showLoading(show) {
-  loadingIndicator.classList.toggle('show', show);
-}
+function showLoading(show) { loadingIndicator.classList.toggle('show', show); }
 function generateId() { return 'work_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8); }
 function formatDate(ts) {
   const d = new Date(ts);
@@ -1470,7 +1421,6 @@ function formatDate(ts) {
 function escapeHtml(s) {
   return String(s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
-
 function hexToRgb(hex) {
   hex = hex.replace('#','').trim();
   if (hex.length === 3) hex = hex.split('').map(c => c+c).join('');
@@ -1524,7 +1474,6 @@ function emailToKey(email) {
   return email.toLowerCase().replace(/\./g, ',').replace(/@/g, '_at_');
 }
 
-// ===== カラーUI同期 =====
 let isSyncingColor = false;
 function syncColorUI(source) {
   if (isSyncingColor) return;
@@ -1534,17 +1483,11 @@ function syncColorUI(source) {
   const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
   colorSwatchFill.style.background = currentColor;
   hexInput.value = currentColor.replace('#','').toUpperCase();
-  if (source !== 'rgb') {
-    sliderR.value = rgb.r; sliderG.value = rgb.g; sliderB.value = rgb.b;
-  }
+  if (source !== 'rgb') { sliderR.value = rgb.r; sliderG.value = rgb.g; sliderB.value = rgb.b; }
   valR.textContent = Math.round(rgb.r);
   valG.textContent = Math.round(rgb.g);
   valB.textContent = Math.round(rgb.b);
-  if (source !== 'hsl') {
-    sliderH.value = Math.round(hsl.h);
-    sliderS.value = Math.round(hsl.s);
-    sliderL.value = Math.round(hsl.l);
-  }
+  if (source !== 'hsl') { sliderH.value = Math.round(hsl.h); sliderS.value = Math.round(hsl.s); sliderL.value = Math.round(hsl.l); }
   valH.textContent = Math.round(hsl.h);
   valS.textContent = Math.round(hsl.s);
   valL.textContent = Math.round(hsl.l);
@@ -1559,15 +1502,10 @@ function setColor(hex, source) {
   const rgb = hexToRgb(hex);
   if (!rgb) return;
   currentColor = rgbToHex(rgb.r, rgb.g, rgb.b);
-  if (isEraser) {
-    isEraser = false;
-    eraserToggle.classList.remove('active');
-    canvas.classList.remove('eraser-mode');
-  }
+  if (isEraser) { isEraser = false; eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode'); }
   syncColorUI(source);
 }
 
-// ===== キャンバス解像度 =====
 function computeInternalSize() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   return { w: Math.round(BASE_W * dpr), h: Math.round(BASE_H * dpr), dpr };
@@ -1584,7 +1522,6 @@ function setInternalResolution() {
 }
 function getScaleFactor() { return W / BASE_W; }
 
-// ===== ズーム・パン =====
 function updateZoomUI() {
   canvasTransform.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
   zoomDisplay.textContent = Math.round(zoom * 100) + '%';
@@ -1616,7 +1553,6 @@ function setZoom(newZoom, clientX, clientY) {
   if (imageEditState) updateImageEditBox();
 }
 
-// ===== ローカルストレージ =====
 function getWorksIndex() {
   try { const raw = localStorage.getItem(STORAGE_KEY_INDEX); return raw ? JSON.parse(raw) : []; }
   catch (e) { return []; }
@@ -1670,10 +1606,7 @@ async function saveCurrentWork(silent, reason) {
   } catch (e) { console.warn('保存失敗', e); }
   finally {
     isSaving = false;
-    if (pendingSaveAgain) {
-      pendingSaveAgain = false;
-      setTimeout(() => saveCurrentWork(true), 50);
-    }
+    if (pendingSaveAgain) { pendingSaveAgain = false; setTimeout(() => saveCurrentWork(true), 50); }
   }
 }
 function scheduleAutoSave() {
@@ -1761,7 +1694,6 @@ function deleteWork(workId) {
   } catch (e) {}
 }
 
-// ===== 画面切替 =====
 function showHomeScreen() {
   if (isDrawing) { isDrawing = false; moveSnapshot = null; }
   if (imageEditState) cancelImageEdit();
@@ -1779,7 +1711,6 @@ function showEditorScreen() {
   }));
 }
 
-// ===== ギャラリー =====
 function renderGallery() {
   const index = getWorksIndex();
   galleryEl.innerHTML = '';
@@ -1820,7 +1751,6 @@ function renderGallery() {
   });
 }
 
-// ===== 新規作成 =====
 function createNewWork(backgroundImage) {
   layers = []; layerCounter = 0; currentWorkId = null;
   artTitleEl.textContent = '無題の作品';
@@ -1847,7 +1777,6 @@ function createNewWork(backgroundImage) {
   setTimeout(() => saveCurrentWork(true), 100);
 }
 
-// ===== レイヤー =====
 function addLayer(name, opts = {}) {
   const id = 'layer_' + (++layerCounter);
   const c = document.createElement('canvas'); c.width = W; c.height = H;
@@ -1904,7 +1833,6 @@ function reorderLayers(fromId, toId, position) {
   renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
 }
 
-// ===== 履歴 =====
 function pushHistory() {
   if (isLoading) return;
   const snapshot = layers.map(l => ({
@@ -1956,7 +1884,6 @@ function updateUndoRedo() {
   redoBtn.disabled = historyIndex >= history.length - 1;
 }
 
-// ===== 合成 =====
 function composite() {
   ctx.clearRect(0, 0, W, H);
   for (const layer of layers) {
@@ -1968,7 +1895,6 @@ function composite() {
   }
 }
 
-// ===== レイヤー一覧描画 =====
 function renderLayerList() {
   layerList.innerHTML = '';
   const reversed = [...layers].reverse();
@@ -2116,7 +2042,6 @@ function attachDragReorder(item, layerId) {
   item.addEventListener('pointerdown', onPointerDown);
 }
 
-// ===== プレビュー =====
 function updateSizePreview() {
   const pw = sizePreviewCanvas.width, ph = sizePreviewCanvas.height;
   sizePreviewCtx.clearRect(0, 0, pw, ph);
@@ -2165,7 +2090,6 @@ function updateOpacityPreview() {
   opacityPreviewCtx.restore();
 }
 
-// ===== 座標変換 =====
 function getCanvasCoords(e) {
   const rect = canvas.getBoundingClientRect();
   const scaleX = W / rect.width, scaleY = H / rect.height;
@@ -2180,7 +2104,6 @@ function getCanvasCoords(e) {
   };
 }
 
-// ===== スポイト =====
 function pickColorAt(x, y) {
   const px = Math.floor(x), py = Math.floor(y);
   if (px < 0 || py < 0 || px >= W || py >= H) return null;
@@ -2216,8 +2139,6 @@ function setEyedropperMode(on) {
     eyedropperToolBtn.classList.remove('active');
   }
 }
-
-// ===== 塗りつぶし =====
 function setFillMode(on) {
   isFillMode = on;
   if (on) {
@@ -2273,7 +2194,6 @@ function floodFill(layer, startX, startY, fillColorHex, tolerance) {
   return false;
 }
 
-// ===== ブラシ描画 =====
 function drawPen(c, x0, y0, x1, y1, size, color, alpha) {
   c.save();
   c.globalAlpha = alpha;
@@ -2434,7 +2354,6 @@ function blurAt(c, cx, cy, radius) {
   c.putImageData(srcData, minX, minY);
 }
 
-// ===== ストロークをレイヤーに適用 =====
 function drawStrokeToLayer(layer, x0, y0, x1, y1, params, seed) {
   const c = layer.ctx;
   const { color, size, brush, alpha, eraser } = params;
@@ -2460,7 +2379,6 @@ function drawStrokeToLayer(layer, x0, y0, x1, y1, params, seed) {
   c.restore();
 }
 
-// ===== 描画イベント =====
 function startDrawing(e) {
   if (e.button !== undefined && e.button !== 0) return;
   e.preventDefault();
@@ -2478,10 +2396,7 @@ function startDrawing(e) {
   }
   if (isFillMode) {
     const ok = floodFill(layer, coords.x, coords.y, currentColor, currentTolerance);
-    if (ok) {
-      composite(); scheduleAutoSave(); pushHistory();
-      showToast('塗りつぶしました', 'success');
-    }
+    if (ok) { composite(); scheduleAutoSave(); pushHistory(); showToast('塗りつぶしました', 'success'); }
     setFillMode(false);
     return;
   }
@@ -2492,7 +2407,6 @@ function startDrawing(e) {
     moveOffsetX = 0; moveOffsetY = 0;
     return;
   }
-
   isDrawing = true;
   lastX = coords.x; lastY = coords.y;
 
@@ -2517,7 +2431,6 @@ function startDrawing(e) {
   }
   composite(); scheduleAutoSave();
 }
-
 function draw(e) {
   if (!isDrawing) return;
   e.preventDefault();
@@ -2525,7 +2438,6 @@ function draw(e) {
   if (!coords) return;
   const layer = getActiveLayer();
   if (!layer || !layer.visible) return;
-
   if (isMoveMode && moveSnapshot) {
     const dx = Math.round(coords.x - moveStartX);
     const dy = Math.round(coords.y - moveStartY);
@@ -2536,26 +2448,19 @@ function draw(e) {
     composite(); scheduleAutoSave();
     return;
   }
-
   drawStrokeToLayer(layer, lastX, lastY, coords.x, coords.y, {
     color: currentColor, size: currentSize, brush: currentBrush, alpha: currentOpacity, eraser: isEraser
   }, myCurrentStrokeSeed);
-
   if (activeSessionId && myCurrentStrokeId) {
     const dist = Math.hypot(coords.x - myLastSentPoint.x, coords.y - myLastSentPoint.y);
     if (dist >= STROKE_MIN_DIST) {
-      sendStrokeEvent({
-        type: 'move', strokeId: myCurrentStrokeId,
-        x: coords.x, y: coords.y
-      });
+      sendStrokeEvent({ type: 'move', strokeId: myCurrentStrokeId, x: coords.x, y: coords.y });
       myLastSentPoint = { x: coords.x, y: coords.y };
     }
   }
-
   lastX = coords.x; lastY = coords.y;
   composite(); scheduleAutoSave();
 }
-
 function stopDrawing(e) {
   if (e) e.preventDefault();
   if (!isDrawing) return;
@@ -2572,7 +2477,6 @@ function stopDrawing(e) {
   pushHistory();
 }
 
-// ===== 画像編集 =====
 function enterImageEditMode(img, layerId) {
   imageEditState = { layerId, img, x: 0, y: 0, w: BASE_W, h: BASE_H, rotation: 0 };
   const imgRatio = img.width / img.height;
@@ -2731,7 +2635,6 @@ function setupImageEditInteractions() {
   imgCancelBtn.addEventListener('click', cancelImageEdit);
   imgResetBtn.addEventListener('click', resetImageEdit);
 }
-
 function loadImageFromFile(file) {
   if (!file || !file.type.startsWith('image/')) return;
   const reader = new FileReader();
@@ -2746,7 +2649,6 @@ function loadImageFromFile(file) {
   reader.readAsDataURL(file);
 }
 
-// ===== カラープリセット =====
 function renderColorPresets() {
   colorPresets.innerHTML = '';
   PRESET_COLORS.forEach(c => {
@@ -2762,7 +2664,6 @@ function renderColorPresets() {
   syncColorUI();
 }
 
-// ===== カラーイベント =====
 document.querySelectorAll('.picker-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.picker-tab').forEach(t => t.classList.remove('active'));
@@ -2820,7 +2721,6 @@ toleranceSlider.addEventListener('input', (e) => {
   toleranceValue.textContent = currentTolerance;
 });
 
-// ===== ズーム操作 =====
 zoomInBtn.addEventListener('click', () => {
   const rect = canvasViewport.getBoundingClientRect();
   setZoom(zoom * 1.25, rect.left + rect.width/2, rect.top + rect.height/2);
@@ -2844,7 +2744,6 @@ canvasViewport.addEventListener('wheel', (e) => {
   }
 }, { passive: false });
 
-// ===== Pointer Events =====
 canvas.addEventListener('pointerdown', (e) => {
   if (e.pointerType === 'mouse' && e.button !== 0) return;
   if (imageEditState) return;
@@ -2925,7 +2824,6 @@ function updatePinch() {
 }
 function endPinch() { pinchState = null; }
 
-// ===== ブラシ選択 =====
 brushItems.forEach(btn => {
   btn.addEventListener('click', () => {
     brushItems.forEach(b => b.classList.remove('active'));
@@ -2938,9 +2836,7 @@ brushItems.forEach(btn => {
     updateSizePreview();
   });
 });
-brushToggleBtn.addEventListener('click', () => {
-  brushPanel.classList.toggle('show');
-});
+brushToggleBtn.addEventListener('click', () => { brushPanel.classList.toggle('show'); });
 eraserToggle.addEventListener('click', () => {
   isEraser = !isEraser;
   if (isEraser) {
@@ -2963,17 +2859,10 @@ moveToggle.addEventListener('click', () => {
     moveToggle.classList.remove('active'); canvas.classList.remove('move-mode');
   }
 });
-sizeSlider.addEventListener('input', (e) => {
-  currentSize = parseInt(e.target.value, 10);
-  updateSizePreview();
-});
-opacitySlider.addEventListener('input', (e) => {
-  currentOpacity = parseInt(e.target.value, 10) / 100;
-  updateOpacityPreview();
-});
+sizeSlider.addEventListener('input', (e) => { currentSize = parseInt(e.target.value, 10); updateSizePreview(); });
+opacitySlider.addEventListener('input', (e) => { currentOpacity = parseInt(e.target.value, 10) / 100; updateOpacityPreview(); });
 clearBtn.addEventListener('click', () => {
-  const layer = getActiveLayer();
-  if (!layer) return;
+  const layer = getActiveLayer(); if (!layer) return;
   if (!confirm('このレイヤーの内容を消去しますか？')) return;
   layer.ctx.clearRect(0, 0, W, H);
   renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
@@ -3112,7 +3001,7 @@ window.addEventListener('resize', () => {
 });
 
 // =====================================================
-// ===== 認証 =====
+// 認証
 // =====================================================
 async function handleLogin() {
   loginError.style.display = 'none';
@@ -3121,50 +3010,33 @@ async function handleLogin() {
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
   try {
-    try { await setPersistence(auth, browserLocalPersistence); }
-    catch (e) { console.warn('setPersistence failed', e); }
+    try { await setPersistence(auth, browserLocalPersistence); } catch (e) {}
     await signInWithPopup(auth, provider);
   } catch (e) {
     console.error('Login error:', e);
     let msg = '';
-    if (e.code === 'auth/unauthorized-domain') {
-      msg = 'このドメインは許可されていません。Firebase Console → Authentication → Settings → 承認済みドメイン に ' + window.location.hostname + ' を追加してください。';
-    } else if (e.code === 'auth/popup-blocked') {
-      msg = 'ポップアップがブロックされました。ブラウザのポップアップ許可をこのサイトに与えてください。';
-    } else if (e.code === 'auth/popup-closed-by-user') {
-      msg = 'ログインがキャンセルされました。';
-    } else if (e.code === 'auth/cancelled-popup-request') {
-      msg = '別のポップアップが開いています。';
-    } else if (e.code === 'auth/operation-not-allowed') {
-      msg = 'Google ログインが有効化されていません。Firebase Console → Authentication → Sign-in method で Google を有効にしてください。';
-    } else if (e.code === 'auth/network-request-failed') {
-      msg = 'ネットワークエラー。インターネット接続を確認してください。';
-    } else {
-      msg = 'ログインに失敗しました: ' + (e.message || e.code || String(e));
-    }
+    if (e.code === 'auth/unauthorized-domain') msg = 'このドメインは許可されていません。Firebase Console → Authentication → Settings → 承認済みドメイン に ' + window.location.hostname + ' を追加してください。';
+    else if (e.code === 'auth/popup-blocked') msg = 'ポップアップがブロックされました。ブラウザのポップアップ許可をこのサイトに与えてください。';
+    else if (e.code === 'auth/popup-closed-by-user') msg = 'ログインがキャンセルされました。';
+    else if (e.code === 'auth/cancelled-popup-request') msg = '別のポップアップが開いています。';
+    else if (e.code === 'auth/operation-not-allowed') msg = 'Google ログインが有効化されていません。';
+    else if (e.code === 'auth/network-request-failed') msg = 'ネットワークエラー。';
+    else msg = 'ログインに失敗しました: ' + (e.message || e.code || String(e));
     loginError.textContent = msg;
     loginError.style.display = 'block';
-  } finally {
-    googleLoginBtn.disabled = false;
-  }
+  } finally { googleLoginBtn.disabled = false; }
 }
 googleLoginBtn.addEventListener('click', handleLogin);
 
-userAvatar.addEventListener('click', () => {
-  logoutModal.classList.add('show');
-});
-logoutCancelBtn.addEventListener('click', () => {
-  logoutModal.classList.remove('show');
-});
+userAvatar.addEventListener('click', () => { logoutModal.classList.add('show'); });
+logoutCancelBtn.addEventListener('click', () => { logoutModal.classList.remove('show'); });
 logoutConfirmBtn.addEventListener('click', async () => {
   logoutModal.classList.remove('show');
   try {
     await cleanupSession();
     await signOut(auth);
     showToast('ログアウトしました', 'success');
-  } catch (e) {
-    showToast('ログアウト失敗: ' + e.message, 'error');
-  }
+  } catch (e) { showToast('ログアウト失敗: ' + e.message, 'error'); }
 });
 
 onAuthStateChanged(auth, async (user) => {
@@ -3184,13 +3056,11 @@ onAuthStateChanged(auth, async (user) => {
           photoURL: user.photoURL || '',
           updatedAt: Date.now()
         });
-        if (user.email) {
-          await set(ref(db, 'userEmails/' + emailToKey(user.email)), user.uid);
-        }
+        if (user.email) await set(ref(db, 'userEmails/' + emailToKey(user.email)), user.uid);
       } catch (dbErr) { console.warn('ユーザー情報の保存に失敗:', dbErr); }
-      try { startFriendsListener(); } catch (e) { console.warn('friends listener failed', e); }
-      try { startRequestsListener(); } catch (e) { console.warn('requests listener failed', e); }
-      try { startInviteListener(); } catch (e) { console.warn('invite listener failed', e); }
+      try { startFriendsListener(); } catch (e) {}
+      try { startRequestsListener(); } catch (e) {}
+      try { startInviteListener(); } catch (e) {}
       renderGallery();
     } else {
       currentUser = null;
@@ -3199,10 +3069,7 @@ onAuthStateChanged(auth, async (user) => {
       homeScreen.classList.add('hidden');
       editorScreen.classList.remove('active');
     }
-  } catch (e) {
-    console.error('onAuthStateChanged error:', e);
-    showToast('ログイン後の処理でエラー: ' + e.message, 'error');
-  }
+  } catch (e) { console.error('onAuthStateChanged error:', e); }
 });
 
 function cleanupListeners() {
@@ -3227,11 +3094,7 @@ function startFriendsListener() {
     friends = snap.val() || {};
     renderFriendsList();
     renderInviteFriendList();
-  }, (err) => {
-    console.warn('friends listener error:', err);
-    friends = {};
-    renderFriendsList();
-  });
+  }, (err) => { friends = {}; renderFriendsList(); });
 }
 function startRequestsListener() {
   requestsUnsubscribe = onValue(ref(db, 'userFriendRequests/' + currentUser.uid), async (snap) => {
@@ -3243,20 +3106,17 @@ function startRequestsListener() {
           const r = await get(ref(db, 'friendRequests/' + reqId));
           if (r.exists()) {
             const data = r.val();
-            if (data.status === 'pending' && data.to === currentUser.uid) {
-              pendingRequests[reqId] = data;
-            }
+            if (data.status === 'pending' && data.to === currentUser.uid) pendingRequests[reqId] = data;
           }
         } catch (e) {}
       });
       await Promise.all(promises);
       renderRequestsPanel();
       updateFriendBadge();
-    } catch (e) { console.warn('requests listener error:', e); }
-  }, (err) => { console.warn('requests listener error:', err); });
+    } catch (e) {}
+  });
 }
 
-// ===== 招待リスナー =====
 function startInviteListener() {
   if (invitesUnsubscribe) { try { invitesUnsubscribe(); } catch(e){} invitesUnsubscribe = null; }
   invitesUnsubscribe = onValue(ref(db, 'sessionInvites/' + currentUser.uid), async (snap) => {
@@ -3272,14 +3132,13 @@ function startInviteListener() {
             if (s.status === 'pending' && s.guestId === currentUser.uid) {
               shownInviteIds.add(sid);
               incomingInviteQueue.push({ sessionId: sid, session: s });
-              console.log('[招待検知]', sid, s.ownerName);
             }
           }
-        } catch (e) { console.warn('invite fetch error:', e); }
+        } catch (e) {}
       }
       processInviteQueue();
-    } catch (e) { console.warn('invite listener error:', e); }
-  }, (err) => { console.warn('invite listener error:', err); });
+    } catch (e) {}
+  });
 }
 
 function processInviteQueue() {
@@ -3389,23 +3248,14 @@ async function handleRequestAction(rid, action) {
       await update(ref(db), updates);
       showToast('拒否しました');
     }
-  } catch (e) {
-    console.error(e);
-    showToast('処理に失敗しました', 'error');
-  }
+  } catch (e) { showToast('処理に失敗しました', 'error'); }
 }
 function updateFriendBadge() {
   const count = Object.keys(pendingRequests).length;
-  if (count > 0) {
-    friendNotifBadge.textContent = count;
-    friendNotifBadge.style.display = 'flex';
-  } else {
-    friendNotifBadge.style.display = 'none';
-  }
+  if (count > 0) { friendNotifBadge.textContent = count; friendNotifBadge.style.display = 'flex'; }
+  else { friendNotifBadge.style.display = 'none'; }
 }
-friendsBtn.addEventListener('click', () => {
-  friendsPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-});
+friendsBtn.addEventListener('click', () => { friendsPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
 
 addFriendBtn.addEventListener('click', async () => {
   const email = friendEmailInput.value.trim();
@@ -3417,10 +3267,7 @@ addFriendBtn.addEventListener('click', async () => {
   try {
     const key = emailToKey(email);
     const uidSnap = await get(ref(db, 'userEmails/' + key));
-    if (!uidSnap.exists()) {
-      addFriendMsg.textContent = 'このメールアドレスのユーザーは見つかりません';
-      addFriendMsg.classList.add('error'); return;
-    }
+    if (!uidSnap.exists()) { addFriendMsg.textContent = 'このメールアドレスのユーザーは見つかりません'; addFriendMsg.classList.add('error'); return; }
     const targetUid = uidSnap.val();
     if (targetUid === currentUser.uid) { addFriendMsg.textContent = '自分自身は追加できません'; addFriendMsg.classList.add('error'); return; }
     const alreadyFriend = await get(ref(db, 'friends/' + currentUser.uid + '/' + targetUid));
@@ -3429,17 +3276,13 @@ addFriendBtn.addEventListener('click', async () => {
     const reqs = sentSnap.val() || {};
     const existing = Object.entries(reqs).find(([id, r]) =>
       r.status === 'pending' &&
-      ((r.from === currentUser.uid && r.to === targetUid) ||
-       (r.from === targetUid && r.to === currentUser.uid))
+      ((r.from === currentUser.uid && r.to === targetUid) || (r.from === targetUid && r.to === currentUser.uid))
     );
-    if (existing) { addFriendMsg.textContent = '既にリクエスト送信済み、または受信しています'; addFriendMsg.classList.add('error'); return; }
+    if (existing) { addFriendMsg.textContent = '既にリクエスト送信済み'; addFriendMsg.classList.add('error'); return; }
     const newReqRef = push(ref(db, 'friendRequests'));
     const reqId = newReqRef.key;
     const updates = {};
-    updates['friendRequests/' + reqId] = {
-      from: currentUser.uid, to: targetUid,
-      status: 'pending', createdAt: Date.now()
-    };
+    updates['friendRequests/' + reqId] = { from: currentUser.uid, to: targetUid, status: 'pending', createdAt: Date.now() };
     updates['userFriendRequests/' + targetUid + '/' + reqId] = true;
     updates['userFriendRequests/' + currentUser.uid + '/' + reqId] = true;
     await update(ref(db), updates);
@@ -3447,24 +3290,20 @@ addFriendBtn.addEventListener('click', async () => {
     addFriendMsg.classList.add('success');
     friendEmailInput.value = '';
   } catch (e) {
-    console.error(e);
     addFriendMsg.textContent = 'エラー: ' + e.message;
     addFriendMsg.classList.add('error');
   }
 });
 
 // =====================================================
-// ===== 招待とセッション（キャンバス保存先をオーナーに） =====
+// 招待とセッション
 // =====================================================
 inviteBtn.addEventListener('click', () => {
   if (activeSessionId) { showToast('既に共同描画セッション中です', 'error'); return; }
   inviteModal.classList.add('show');
 });
-inviteCancelBtn.addEventListener('click', () => {
-  inviteModal.classList.remove('show');
-});
+inviteCancelBtn.addEventListener('click', () => { inviteModal.classList.remove('show'); });
 
-// キャンバスのスナップショットを取得（サイズを抑えて確実に送れるように）
 function captureCanvasSnapshot() {
   const snapshot = document.createElement('canvas');
   snapshot.width = W;
@@ -3479,8 +3318,8 @@ function captureCanvasSnapshot() {
     sctx.drawImage(layer.canvas, 0, 0);
     sctx.restore();
   }
-  // 最大 800x600 に縮小、JPEG品質0.7 → 確実に100KB未満に
-  const maxDim = 800;
+  // 640x480 に縮小、JPEG品質0.65
+  const maxDim = 640;
   let tw = W, th = H;
   if (Math.max(W, H) > maxDim) {
     const r = maxDim / Math.max(W, H);
@@ -3493,10 +3332,9 @@ function captureCanvasSnapshot() {
   smctx.fillStyle = '#ffffff';
   smctx.fillRect(0, 0, tw, th);
   smctx.drawImage(snapshot, 0, 0, tw, th);
-  return small.toDataURL('image/jpeg', 0.7);
+  return small.toDataURL('image/jpeg', 0.65);
 }
 
-// スナップショットを自分のキャンバスに反映
 async function applyCanvasSnapshot(dataURL) {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -3512,26 +3350,16 @@ async function applyCanvasSnapshot(dataURL) {
       const bgCtx = bgCanvas.getContext('2d', { willReadFrequently: true });
       bgCtx.fillStyle = '#ffffff';
       bgCtx.fillRect(0, 0, W, H);
-      const bgLayer = {
-        id: 'layer_' + layerCounter,
-        name: '背景',
-        canvas: bgCanvas, ctx: bgCtx,
-        visible: true, opacity: 1
-      };
+      const bgLayer = { id: 'layer_' + layerCounter, name: '背景', canvas: bgCanvas, ctx: bgCtx, visible: true, opacity: 1 };
       layers.push(bgLayer);
 
-      // 相手のキャンバス
+      // 共同キャンバス
       layerCounter++;
       const newCanvas = document.createElement('canvas');
       newCanvas.width = W; newCanvas.height = H;
       const newCtx = newCanvas.getContext('2d', { willReadFrequently: true });
       newCtx.drawImage(img, 0, 0, W, H);
-      const newLayer = {
-        id: 'layer_' + layerCounter,
-        name: '共同キャンバス',
-        canvas: newCanvas, ctx: newCtx,
-        visible: true, opacity: 1
-      };
+      const newLayer = { id: 'layer_' + layerCounter, name: '共同キャンバス', canvas: newCanvas, ctx: newCtx, visible: true, opacity: 1 };
       layers.push(newLayer);
       activeLayerId = newLayer.id;
 
@@ -3546,94 +3374,56 @@ async function applyCanvasSnapshot(dataURL) {
   });
 }
 
-// スナップショットをオーナーのデータとして保存
-// ★ userWorks/{ownerId}/{sessionId} に保存 → 作成者の作品として残る
 async function uploadCanvasSnapshotToSession(sessionId, ownerId) {
-  if (!sessionId || !ownerId) return;
+  if (!sessionId || !ownerId) return false;
   try {
     const dataURL = captureCanvasSnapshot();
-    // オーナーの保存領域に保存
-    await set(ref(db, 'userWorks/' + ownerId + '/' + sessionId), {
-      dataURL: dataURL,
-      updatedAt: Date.now(),
-      ownerId: ownerId,
-      sessionId: sessionId
-    });
-    // セッションにも参照を張る（ゲストが見るため）
+    console.log('[snapshot] upload size:', Math.round(dataURL.length / 1024), 'KB');
+    // セッションに直接保存
     await set(ref(db, 'sessionSnapshots/' + sessionId), {
+      dataURL: dataURL,
       ownerId: ownerId,
       updatedAt: Date.now()
     });
-    console.log('[snapshot] uploaded', sessionId, 'owner:', ownerId, 'size:', dataURL.length);
+    console.log('[snapshot] uploaded OK');
+    return true;
   } catch (e) {
-    console.error('スナップショット保存失敗:', e);
-    throw e;
+    console.error('[snapshot] upload FAILED:', e);
+    return false;
   }
 }
 
-// スナップショットを取得（リトライ付き）
 async function downloadCanvasSnapshotFromSession(sessionId, maxRetries = 3) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      // sessionSnapshots から ownerId を取得
-      const metaSnap = await get(ref(db, 'sessionSnapshots/' + sessionId));
-      if (!metaSnap.exists()) {
-        console.warn(`[snapshot] attempt ${attempt}: meta not found`);
-        if (attempt < maxRetries) {
-          await new Promise(r => setTimeout(r, 500 * attempt));
-          continue;
+      console.log(`[snapshot] fetch attempt ${attempt}`);
+      const snap = await get(ref(db, 'sessionSnapshots/' + sessionId));
+      if (snap.exists()) {
+        const data = snap.val();
+        if (data && data.dataURL) {
+          await applyCanvasSnapshot(data.dataURL);
+          console.log('[snapshot] applied OK');
+          return true;
         }
-        return false;
       }
-      const meta = metaSnap.val();
-      const ownerId = meta.ownerId;
-      if (!ownerId) {
-        console.warn(`[snapshot] attempt ${attempt}: ownerId not found`);
-        if (attempt < maxRetries) {
-          await new Promise(r => setTimeout(r, 500 * attempt));
-          continue;
-        }
-        return false;
-      }
-      // オーナーの作品から dataURL を取得
-      const snap = await get(ref(db, 'userWorks/' + ownerId + '/' + sessionId));
-      if (!snap.exists()) {
-        console.warn(`[snapshot] attempt ${attempt}: userWork not found`);
-        if (attempt < maxRetries) {
-          await new Promise(r => setTimeout(r, 500 * attempt));
-          continue;
-        }
-        return false;
-      }
-      const data = snap.val();
-      if (data && data.dataURL) {
-        await applyCanvasSnapshot(data.dataURL);
-        console.log('[snapshot] applied', sessionId, 'attempt:', attempt);
-        return true;
-      }
+      console.warn(`[snapshot] attempt ${attempt}: no dataURL`);
     } catch (e) {
       console.warn(`[snapshot] attempt ${attempt} error:`, e);
-      if (attempt < maxRetries) {
-        await new Promise(r => setTimeout(r, 500 * attempt));
-      }
     }
+    if (attempt < maxRetries) await new Promise(r => setTimeout(r, 600 * attempt));
   }
   return false;
 }
 
-// オーナー側：ゲストから再送要求が来たらスナップショットを再アップロード
 function startResendListener(sessionId, ownerId) {
   if (resendRequestUnsubscribe) { try { resendRequestUnsubscribe(); } catch(e){} resendRequestUnsubscribe = null; }
   resendRequestUnsubscribe = onValue(ref(db, 'snapshotResendRequests/' + sessionId), async (snap) => {
     if (snap.exists() && snap.val() === true) {
-      console.log('[snapshot] resend request received');
+      console.log('[snapshot] resend requested');
       try {
         await uploadCanvasSnapshotToSession(sessionId, ownerId);
-        // フラグをクリア
         await remove(ref(db, 'snapshotResendRequests/' + sessionId));
-      } catch (e) {
-        console.error('再送失敗:', e);
-      }
+      } catch (e) {}
     }
   });
 }
@@ -3655,26 +3445,32 @@ async function inviteFriendToCanvas(friendUid) {
       startedAt: null
     };
     await set(sessionRef, sessionData);
-    // ★ スナップショットをオーナーの保存領域に保存
-    await uploadCanvasSnapshotToSession(sessionId, currentUser.uid);
+    console.log('[invite] session created:', sessionId);
+
+    // スナップショットを保存
+    const ok = await uploadCanvasSnapshotToSession(sessionId, currentUser.uid);
+    if (!ok) {
+      showToast('キャンバスの保存に失敗しました。もう一度お試しください', 'error');
+      try { await remove(ref(db, 'sessions/' + sessionId)); } catch(e){}
+      return;
+    }
+
     // 招待通知
     await set(ref(db, 'sessionInvites/' + friendUid + '/' + sessionId), true);
+    console.log('[invite] notification sent');
 
     activeSessionId = sessionId;
     activeSessionOwnerId = currentUser.uid;
     sessionRole = 'owner';
     await attachSessionListener(sessionId);
-    // 再送要求リスナー開始（オーナーのみ）
     startResendListener(sessionId, currentUser.uid);
 
     showToast(`${friend.displayName} さんに招待を送信しました`, 'success');
     inviteModal.classList.remove('show');
   } catch (e) {
-    console.error(e);
+    console.error('[invite] error:', e);
     showToast('招待に失敗: ' + e.message, 'error');
-  } finally {
-    showLoading(false);
-  }
+  } finally { showLoading(false); }
 }
 
 async function attachSessionListener(sessionId) {
@@ -3695,9 +3491,7 @@ async function attachSessionListener(sessionId) {
     if (s.status === 'active') {
       collabBadge.classList.add('show');
       collabBadgeText.textContent = `共同描画中: ${sessionRole === 'owner' ? s.guestName : s.ownerName}`;
-      if (!strokesUnsubscribe) {
-        startStrokesListener(sessionId);
-      }
+      if (!strokesUnsubscribe) startStrokesListener(sessionId);
     } else if (s.status === 'declined') {
       showToast('招待が拒否されました', 'error');
       await cleanupSession();
@@ -3708,18 +3502,15 @@ async function attachSessionListener(sessionId) {
   });
 }
 
-// ===== 招待モーダル =====
 function showIncomingInvite(sessionId, session) {
   isShowingInviteModal = true;
   const alreadyInSession = !!activeSessionId;
   if (alreadyInSession) {
-    incomingInviteBody.innerHTML = 
-      `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>` +
-      `<span style="color:#ffb366;">※現在、別のキャンバスで描画中です。「参加」を押すと既存のセッションを終了して切り替わります。</span><br>` +
+    incomingInviteBody.innerHTML = `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>` +
+      `<span style="color:#ffb366;">※現在、別のキャンバスで描画中です。「参加」を押すと既存を終了して切り替わります。</span><br>` +
       `<span style="color:#5bdf8d;">参加すると相手のキャンバスの続きから描けます。</span>`;
   } else {
-    incomingInviteBody.innerHTML = 
-      `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>` +
+    incomingInviteBody.innerHTML = `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>` +
       `<span style="color:#5bdf8d;">参加すると相手のキャンバスの続きから描けます。</span><br>参加しますか？`;
   }
   const newAccept = inviteAcceptBtn.cloneNode(true);
@@ -3731,12 +3522,11 @@ function showIncomingInvite(sessionId, session) {
   newAccept.addEventListener('click', async () => {
     incomingInviteModal.classList.remove('show');
     isShowingInviteModal = false;
-    if (activeSessionId) {
-      await cleanupSession();
-    }
+    if (activeSessionId) await cleanupSession();
     try {
       showLoading(true);
-      // セッションを active に更新
+      console.log('[invite] accept:', sessionId);
+      // セッションを active に
       await update(ref(db, 'sessions/' + sessionId), { status: 'active', startedAt: Date.now() });
       await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId));
       shownInviteIds.delete(sessionId);
@@ -3745,39 +3535,33 @@ function showIncomingInvite(sessionId, session) {
       activeSessionOwnerId = session.ownerId;
       sessionRole = 'guest';
 
-      // 相手のキャンバスを取得（リトライ付き）
+      // ★ 必ずエディタ画面へ
+      showEditorScreen();
+      await new Promise(r => setTimeout(r, 400));
+
+      // スナップショット取得
       showToast('相手のキャンバスを読み込んでいます...', 'success');
       let applied = await downloadCanvasSnapshotFromSession(sessionId, 3);
 
-      // 失敗したら再送要求を送って、もう一度取得
       if (!applied) {
-        console.warn('[snapshot] first attempts failed, requesting resend');
+        console.warn('[invite] first fetch failed, requesting resend');
         showToast('再取得を試みています...', 'success');
         try {
           await set(ref(db, 'snapshotResendRequests/' + sessionId), true);
-          // 再送要求をセットして少し待つ
           await new Promise(r => setTimeout(r, 1500));
           applied = await downloadCanvasSnapshotFromSession(sessionId, 5);
-        } catch (e) {
-          console.warn('resend request error:', e);
-        }
+        } catch (e) {}
       }
 
-      if (applied) {
-        showToast('相手のキャンバスに参加しました', 'success');
-      } else {
-        // それでもダメなら、相手のストロークを最初から再生するようにする
-        // （キャンバスは白紙だが、以降のストロークは反映される）
-        showToast('キャンバスの読み込みに失敗しました。以降の描画は同期されます', 'error');
-        console.warn('[snapshot] all attempts failed');
-      }
+      if (applied) showToast('相手のキャンバスに参加しました', 'success');
+      else showToast('キャンバスの読み込みに失敗しました', 'error');
 
       await attachSessionListener(sessionId);
       collabBadge.classList.add('show');
       collabBadgeText.textContent = '共同描画中';
       startStrokesListener(sessionId);
     } catch (e) {
-      console.error(e);
+      console.error('[invite] accept error:', e);
       showToast('参加に失敗: ' + e.message, 'error');
     } finally {
       showLoading(false);
@@ -3792,23 +3576,18 @@ function showIncomingInvite(sessionId, session) {
       await update(ref(db, 'sessions/' + sessionId), { status: 'declined' });
       await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId));
       shownInviteIds.delete(sessionId);
-    } catch (e) { console.error(e); }
+    } catch (e) {}
     processInviteQueue();
   });
 
   incomingInviteModal.classList.add('show');
 }
 
-// ===== ストローク同期 =====
 async function sendStrokeEvent(event) {
   if (!activeSessionId) return;
   try {
     const r = push(ref(db, 'strokes/' + activeSessionId));
-    await set(r, {
-      ...event,
-      uid: currentUser.uid,
-      timestamp: Date.now()
-    });
+    await set(r, { ...event, uid: currentUser.uid, timestamp: Date.now() });
   } catch (e) { console.error('stroke送信失敗', e); }
 }
 
@@ -3818,9 +3597,7 @@ function startStrokesListener(sessionId) {
   const existingKeys = new Set();
   const initialLoad = new Promise((resolve) => {
     get(strokesRef).then((snap) => {
-      if (snap.exists()) {
-        Object.keys(snap.val()).forEach(k => existingKeys.add(k));
-      }
+      if (snap.exists()) Object.keys(snap.val()).forEach(k => existingKeys.add(k));
       resolve();
     }).catch(() => resolve());
   });
@@ -3833,15 +3610,12 @@ function startStrokesListener(sessionId) {
     if (!ev) return;
     if (ev.uid === currentUser.uid) return;
     applyRemoteStrokeEvent(ev);
-  }, (err) => {
-    console.warn('strokes listener error:', err);
   });
 }
 
 function applyRemoteStrokeEvent(ev) {
   const layer = getActiveLayer();
   if (!layer || !layer.visible) return;
-
   if (ev.type === 'start') {
     remoteStrokesById[ev.strokeId] = {
       lastX: ev.x, lastY: ev.y,
@@ -3882,7 +3656,6 @@ async function cleanupSession() {
       await remove(ref(db, 'strokes/' + activeSessionId));
       await remove(ref(db, 'sessionSnapshots/' + activeSessionId));
       await remove(ref(db, 'snapshotResendRequests/' + activeSessionId));
-      // ★ userWorks は削除しない（オーナーの作品として残す）
     } catch (e) {}
   }
   activeSessionId = null;
@@ -3897,7 +3670,6 @@ updateSizePreview();
 updateOpacityPreview();
 setupImageEditInteractions();
 canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-
 </script>
 </body>
 </html>
