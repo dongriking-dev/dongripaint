@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>お絵描きスタジオ - 共同描画</title>
+<style>
+  * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    font-family: 'Segoe UI', Roboto, 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    background: #1e1f24;
+    color: #e6e7ea;
+  }
+  .icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+  .icon-sm { width: 16px; height: 16px; }
+  .icon-lg { width: 24px; height: 24px; }
+  button { font-family: inherit; cursor: pointer; }
+  input { font-family: inherit; }
+
+  /* ===== ログイン画面 ===== */
+  #loginScreen {
+    position: fixed; inset: 0;
+    background: linear-gradient(150deg, #2a2d34 0%, #1a1c21 100%);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 24px;
+    z-index: 100;
+  }
+  #loginScreen.hidden { display: none; }
+  .login-box {
+    background: #26282e; border-radius: 20px; padding: 40px 50px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    border: 1px solid #383b42;
+    text-align: center; max-width: 420px;
+  }
+  .login-box h1 {
+    margin: 0 0 8px; font-size: 1.8rem; font-weight: 600;
+    color: #fff; letter-spacing: 1px;
+  }
+  .login-box p { color: #8592a3; font-size: 0.9rem; margin: 0 0 28px; }
+  .google-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #fff; color: #333; border: none;
+    padding: 12px 24px; border-radius: 40px;
+    font-size: 0.95rem; font-weight: 600;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transition: all 0.15s;
+  }
+  .google-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.4); }
+  .google-btn svg { width: 20px; height: 20px; }
+
+  /* ===== アプリ ===== */
+  #appScreen { display: none; position: fixed; inset: 0; flex-direction: column; }
+  #appScreen.active { display: flex; }
+
+  /* 上部バー */
+  .top-bar {
+    height: 56px; background: #1e1f24;
+    display: flex; align-items: center; padding: 0 14px;
+    gap: 12px; border-bottom: 1px solid #2c2e34;
+    flex-shrink: 0; z-index: 30;
+  }
+  .top-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: transparent; border: none;
+    color: #d0d4dc; display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .top-btn:hover { background: #2c2e34; color: #fff; }
+  .top-btn.primary { background: #3b4048; color: #fff; }
+  .top-btn.primary:hover { background: #4a505a; }
+  .top-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .top-title {
+    flex: 1; text-align: center; font-size: 0.85rem;
+    font-weight: 500; color: #b6bcc7;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .top-group { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+
+  /* ユーザーアバター */
+  .user-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 2px solid #454952; cursor: pointer;
+    background: #2b2d33;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .user-avatar:hover { border-color: #5b8def; }
+  .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* メインレイアウト */
+  .editor-body { flex: 1; display: flex; overflow: hidden; min-height: 0; }
+
+  /* 左ツールバー */
+  .left-toolbar {
+    width: 64px; background: #26282e;
+    border-right: 1px solid #2c2e34;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 12px 0; gap: 6px;
+    flex-shrink: 0; overflow-y: auto; z-index: 15;
+  }
+  .tool-btn {
+    width: 46px; height: 46px; border-radius: 12px;
+    background: transparent; border: none;
+    color: #aab0bb; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; position: relative; flex-shrink: 0;
+  }
+  .tool-btn:hover { background: #32353c; color: #fff; }
+  .tool-btn.active { background: #3b4048; color: #fff; }
+  .tool-btn.active::before {
+    content: ''; position: absolute; left: -12px; top: 50%;
+    transform: translateY(-50%); width: 3px; height: 22px;
+    background: #5b8def; border-radius: 2px;
+  }
+  .tool-separator { width: 30px; height: 1px; background: #383b42; margin: 6px 0; flex-shrink: 0; }
+
+  /* ブラシパネル */
+  .brush-panel {
+    width: 220px; background: #2b2d33;
+    border-right: 1px solid #2c2e34;
+    padding: 14px 12px; flex-shrink: 0;
+    overflow-y: auto; z-index: 14;
+    display: none; flex-direction: column;
+  }
+  .brush-panel.show { display: flex; }
+  .panel-section-title {
+    font-size: 0.7rem; font-weight: 600; color: #7e8694;
+    letter-spacing: 1px; text-transform: uppercase;
+    margin: 4px 0 10px;
+  }
+  .brush-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .brush-item {
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    padding: 10px 6px; border-radius: 10px;
+    background: #232529; border: 1px solid transparent;
+    color: #c8cdd6; cursor: pointer; font-size: 0.72rem;
+    transition: all 0.12s;
+  }
+  .brush-item:hover { background: #34373e; color: #fff; }
+  .brush-item.active { background: #343b48; border-color: #5b8def; color: #fff; }
+  .brush-item .icon { color: #9aa1ad; }
+  .brush-item.active .icon { color: #5b8def; }
+
+  /* キャンバス */
+  .canvas-area {
+    flex: 1; overflow: hidden; background: #14151a;
+    position: relative; min-width: 0;
+  }
+  .canvas-viewport {
+    position: absolute; inset: 0;
+    overflow: hidden; transform: translateZ(0);
+  }
+  .canvas-transform {
+    position: absolute; top: 0; left: 0;
+    transform-origin: 0 0; will-change: transform;
+  }
+  .canvas-frame {
+    position: relative;
+    background: repeating-conic-gradient(#c8cdd6 0% 25%, #ffffff 0% 50%) 50% / 16px 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    line-height: 0; border-radius: 2px;
+  }
+  #drawCanvas {
+    display: block; width: 100%; height: 100%;
+    border-radius: 2px; cursor: crosshair; touch-action: none;
+    background: transparent;
+  }
+  #drawCanvas.eraser-mode { cursor: cell; }
+
+  /* 共同描画中バッジ */
+  .collab-badge {
+    position: absolute; top: 16px; left: 16px;
+    background: #2b2d33; border: 1px solid #5b8def;
+    padding: 8px 14px; border-radius: 30px;
+    font-size: 0.78rem; color: #fff; font-weight: 500;
+    display: none; align-items: center; gap: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    z-index: 25;
+  }
+  .collab-badge.show { display: flex; }
+  .collab-badge .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #5bdf8d;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ズームコントロール */
+  .zoom-controls {
+    position: absolute; bottom: 16px; right: 16px;
+    display: flex; flex-direction: column; gap: 4px;
+    background: #2b2d33; border-radius: 10px; padding: 4px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    border: 1px solid #383b42; z-index: 20;
+  }
+  .zoom-btn {
+    width: 34px; height: 34px; border-radius: 6px;
+    background: transparent; border: none;
+    color: #c8cdd6; display: flex; align-items: center; justify-content: center;
+    transition: background 0.12s;
+  }
+  .zoom-btn:hover { background: #3b4048; color: #fff; }
+
+  /* 右パネル */
+  .right-panels {
+    width: 280px; background: #26282e;
+    border-left: 1px solid #2c2e34;
+    overflow-y: auto; flex-shrink: 0;
+    padding: 14px;
+    display: flex; flex-direction: column; gap: 14px;
+    z-index: 15;
+  }
+  .panel {
+    background: #2b2d33; border-radius: 12px;
+    border: 1px solid #383b42; padding: 14px;
+    color: #d0d4dc; font-size: 0.82rem;
+  }
+  .panel-title {
+    font-size: 0.72rem; font-weight: 600; color: #9aa1ad;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  /* カラー */
+  .color-main-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .color-swatch-big {
+    width: 48px; height: 48px; border-radius: 10px;
+    border: 2px solid #454952; cursor: pointer;
+    position: relative; overflow: hidden; flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .color-swatch-big .checker {
+    position: absolute; inset: 0;
+    background: repeating-conic-gradient(#c8c8c8 0% 25%, #ffffff 0% 50%) 50% / 10px 10px;
+    z-index: 0;
+  }
+  .color-swatch-big .fill { position: absolute; inset: 0; z-index: 1; }
+  .color-hex-row {
+    flex: 1; display: flex; align-items: center;
+    background: #1e1f24; border-radius: 8px;
+    border: 1px solid #383b42; padding: 0 10px;
+    height: 40px; min-width: 0;
+  }
+  .color-hex-row .hash { color: #7e8694; font-size: 0.85rem; font-weight: 600; margin-right: 2px; }
+  .color-hex-row input {
+    flex: 1; background: transparent; border: none;
+    color: #e6e7ea; font-size: 0.85rem;
+    font-family: 'Menlo', 'Consolas', monospace;
+    outline: none; text-transform: uppercase;
+    letter-spacing: 1px; min-width: 0;
+  }
+  .color-presets {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px;
+    margin-top: 10px;
+  }
+  .color-preset {
+    aspect-ratio: 1; border-radius: 6px;
+    border: 2px solid transparent; padding: 0;
+    box-shadow: 0 0 0 1px #454952;
+    transition: transform 0.1s; position: relative; overflow: hidden;
+  }
+  .color-preset:hover { transform: scale(1.12); }
+  .color-preset.active { border-color: #fff; transform: scale(1.12); }
+  .color-preset .fill { position: absolute; inset: 0; z-index: 1; }
+
+  .slider-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+  }
+  .slider-row:last-child { margin-bottom: 0; }
+  .slider-label { width: 46px; font-size: 0.75rem; color: #b6bcc7; flex-shrink: 0; }
+  .slider-row input[type="range"] {
+    flex: 1; -webkit-appearance: none; appearance: none;
+    height: 3px; border-radius: 3px; background: #4a4e57;
+    outline: none;
+  }
+  .slider-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #5b8def; border: 2px solid #2b2d33;
+    box-shadow: 0 0 0 1px #5b8def; cursor: pointer;
+  }
+
+  /* 友達リスト */
+  .friend-list { display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto; }
+  .friend-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px; border-radius: 8px;
+    background: #232529; border: 1px solid #383b42;
+  }
+  .friend-item img { width: 32px; height: 32px; border-radius: 50%; }
+  .friend-item .name {
+    flex: 1; min-width: 0;
+    font-size: 0.8rem; color: #e6e7ea;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .friend-item .email { font-size: 0.65rem; color: #7e8694; }
+  .friend-item button {
+    background: #3b4048; border: none; color: #fff;
+    padding: 5px 12px; border-radius: 6px;
+    font-size: 0.7rem; font-weight: 600;
+    transition: background 0.12s;
+  }
+  .friend-item button:hover { background: #5b8def; }
+  .friend-empty { text-align: center; color: #7e8694; font-size: 0.78rem; padding: 16px 8px; }
+
+  .add-friend-row { display: flex; gap: 6px; margin-top: 10px; }
+  .add-friend-row input {
+    flex: 1; background: #1e1f24; border: 1px solid #383b42;
+    color: #e6e7ea; padding: 8px 12px; border-radius: 8px;
+    font-size: 0.78rem; outline: none; min-width: 0;
+  }
+  .add-friend-row input:focus { border-color: #5b8def; }
+  .add-friend-row button {
+    background: #5b8def; border: none; color: #fff;
+    padding: 8px 14px; border-radius: 8px;
+    font-size: 0.78rem; font-weight: 600;
+  }
+  .add-friend-row button:hover { background: #4a7bd6; }
+  .add-friend-msg { font-size: 0.72rem; color: #8592a3; margin-top: 8px; min-height: 1em; }
+  .add-friend-msg.error { color: #ff8b7f; }
+  .add-friend-msg.success { color: #5bdf8d; }
+
+  /* 通知バッジ */
+  .notif-badge {
+    position: absolute; top: 4px; right: 4px;
+    min-width: 18px; height: 18px; padding: 0 5px;
+    background: #e74c3c; color: #fff;
+    border-radius: 10px; font-size: 0.65rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #26282e;
+    pointer-events: none;
+  }
+
+  /* モーダル */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    display: none; align-items: center; justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: #2b2d33; border-radius: 16px;
+    border: 1px solid #383b42; padding: 24px;
+    min-width: 320px; max-width: 90vw;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+  }
+  .modal h3 { margin: 0 0 8px; font-size: 1.05rem; color: #fff; }
+  .modal p { margin: 0 0 20px; color: #b6bcc7; font-size: 0.85rem; }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+  .modal-btn {
+    padding: 8px 20px; border-radius: 8px;
+    border: none; font-size: 0.85rem; font-weight: 600;
+    transition: all 0.12s;
+  }
+  .modal-btn.primary { background: #5b8def; color: #fff; }
+  .modal-btn.primary:hover { background: #4a7bd6; }
+  .modal-btn.secondary { background: #383b42; color: #d0d4dc; }
+  .modal-btn.secondary:hover { background: #4a4e57; }
+  .modal-btn.danger { background: #e74c3c; color: #fff; }
+  .modal-btn.danger:hover { background: #c0392b; }
+
+  /* トースト */
+  .toast {
+    position: fixed; bottom: 20px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #2b2d33; color: #fff;
+    padding: 12px 24px; border-radius: 30px;
+    font-size: 0.82rem; font-weight: 500;
+    border: 1px solid #383b42;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 2000;
+    max-width: 90vw;
+    text-align: center;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.success { border-color: #5bdf8d; }
+  .toast.error { border-color: #ff8b7f; }
+
+  /* ローディング */
+  #loadingIndicator {
+    position: fixed; inset: 0;
+    background: rgba(20,21,26,0.85);
+    backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center;
+    z-index: 3000; flex-direction: column; gap: 16px;
+    color: #d0d4dc;
+  }
+  #loadingIndicator.show { display: flex; }
+  .spinner {
+    width: 44px; height: 44px;
+    border: 3px solid #383b42;
+    border-top-color: #5b8def;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 900px) {
+    .brush-panel { display: none !important; }
+    .right-panels { width: 240px; }
+  }
+  @media (max-width: 700px) {
+    .right-panels { display: none; }
+  }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: #454952; border-radius: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ===== ログイン画面 ===== -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>お絵描きスタジオ</h1>
+    <p>友達と一緒に絵を描こう</p>
+    <button class="google-btn" id="googleLoginBtn">
+      <svg viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      Googleでログイン
+    </button>
+  </div>
+</div>
+
+<!-- ===== メインアプリ ===== -->
+<div id="appScreen">
+  <div class="top-bar">
+    <div class="user-avatar" id="userAvatar" title="ログアウト">
+      <img id="userAvatarImg" src="" alt="">
+    </div>
+    <div class="top-group">
+      <button class="top-btn" id="undoBtn" title="元に戻す" disabled>
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 00-4-4H4"/></svg>
+      </button>
+      <button class="top-btn" id="redoBtn" title="やり直す" disabled>
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 014-4h12"/></svg>
+      </button>
+    </div>
+    <div class="top-title" id="artTitle">共同キャンバス</div>
+    <div class="top-group">
+      <button class="top-btn" id="friendsBtn" title="友達" style="position:relative;">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        <span class="notif-badge" id="friendNotifBadge" style="display:none;">0</span>
+      </button>
+      <button class="top-btn primary" id="inviteBtn" title="友達を招待">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="editor-body">
+    <!-- 左ツールバー -->
+    <div class="left-toolbar">
+      <button class="tool-btn active" id="brushToggleBtn" title="ブラシ">
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 114.03 4.03l-8.06 8.08"/>
+          <path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 00-3-3.02z"/>
+        </svg>
+      </button>
+      <button class="tool-btn" id="eraserToggle" title="消しゴム">
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 20H7L3 16a2 2 0 010-3L13 3a2 2 0 013 0l5 5a2 2 0 010 3l-9 9"/>
+          <line x1="8" y1="12" x2="14" y2="18"/>
+        </svg>
+      </button>
+      <div class="tool-separator"></div>
+      <button class="tool-btn" id="clearBtn" title="全消去">
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"/>
+          <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+          <path d="M10 11v6M14 11v6"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- ブラシパネル -->
+    <div class="brush-panel show" id="brushPanel">
+      <div class="panel-section-title">ブラシ</div>
+      <div class="brush-grid">
+        <button class="brush-item active" data-brush="pen">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
+          ペン
+        </button>
+        <button class="brush-item" data-brush="marker">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l-5 5v4h4l5-5"/><path d="M13 7l4 4"/><path d="M15 5l4 4a2 2 0 010 3l-3 3-7-7 3-3a2 2 0 013 0z"/>
+          </svg>
+          マーカー
+        </button>
+      </div>
+    </div>
+
+    <!-- キャンバス -->
+    <div class="canvas-area" id="canvasArea">
+      <div class="canvas-viewport" id="canvasViewport">
+        <div class="canvas-transform" id="canvasTransform">
+          <div class="canvas-frame" id="canvasFrame">
+            <canvas id="drawCanvas" width="1200" height="900"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="collab-badge" id="collabBadge">
+        <div class="dot"></div>
+        <span id="collabBadgeText">共同描画中</span>
+      </div>
+
+      <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomInBtn" title="拡大">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="zoom-btn" id="zoomOutBtn" title="縮小">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="zoom-btn" id="zoomResetBtn" title="リセット">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2"/>
+            <rect x="9" y="9" width="6" height="6" rx="1"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 右パネル -->
+    <div class="right-panels">
+      <div class="panel">
+        <div class="panel-title">カラー</div>
+        <div class="color-main-row">
+          <div class="color-swatch-big" id="colorSwatchBig">
+            <div class="checker"></div>
+            <div class="fill" id="colorSwatchFill" style="background:#1e2b3c"></div>
+          </div>
+          <div class="color-hex-row">
+            <span class="hash">#</span>
+            <input type="text" id="hexInput" maxlength="6" value="1E2B3C" spellcheck="false">
+          </div>
+        </div>
+        <div class="color-presets" id="colorPresets"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">ブラシ設定</div>
+        <div class="slider-row">
+          <div class="slider-label">サイズ</div>
+          <input type="range" id="sizeSlider" min="1" max="80" value="8" step="1">
+        </div>
+        <div class="slider-row">
+          <div class="slider-label">不透明度</div>
+          <input type="range" id="opacitySlider" min="1" max="100" value="100" step="1">
+        </div>
+      </div>
+
+      <!-- 友達パネル -->
+      <div class="panel" id="friendsPanel">
+        <div class="panel-title">
+          <span>友達</span>
+          <span id="friendCount" style="font-size:0.7rem; color:#7e8694; text-transform:none;">0人</span>
+        </div>
+        <div class="friend-list" id="friendList"></div>
+        <div class="add-friend-row">
+          <input type="email" id="friendEmailInput" placeholder="メールアドレス">
+          <button id="addFriendBtn">追加</button>
+        </div>
+        <div class="add-friend-msg" id="addFriendMsg"></div>
+      </div>
+
+      <!-- 承認待ちの友達リクエスト -->
+      <div class="panel" id="requestsPanel" style="display:none;">
+        <div class="panel-title">友達リクエスト</div>
+        <div class="friend-list" id="requestList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 招待選択モーダル -->
+<div class="modal-overlay" id="inviteModal">
+  <div class="modal">
+    <h3>友達を招待</h3>
+    <p>一緒に描く友達を選んでください</p>
+    <div class="friend-list" id="inviteFriendList"></div>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="modal-btn secondary" id="inviteCancelBtn">キャンセル</button>
+    </div>
+  </div>
+</div>
+
+<!-- 招待受信モーダル -->
+<div class="modal-overlay" id="incomingInviteModal">
+  <div class="modal">
+    <h3 id="incomingInviteTitle">招待が届きました</h3>
+    <p id="incomingInviteBody"></p>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" id="inviteDeclineBtn">無視</button>
+      <button class="modal-btn primary" id="inviteAcceptBtn">参加</button>
+    </div>
+  </div>
+</div>
+
+<!-- ログアウト確認 -->
+<div class="modal-overlay" id="logoutModal">
+  <div class="modal">
+    <h3>ログアウト</h3>
+    <p>ログアウトしますか？</p>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" id="logoutCancelBtn">キャンセル</button>
+      <button class="modal-btn danger" id="logoutConfirmBtn">ログアウト</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div id="loadingIndicator"><div class="spinner"></div><div>処理中...</div></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, set, get, update, push, onValue, onDisconnect,
+         serverTimestamp, query, orderByChild, equalTo, limitToLast, remove }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ===== Firebase設定 =====
+const firebaseConfig = {
+  apiKey: "AIzaSyBZhZTrcRmz6syRL8V1qc5UzYgT9wjy5ck",
+  authDomain: "dockgam-9fe2c.firebaseapp.com",
+  databaseURL: "https://dockgam-9fe2c-default-rtdb.firebaseio.com",
+  projectId: "dockgam-9fe2c",
+  storageBucket: "dockgam-9fe2c.firebasestorage.app",
+  messagingSenderId: "149151085103",
+  appId: "1:149151085103:web:555daf012f53f4d4258cda",
+  measurementId: "G-DCHKB276E5"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+// ===== 状態 =====
+let currentUser = null;
+let friends = {};              // { uid: { uid, displayName, email, photoURL, since } }
+let pendingRequests = {};      // { requestId: { from, to, status, ... } }
+let activeSessionId = null;    // 参加中のセッションID
+let sessionRole = null;        // 'owner' | 'guest'
+let sessionUnsubscribe = null;
+let strokesUnsubscribe = null;
+let inviteUnsubscribe = null;
+let requestsUnsubscribe = null;
+let friendsUnsubscribe = null;
+let pendingInviteShown = null; // 既に表示した招待ID
+
+// 描画用
+const BASE_W = 1200, BASE_H = 900;
+const canvas = document.getElementById('drawCanvas');
+const ctx = canvas.getContext('2d', { willReadFrequently: true });
+canvas.width = BASE_W;
+canvas.height = BASE_H;
+
+let isDrawing = false;
+let lastX = 0, lastY = 0;
+let currentColor = '#1e2b3c';
+let currentSize = 8;
+let currentOpacity = 1;
+let currentBrush = 'pen';
+let isEraser = false;
+
+// ズーム/パン
+let zoom = 1, panX = 0, panY = 0;
+const MIN_ZOOM = 0.1, MAX_ZOOM = 8;
+let activePointers = new Map();
+let pinchState = null;
+
+// リモートからの描画を適用中かどうか（自分の描画と区別）
+let applyingRemote = false;
+
+// ===== ユーティリティ =====
+function showToast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show ' + type;
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => el.className = 'toast ' + type, 2500);
+}
+function showLoading(show) {
+  document.getElementById('loadingIndicator').classList.toggle('show', show);
+}
+function hexToRgb(hex) {
+  hex = hex.replace('#','').trim();
+  if (hex.length === 3) hex = hex.split('').map(c => c+c).join('');
+  if (hex.length !== 6) return null;
+  const n = parseInt(hex, 16);
+  if (isNaN(n)) return null;
+  return { r: (n>>16)&255, g: (n>>8)&255, b: n&255 };
+}
+function rgbToHex(r,g,b) {
+  const c = v => Math.max(0, Math.min(255, Math.round(v)));
+  return '#' + [c(r),c(g),c(b)].map(v => v.toString(16).padStart(2,'0')).join('');
+}
+// メールアドレスをキーに使える形に変換（. と @ が使えないため）
+function emailToKey(email) {
+  return email.toLowerCase().replace(/\./g, ',').replace(/@/g, '_at_');
+}
+
+// ===== 認証 =====
+document.getElementById('googleLoginBtn').addEventListener('click', async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    showLoading(true);
+    await signInWithPopup(auth, provider);
+  } catch (e) {
+    console.error(e);
+    showToast('ログインに失敗: ' + e.message, 'error');
+  } finally {
+    showLoading(false);
+  }
+});
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('appScreen').classList.add('active');
+    document.getElementById('userAvatarImg').src = user.photoURL || '';
+    document.getElementById('artTitle').textContent = '共同キャンバス';
+
+    // ユーザー情報を保存
+    await set(ref(db, 'users/' + user.uid), {
+      uid: user.uid,
+      displayName: user.displayName || '名無し',
+      email: user.email,
+      photoURL: user.photoURL || '',
+      updatedAt: Date.now()
+    });
+    // メール→UID の逆引きマップ
+    await set(ref(db, 'userEmails/' + emailToKey(user.email)), user.uid);
+
+    // 各リスナーを開始
+    startFriendsListener();
+    startRequestsListener();
+    startInviteListener();
+
+    // 初期描画：背景を白で塗る
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, BASE_W, BASE_H);
+    // 初期ズームフィット
+    requestAnimationFrame(() => autoFitCanvas());
+  } else {
+    currentUser = null;
+    document.getElementById('loginScreen').classList.remove('hidden');
+    document.getElementById('appScreen').classList.remove('active');
+    cleanupListeners();
+  }
+});
+
+// ログアウト
+document.getElementById('userAvatar').addEventListener('click', () => {
+  document.getElementById('logoutModal').classList.add('show');
+});
+document.getElementById('logoutCancelBtn').addEventListener('click', () => {
+  document.getElementById('logoutModal').classList.remove('show');
+});
+document.getElementById('logoutConfirmBtn').addEventListener('click', async () => {
+  document.getElementById('logoutModal').classList.remove('show');
+  try {
+    await cleanupSession();
+    await signOut(auth);
+  } catch (e) {
+    showToast('ログアウトに失敗: ' + e.message, 'error');
+  }
+});
+
+// ===== リスナー後始末 =====
+function cleanupListeners() {
+  if (friendsUnsubscribe) { friendsUnsubscribe(); friendsUnsubscribe = null; }
+  if (requestsUnsubscribe) { requestsUnsubscribe(); requestsUnsubscribe = null; }
+  if (inviteUnsubscribe) { inviteUnsubscribe(); inviteUnsubscribe = null; }
+  if (sessionUnsubscribe) { sessionUnsubscribe(); sessionUnsubscribe = null; }
+  if (strokesUnsubscribe) { strokesUnsubscribe(); strokesUnsubscribe = null; }
+  friends = {};
+  pendingRequests = {};
+  activeSessionId = null;
+  sessionRole = null;
+}
+
+// ===== 友達リスナー =====
+function startFriendsListener() {
+  const friendsRef = ref(db, 'friends/' + currentUser.uid);
+  friendsUnsubscribe = onValue(friendsRef, (snap) => {
+    friends = snap.val() || {};
+    renderFriendsList();
+    renderInviteFriendList();
+    // 通知バッジの更新
+    updateFriendBadge();
+  });
+}
+
+// ===== 友達リクエスト リスナー =====
+function startRequestsListener() {
+  const reqRef = ref(db, 'userFriendRequests/' + currentUser.uid);
+  requestsUnsubscribe = onValue(reqRef, async (snap) => {
+    const ids = snap.val() || {};
+    pendingRequests = {};
+
+    const promises = Object.keys(ids).map(async (reqId) => {
+      const r = await get(ref(db, 'friendRequests/' + reqId));
+      if (r.exists()) {
+        const data = r.val();
+        if (data.status === 'pending' && data.to === currentUser.uid) {
+          pendingRequests[reqId] = data;
+        }
+      }
+    });
+    await Promise.all(promises);
+    renderRequestsPanel();
+    updateFriendBadge();
+  });
+}
+
+// ===== 招待リスナー =====
+function startInviteListener() {
+  const inviteRef = ref(db, 'sessionInvites/' + currentUser.uid);
+  inviteUnsubscribe = onValue(inviteRef, async (snap) => {
+    const invites = snap.val() || {};
+    // pending の招待のうち、まだ表示していないものを探す
+    const sessionIds = Object.keys(invites).filter(id => invites[id] === true);
+    for (const sid of sessionIds) {
+      if (pendingInviteShown === sid) continue;
+      const sSnap = await get(ref(db, 'sessions/' + sid));
+      if (sSnap.exists()) {
+        const s = sSnap.val();
+        if (s.status === 'pending' && s.guestId === currentUser.uid) {
+          pendingInviteShown = sid;
+          showIncomingInvite(sid, s);
+          return;
+        }
+      }
+    }
+  });
+}
+
+// ===== 友達リスト描画 =====
+function renderFriendsList() {
+  const list = document.getElementById('friendList');
+  const ids = Object.keys(friends);
+  document.getElementById('friendCount').textContent = ids.length + '人';
+
+  if (ids.length === 0) {
+    list.innerHTML = '<div class="friend-empty">まだ友達がいません。<br>メールアドレスで追加しましょう。</div>';
+    return;
+  }
+  list.innerHTML = ids.map(uid => {
+    const f = friends[uid];
+    const photo = f.photoURL || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%23555%27%3E%3Ccircle cx=%2712%27 cy=%278%27 r=%274%27/%3E%3Cpath d=%27M4 20c0-4 4-6 8-6s8 2 8 6%27/%3E%3C/svg%3E';
+    return `<div class="friend-item">
+      <img src="${photo}" alt="">
+      <div style="flex:1;min-width:0;">
+        <div class="name">${escapeHtml(f.displayName || '名無し')}</div>
+        <div class="email">${escapeHtml(f.email || '')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderInviteFriendList() {
+  const list = document.getElementById('inviteFriendList');
+  const ids = Object.keys(friends);
+  if (ids.length === 0) {
+    list.innerHTML = '<div class="friend-empty">招待できる友達がいません。</div>';
+    return;
+  }
+  list.innerHTML = ids.map(uid => {
+    const f = friends[uid];
+    return `<div class="friend-item">
+      <img src="${f.photoURL || ''}" alt="">
+      <div style="flex:1;min-width:0;">
+        <div class="name">${escapeHtml(f.displayName || '名無し')}</div>
+        <div class="email">${escapeHtml(f.email || '')}</div>
+      </div>
+      <button class="invite-friend-btn" data-uid="${uid}">招待</button>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.invite-friend-btn').forEach(btn => {
+    btn.addEventListener('click', () => inviteFriendToCanvas(btn.dataset.uid));
+  });
+}
+
+// ===== 友達リクエスト パネル =====
+function renderRequestsPanel() {
+  const panel = document.getElementById('requestsPanel');
+  const list = document.getElementById('requestList');
+  const ids = Object.keys(pendingRequests);
+
+  if (ids.length === 0) {
+    panel.style.display = 'none';
+    return;
+  }
+  panel.style.display = 'block';
+
+  // ユーザー情報を取得して表示
+  Promise.all(ids.map(async (rid) => {
+    const r = pendingRequests[rid];
+    const uSnap = await get(ref(db, 'users/' + r.from));
+    return { rid, r, u: uSnap.val() || {} };
+  })).then(items => {
+    list.innerHTML = items.map(({rid, u}) => `
+      <div class="friend-item">
+        <img src="${u.photoURL || ''}" alt="">
+        <div style="flex:1;min-width:0;">
+          <div class="name">${escapeHtml(u.displayName || '名無し')}</div>
+          <div class="email">${escapeHtml(u.email || '')}</div>
+        </div>
+        <button data-rid="${rid}" data-action="accept" style="background:#5bdf8d;color:#1e1f24;">承認</button>
+        <button data-rid="${rid}" data-action="reject" style="background:#4a4e57;">拒否</button>
+      </div>
+    `).join('');
+    list.querySelectorAll('button[data-action]').forEach(btn => {
+      btn.addEventListener('click', () => handleRequestAction(btn.dataset.rid, btn.dataset.action));
+    });
+  });
+}
+
+async function handleRequestAction(rid, action) {
+  try {
+    const rSnap = await get(ref(db, 'friendRequests/' + rid));
+    if (!rSnap.exists()) return;
+    const r = rSnap.val();
+
+    if (action === 'accept') {
+      // 友達リストに追加（双方向）
+      const now = Date.now();
+      const fromSnap = await get(ref(db, 'users/' + r.from));
+      const toSnap = await get(ref(db, 'users/' + currentUser.uid));
+      const fromUser = fromSnap.val() || {};
+      const toUser = toSnap.val() || {};
+
+      const updates = {};
+      updates['friends/' + r.from + '/' + currentUser.uid] = {
+        uid: currentUser.uid,
+        displayName: toUser.displayName || '',
+        email: toUser.email || '',
+        photoURL: toUser.photoURL || '',
+        since: now
+      };
+      updates['friends/' + currentUser.uid + '/' + r.from] = {
+        uid: r.from,
+        displayName: fromUser.displayName || '',
+        email: fromUser.email || '',
+        photoURL: fromUser.photoURL || '',
+        since: now
+      };
+      updates['friendRequests/' + rid + '/status'] = 'accepted';
+      updates['userFriendRequests/' + currentUser.uid + '/' + rid] = null;
+      updates['userFriendRequests/' + r.from + '/' + rid] = null;
+
+      await update(ref(db), updates);
+      showToast('友達になりました', 'success');
+    } else {
+      await update(ref(db, 'friendRequests/' + rid), { status: 'rejected' });
+      await remove(ref(db, 'userFriendRequests/' + currentUser.uid + '/' + rid));
+      await remove(ref(db, 'userFriendRequests/' + r.from + '/' + rid));
+      showToast('リクエストを拒否しました');
+    }
+  } catch (e) {
+    console.error(e);
+    showToast('処理に失敗しました', 'error');
+  }
+}
+
+// ===== 友達追加 =====
+document.getElementById('addFriendBtn').addEventListener('click', async () => {
+  const email = document.getElementById('friendEmailInput').value.trim();
+  const msgEl = document.getElementById('addFriendMsg');
+  msgEl.className = 'add-friend-msg';
+  msgEl.textContent = '';
+
+  if (!email) { msgEl.textContent = 'メールアドレスを入力してください'; msgEl.classList.add('error'); return; }
+  if (email === currentUser.email) { msgEl.textContent = '自分自身は追加できません'; msgEl.classList.add('error'); return; }
+
+  try {
+    const key = emailToKey(email);
+    const uidSnap = await get(ref(db, 'userEmails/' + key));
+    if (!uidSnap.exists()) {
+      msgEl.textContent = 'このメールアドレスのユーザーは見つかりません';
+      msgEl.classList.add('error');
+      return;
+    }
+    const targetUid = uidSnap.val();
+    if (targetUid === currentUser.uid) { msgEl.textContent = '自分自身は追加できません'; msgEl.classList.add('error'); return; }
+
+    // 既に友達か確認
+    const alreadyFriend = await get(ref(db, 'friends/' + currentUser.uid + '/' + targetUid));
+    if (alreadyFriend.exists()) {
+      msgEl.textContent = '既に友達です';
+      msgEl.classList.add('error');
+      return;
+    }
+
+    // 既存リクエストを確認（送信側・受信側両方）
+    const reqRef = ref(db, 'friendRequests');
+    const sentSnap = await get(reqRef);
+    const reqs = sentSnap.val() || {};
+    const existing = Object.entries(reqs).find(([id, r]) =>
+      r.status === 'pending' &&
+      ((r.from === currentUser.uid && r.to === targetUid) ||
+       (r.from === targetUid && r.to === currentUser.uid))
+    );
+    if (existing) {
+      msgEl.textContent = '既にリクエストを送信済み、または受信しています';
+      msgEl.classList.add('error');
+      return;
+    }
+
+    // リクエスト作成
+    const newReqRef = push(ref(db, 'friendRequests'));
+    const reqId = newReqRef.key;
+    const updates = {};
+    updates['friendRequests/' + reqId] = {
+      from: currentUser.uid,
+      to: targetUid,
+      status: 'pending',
+      createdAt: Date.now()
+    };
+    updates['userFriendRequests/' + targetUid + '/' + reqId] = true;
+    updates['userFriendRequests/' + currentUser.uid + '/' + reqId] = true;
+    await update(ref(db), updates);
+
+    msgEl.textContent = '友達リクエストを送信しました';
+    msgEl.classList.add('success');
+    document.getElementById('friendEmailInput').value = '';
+  } catch (e) {
+    console.error(e);
+    msgEl.textContent = 'エラー: ' + e.message;
+    msgEl.classList.add('error');
+  }
+});
+
+// ===== 友達リクエスト通知バッジ =====
+function updateFriendBadge() {
+  const badge = document.getElementById('friendNotifBadge');
+  const count = Object.keys(pendingRequests).length;
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+// ===== 招待モーダル =====
+document.getElementById('inviteBtn').addEventListener('click', () => {
+  if (activeSessionId) {
+    showToast('既に共同描画セッション中です');
+    return;
+  }
+  document.getElementById('inviteModal').classList.add('show');
+  renderInviteFriendList();
+});
+document.getElementById('inviteCancelBtn').addEventListener('click', () => {
+  document.getElementById('inviteModal').classList.remove('show');
+});
+
+// ===== キャンバス招待 =====
+async function inviteFriendToCanvas(friendUid) {
+  if (activeSessionId) {
+    showToast('既に共同描画セッション中です');
+    return;
+  }
+  try {
+    showLoading(true);
+    // セッション作成
+    const sessionRef = push(ref(db, 'sessions'));
+    const sessionId = sessionRef.key;
+    const friend = friends[friendUid];
+
+    const sessionData = {
+      ownerId: currentUser.uid,
+      ownerName: currentUser.displayName || '名無し',
+      guestId: friendUid,
+      guestName: friend ? friend.displayName : '名無し',
+      status: 'pending',
+      createdAt: Date.now(),
+      startedAt: null
+    };
+    await set(sessionRef, sessionData);
+
+    // 招待通知
+    await set(ref(db, 'sessionInvites/' + friendUid + '/' + sessionId), true);
+
+    // オーナーとして参加（ゲストの応答を待つ）
+    activeSessionId = sessionId;
+    sessionRole = 'owner';
+    await attachSessionListener(sessionId);
+    showToast(`${friend.displayName} さんに招待を送信しました`, 'success');
+
+    document.getElementById('inviteModal').classList.remove('show');
+  } catch (e) {
+    console.error(e);
+    showToast('招待に失敗: ' + e.message, 'error');
+  } finally {
+    showLoading(false);
+  }
+}
+
+// ===== セッション監視 =====
+async function attachSessionListener(sessionId) {
+  if (sessionUnsubscribe) { sessionUnsubscribe(); sessionUnsubscribe = null; }
+  sessionUnsubscribe = onValue(ref(db, 'sessions/' + sessionId), async (snap) => {
+    if (!snap.exists()) {
+      // セッションが消えた
+      if (activeSessionId === sessionId) {
+        await cleanupSession();
+        showToast('セッションが終了しました');
+      }
+      return;
+    }
+    const s = snap.val();
+    if (activeSessionId !== sessionId) activeSessionId = sessionId;
+
+    if (s.status === 'active') {
+      // 共同描画開始
+      if (!strokesUnsubscribe) {
+        document.getElementById('collabBadge').classList.add('show');
+        document.getElementById('collabBadgeText').textContent = '共同描画中';
+        // 既存の描画をロード
+        await loadExistingStrokes(sessionId);
+        startStrokesListener(sessionId);
+      }
+    } else if (s.status === 'declined') {
+      showToast('招待が拒否されました', 'error');
+      await cleanupSession();
+    } else if (s.status === 'ended') {
+      showToast('セッションが終了しました');
+      await cleanupSession();
+    }
+  });
+}
+
+// ===== 招待受信 =====
+function showIncomingInvite(sessionId, session) {
+  document.getElementById('incomingInviteTitle').textContent = '招待が届きました';
+  document.getElementById('incomingInviteBody').innerHTML =
+    `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>参加しますか？`;
+
+  const acceptBtn = document.getElementById('inviteAcceptBtn');
+  const declineBtn = document.getElementById('inviteDeclineBtn');
+
+  // 古いリスナーを削除
+  const newAccept = acceptBtn.cloneNode(true);
+  const newDecline = declineBtn.cloneNode(true);
+  acceptBtn.parentNode.replaceChild(newAccept, acceptBtn);
+  declineBtn.parentNode.replaceChild(newDecline, declineBtn);
+
+  newAccept.addEventListener('click', async () => {
+    document.getElementById('incomingInviteModal').classList.remove('show');
+    pendingInviteShown = null;
+    try {
+      showLoading(true);
+      await update(ref(db, 'sessions/' + sessionId), { status: 'active', startedAt: Date.now() });
+      await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId));
+      activeSessionId = sessionId;
+      sessionRole = 'guest';
+      await attachSessionListener(sessionId);
+      document.getElementById('collabBadge').classList.add('show');
+      document.getElementById('collabBadgeText').textContent = '共同描画中';
+      await loadExistingStrokes(sessionId);
+      startStrokesListener(sessionId);
+      showToast('セッションに参加しました', 'success');
+    } catch (e) {
+      console.error(e);
+      showToast('参加に失敗: ' + e.message, 'error');
+    } finally {
+      showLoading(false);
+    }
+  });
+
+  newDecline.addEventListener('click', async () => {
+    document.getElementById('incomingInviteModal').classList.remove('show');
+    pendingInviteShown = null;
+    try {
+      await update(ref(db, 'sessions/' + sessionId), { status: 'declined' });
+      await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId));
+    } catch (e) { console.error(e); }
+  });
+
+  document.getElementById('incomingInviteModal').classList.add('show');
+}
+
+// ===== 既存ストローク ロード =====
+async function loadExistingStrokes(sessionId) {
+  // 既存の描画は別端末での初期ロード時のみ
+  // 今回は新規セッションなのでスキップ
+}
+
+// ===== ストローク リスナー =====
+function startStrokesListener(sessionId) {
+  if (strokesUnsubscribe) { strokesUnsubscribe(); strokesUnsubscribe = null; }
+  const strokesRef = ref(db, 'strokes/' + sessionId);
+  let firstLoad = true;
+
+  strokesUnsubscribe = onValue(strokesRef, (snap) => {
+    const strokes = snap.val() || {};
+    if (firstLoad) {
+      // 初回は全ストロークを適用
+      firstLoad = false;
+      return;
+    }
+    // 自分のストロークは無視（既にローカルで描画済み）
+    // onValue では差分がわからないため、全ストロークを走査するのではなく
+    // 新規追加されたものを child_added で監視するべきだが、ここでは onValue で全走査
+    // 簡単のため、直近のものだけ処理する
+  });
+
+  // child_added で新規ストロークのみ受信
+  const { onChildAdded } = window.__fbRTDB;
+  // onChildAdded を直接使う
+  strokesUnsubscribe = onChildAdded(strokesRef, (childSnap) => {
+    const stroke = childSnap.val();
+    if (!stroke) return;
+    if (stroke.uid === currentUser.uid) return; // 自分の描画は無視
+    applyRemoteStroke(stroke);
+  });
+}
+
+// ===== リモートストローク適用 =====
+let remoteStrokeState = {}; // uid -> { lastX, lastY, color, size, brush, opacity }
+function applyRemoteStroke(stroke) {
+  applyingRemote = true;
+  try {
+    if (stroke.type === 'start') {
+      remoteStrokeState[stroke.uid] = {
+        lastX: stroke.x,
+        lastY: stroke.y,
+        color: stroke.color,
+        size: stroke.size,
+        brush: stroke.brush,
+        opacity: stroke.opacity
+      };
+    } else if (stroke.type === 'move') {
+      const state = remoteStrokeState[stroke.uid];
+      if (!state) {
+        // start が来ていない場合は描画しない
+        return;
+      }
+      drawStrokeOnCanvas(state.lastX, state.lastY, stroke.x, stroke.y, state.color, state.size, state.brush, state.opacity, state.isEraser);
+      state.lastX = stroke.x;
+      state.lastY = stroke.y;
+    } else if (stroke.type === 'end') {
+      delete remoteStrokeState[stroke.uid];
+    }
+  } finally {
+    applyingRemote = false;
+  }
+}
+
+// ===== ストローク送信 =====
+async function sendStroke(stroke) {
+  if (!activeSessionId) return;
+  if (applyingRemote) return;
+  try {
+    const r = push(ref(db, 'strokes/' + activeSessionId));
+    await set(r, {
+      ...stroke,
+      uid: currentUser.uid,
+      timestamp: Date.now()
+    });
+  } catch (e) { console.error('送信エラー', e); }
+}
+
+// ===== セッション終了 =====
+async function cleanupSession() {
+  if (sessionUnsubscribe) { sessionUnsubscribe(); sessionUnsubscribe = null; }
+  if (strokesUnsubscribe) { strokesUnsubscribe(); strokesUnsubscribe = null; }
+  remoteStrokeState = {};
+  if (activeSessionId) {
+    try {
+      await update(ref(db, 'sessions/' + activeSessionId), { status: 'ended' });
+      // 自分の招待通知を消す
+      await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + activeSessionId));
+      // ストロークも削除
+      await remove(ref(db, 'strokes/' + activeSessionId));
+    } catch (e) { /* ignore */ }
+  }
+  activeSessionId = null;
+  sessionRole = null;
+  document.getElementById('collabBadge').classList.remove('show');
+}
+
+// ===== 描画処理 =====
+function drawStrokeOnCanvas(x0, y0, x1, y1, color, size, brush, opacity, eraser) {
+  ctx.save();
+  if (eraser) {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.strokeStyle = 'rgba(0,0,0,1)';
+    ctx.lineWidth = size;
+  } else {
+    if (brush === 'marker') {
+      ctx.globalAlpha = opacity * 0.55;
+      ctx.lineWidth = size * 1.15;
+      ctx.lineCap = 'square';
+    } else {
+      ctx.globalAlpha = opacity;
+      ctx.lineWidth = size;
+      ctx.lineCap = 'round';
+    }
+    ctx.strokeStyle = color;
+  }
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  ctx.moveTo(x0, y0);
+  ctx.lineTo(x1, y1);
+  ctx.stroke();
+  ctx.restore();
+}
+
+// 自分の描画：キャンバスに描いて、リモートにも送信
+function drawLocal(x0, y0, x1, y1) {
+  drawStrokeOnCanvas(x0, y0, x1, y1, currentColor, currentSize, currentBrush, currentOpacity, isEraser);
+  // 送信
+  if (activeSessionId) {
+    sendStroke({
+      type: 'move',
+      x: x1,
+      y: y1,
+      color: currentColor,
+      size: currentSize,
+      brush: currentBrush,
+      opacity: currentOpacity,
+      isEraser: isEraser
+    });
+  }
+}
+
+// ===== キャンバス座標変換 =====
+function getCanvasCoords(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = BASE_W / rect.width;
+  const scaleY = BASE_H / rect.height;
+  let clientX, clientY;
+  if (e.touches) {
+    if (e.touches.length === 0) return null;
+    clientX = e.touches[0].clientX;
+    clientY = e.touches[0].clientY;
+  } else {
+    clientX = e.clientX;
+    clientY = e.clientY;
+  }
+  return {
+    x: (clientX - rect.left) * scaleX,
+    y: (clientY - rect.top) * scaleY
+  };
+}
+
+// ===== キャンバス イベント =====
+canvas.addEventListener('pointerdown', (e) => {
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+  e.preventDefault();
+
+  activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY, type: e.pointerType });
+
+  if (activePointers.size >= 2) {
+    if (isDrawing) { isDrawing = false; sendStroke({ type: 'end' }); }
+    startPinch();
+    return;
+  }
+
+  const coords = getCanvasCoords(e);
+  if (!coords) return;
+
+  isDrawing = true;
+  lastX = coords.x; lastY = coords.y;
+
+  // 開始点を送信
+  if (activeSessionId) {
+    sendStroke({
+      type: 'start',
+      x: coords.x,
+      y: coords.y,
+      color: currentColor,
+      size: currentSize,
+      brush: currentBrush,
+      opacity: currentOpacity,
+      isEraser: isEraser
+    });
+  }
+
+  try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
+
+  // 点を打つ
+  drawStrokeOnCanvas(coords.x, coords.y, coords.x + 0.01, coords.y, currentColor, currentSize, currentBrush, currentOpacity, isEraser);
+});
+
+canvas.addEventListener('pointermove', (e) => {
+  if (!activePointers.has(e.pointerId)) return;
+  activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY, type: e.pointerType });
+
+  if (pinchState) { e.preventDefault(); updatePinch(); return; }
+  if (!isDrawing) return;
+
+  e.preventDefault();
+  const coords = getCanvasCoords(e);
+  if (!coords) return;
+
+  drawLocal(lastX, lastY, coords.x, coords.y);
+  lastX = coords.x; lastY = coords.y;
+});
+
+const onPointerUpGlobal = (e) => {
+  if (!activePointers.has(e.pointerId)) return;
+  activePointers.delete(e.pointerId);
+
+  if (pinchState) {
+    if (activePointers.size >= 2) restartPinch();
+    else endPinch();
+  }
+
+  if (isDrawing) {
+    isDrawing = false;
+    if (activeSessionId) sendStroke({ type: 'end' });
+  }
+  try { canvas.releasePointerCapture(e.pointerId); } catch (err) {}
+};
+canvas.addEventListener('pointerup', onPointerUpGlobal);
+canvas.addEventListener('pointercancel', onPointerUpGlobal);
+window.addEventListener('pointerup', onPointerUpGlobal);
+
+// ===== ピンチズーム =====
+function startPinch() {
+  const pts = Array.from(activePointers.values());
+  if (pts.length < 2) return;
+  const [p1, p2] = pts;
+  pinchState = {
+    startDist: Math.hypot(p2.x - p1.x, p2.y - p1.y),
+    startZoom: zoom,
+    centerX: (p1.x + p2.x) / 2,
+    centerY: (p1.y + p2.y) / 2,
+    startPanX: panX, startPanY: panY
+  };
+}
+function restartPinch() {
+  const pts = Array.from(activePointers.values());
+  if (pts.length < 2) { endPinch(); return; }
+  startPinch();
+}
+function updatePinch() {
+  if (!pinchState) return;
+  const pts = Array.from(activePointers.values());
+  if (pts.length < 2) return;
+  const [p1, p2] = pts;
+  const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+  const cx = (p1.x + p2.x) / 2;
+  const cy = (p1.y + p2.y) / 2;
+  const rect = canvasViewport.getBoundingClientRect();
+  const startLocalX = pinchState.centerX - rect.left;
+  const startLocalY = pinchState.centerY - rect.top;
+  const logicalX = (startLocalX - pinchState.startPanX) / pinchState.startZoom;
+  const logicalY = (startLocalY - pinchState.startPanY) / pinchState.startZoom;
+  const scale = dist / pinchState.startDist;
+  let newZoom = pinchState.startZoom * scale;
+  newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newZoom));
+  const localX = cx - rect.left;
+  const localY = cy - rect.top;
+  panX = localX - logicalX * newZoom;
+  panY = localY - logicalY * newZoom;
+  zoom = newZoom;
+  updateZoomUI();
+}
+function endPinch() { pinchState = null; }
+
+// ===== ズームUI =====
+const canvasViewport = document.getElementById('canvasViewport');
+const canvasTransform = document.getElementById('canvasTransform');
+const canvasFrame = document.getElementById('canvasFrame');
+
+function updateZoomUI() {
+  canvasTransform.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
+}
+function autoFitCanvas() {
+  const vw = canvasViewport.clientWidth - 48;
+  const vh = canvasViewport.clientHeight - 48;
+  const scaleX = vw / BASE_W;
+  const scaleY = vh / BASE_H;
+  zoom = Math.min(scaleX, scaleY, 1);
+  panX = (canvasViewport.clientWidth - BASE_W * zoom) / 2;
+  panY = (canvasViewport.clientHeight - BASE_H * zoom) / 2;
+  updateZoomUI();
+}
+document.getElementById('zoomInBtn').addEventListener('click', () => {
+  const rect = canvasViewport.getBoundingClientRect();
+  setZoom(zoom * 1.25, rect.left + rect.width/2, rect.top + rect.height/2);
+});
+document.getElementById('zoomOutBtn').addEventListener('click', () => {
+  const rect = canvasViewport.getBoundingClientRect();
+  setZoom(zoom / 1.25, rect.left + rect.width/2, rect.top + rect.height/2);
+});
+document.getElementById('zoomResetBtn').addEventListener('click', autoFitCanvas);
+
+function setZoom(newZoom, clientX, clientY) {
+  newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newZoom));
+  const rect = canvasViewport.getBoundingClientRect();
+  const localX = clientX - rect.left;
+  const localY = clientY - rect.top;
+  const logicalX = (localX - panX) / zoom;
+  const logicalY = (localY - panY) / zoom;
+  zoom = newZoom;
+  panX = localX - logicalX * zoom;
+  panY = localY - logicalY * zoom;
+  updateZoomUI();
+}
+
+canvasViewport.addEventListener('wheel', (e) => {
+  if (e.ctrlKey || e.metaKey) {
+    e.preventDefault();
+    const factor = Math.exp(-e.deltaY * 0.01);
+    setZoom(zoom * factor, e.clientX, e.clientY);
+  } else {
+    e.preventDefault();
+    panX -= e.deltaX;
+    panY -= e.deltaY;
+    updateZoomUI();
+  }
+}, { passive: false });
+
+// ===== UI操作 =====
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+// カラープリセット
+const PRESET_COLORS = ['#000000','#ffffff','#7f8c8d','#e74c3c','#e67e22','#f1c40f','#2ecc71','#3498db','#9b59b6','#e84393','#1e2b3c','#95a5a6'];
+function renderColorPresets() {
+  const el = document.getElementById('colorPresets');
+  el.innerHTML = PRESET_COLORS.map(c =>
+    `<button class="color-preset" data-color="${c}" style="background:${c}"><div class="fill" style="background:${c}"></div></button>`
+  ).join('');
+  el.querySelectorAll('.color-preset').forEach(b => {
+    b.addEventListener('click', () => setColor(b.dataset.color));
+  });
+}
+function setColor(hex) {
+  currentColor = hex;
+  document.getElementById('colorSwatchFill').style.background = hex;
+  document.getElementById('hexInput').value = hex.replace('#','').toUpperCase();
+  document.querySelectorAll('.color-preset').forEach(el => {
+    el.classList.toggle('active', el.dataset.color.toLowerCase() === hex.toLowerCase());
+  });
+}
+document.getElementById('hexInput').addEventListener('input', (e) => {
+  const v = e.target.value.replace(/[^0-9a-fA-F]/g, '').slice(0, 6);
+  if (v.length === 6) setColor('#' + v);
+});
+document.getElementById('sizeSlider').addEventListener('input', (e) => { currentSize = parseInt(e.target.value, 10); });
+document.getElementById('opacitySlider').addEventListener('input', (e) => { currentOpacity = parseInt(e.target.value, 10) / 100; });
+
+document.querySelectorAll('.brush-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.brush-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentBrush = btn.dataset.brush;
+    isEraser = false;
+    canvas.classList.remove('eraser-mode');
+    document.getElementById('eraserToggle').classList.remove('active');
+  });
+});
+document.getElementById('brushToggleBtn').addEventListener('click', () => {
+  document.getElementById('brushPanel').classList.toggle('show');
+});
+document.getElementById('eraserToggle').addEventListener('click', () => {
+  isEraser = !isEraser;
+  document.getElementById('eraserToggle').classList.toggle('active', isEraser);
+  canvas.classList.toggle('eraser-mode', isEraser);
+});
+document.getElementById('clearBtn').addEventListener('click', () => {
+  if (!confirm('キャンバスを全消去しますか？')) return;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, BASE_W, BASE_H);
+  if (activeSessionId) sendStroke({ type: 'clear' });
+});
+
+// ===== ウィンドウリサイズ =====
+window.addEventListener('resize', () => {
+  if (currentUser) autoFitCanvas();
+});
+
+// ===== 初期化 =====
+renderColorPresets();
+setColor('#1e2b3c');
+document.getElementById('colorSwatchFill').style.background = '#1e2b3c';
+
+</script>
+</body>
+</html>
