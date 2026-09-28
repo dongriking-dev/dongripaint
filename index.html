@@ -196,7 +196,6 @@
   }
   .zoom-display:hover { background: #3b4048; color: #fff; }
 
-  /* ユーザーアバター */
   .user-avatar {
     width: 36px; height: 36px; border-radius: 50%;
     border: 2px solid #454952; cursor: pointer;
@@ -289,7 +288,6 @@
   .brush-item .icon { color: #9aa1ad; }
   .brush-item.active .icon { color: #5b8def; }
 
-  /* キャンバス領域 */
   .canvas-area {
     flex: 1;
     overflow: hidden;
@@ -332,7 +330,6 @@
   #drawCanvas.eyedropper-mode { cursor: copy; }
   #drawCanvas.fill-mode { cursor: cell; }
 
-  /* 共同描画バッジ */
   .collab-badge {
     position: absolute; top: 16px; left: 16px;
     background: #2b2d33; border: 1px solid #5b8def;
@@ -353,7 +350,6 @@
     50% { opacity: 0.4; }
   }
 
-  /* 画像編集オーバーレイ */
   .image-edit-overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -707,7 +703,6 @@
   }
   .layer-controls button:hover { background: #34373e; border-color: #4a4e57; color: #fff; }
 
-  /* 友達リスト */
   .friend-list { display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto; }
   .friend-item {
     display: flex; align-items: center; gap: 8px;
@@ -754,7 +749,6 @@
   .add-friend-msg.error { color: #ff8b7f; }
   .add-friend-msg.success { color: #5bdf8d; }
 
-  /* モーダル */
   .modal-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.75);
@@ -785,7 +779,6 @@
   .modal-btn.danger { background: #e74c3c; color: #fff; }
   .modal-btn.danger:hover { background: #c0392b; }
 
-  /* トースト */
   .toast {
     position: fixed; bottom: 20px; left: 50%;
     transform: translateX(-50%) translateY(20px);
@@ -1020,7 +1013,6 @@
       </div>
     </div>
 
-    <!-- キャンバス -->
     <div class="canvas-area" id="canvasArea">
       <div class="canvas-viewport" id="canvasViewport">
         <div class="canvas-transform" id="canvasTransform">
@@ -1163,7 +1155,6 @@
         </div>
       </div>
 
-      <!-- 友達パネル -->
       <div class="panel" id="friendsPanel">
         <div class="panel-title">
           <span>友達</span>
@@ -1177,13 +1168,11 @@
         <div class="add-friend-msg" id="addFriendMsg"></div>
       </div>
 
-      <!-- 承認待ちリクエスト -->
       <div class="panel" id="requestsPanel" style="display:none;">
         <div class="panel-title">友達リクエスト</div>
         <div class="friend-list" id="requestList"></div>
       </div>
 
-      <!-- レイヤー -->
       <div class="panel" style="padding-bottom:10px;">
         <div class="panel-title">
           <span>レイヤー</span>
@@ -1251,7 +1240,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence }
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getDatabase, ref, set, get, update, push, onValue, onChildAdded, remove }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -1432,9 +1421,13 @@ let strokesUnsubscribe = null;
 let invitesUnsubscribe = null;
 let requestsUnsubscribe = null;
 let friendsUnsubscribe = null;
-let pendingInviteShown = null;
 let remoteStrokeState = {};
 let applyingRemote = false;
+
+// 招待管理（重要）
+const shownInviteIds = new Set();   // 既にモーダル表示済みの招待ID
+let incomingInviteQueue = [];       // 表示待ちの招待キュー
+let isShowingInviteModal = false;   // モーダル表示中フラグ
 
 let lastStrokeSentTime = 0;
 let lastStrokeSentX = 0, lastStrokeSentY = 0;
@@ -3110,7 +3103,7 @@ window.addEventListener('resize', () => {
 });
 
 // =====================================================
-// ===== 認証（ログイン） =====
+// ===== 認証 =====
 // =====================================================
 async function handleLogin() {
   loginError.style.display = 'none';
@@ -3121,13 +3114,10 @@ async function handleLogin() {
   provider.setCustomParameters({ prompt: 'select_account' });
 
   try {
-    // 永続化設定（念のため明示）
     try {
       await setPersistence(auth, browserLocalPersistence);
     } catch (e) { console.warn('setPersistence failed', e); }
-
     await signInWithPopup(auth, provider);
-    // 成功時は onAuthStateChanged が呼ばれる
   } catch (e) {
     console.error('Login error:', e);
     let msg = '';
@@ -3152,13 +3142,7 @@ async function handleLogin() {
     googleLoginBtn.disabled = false;
   }
 }
-
 googleLoginBtn.addEventListener('click', handleLogin);
-
-// リダイレクトログインからの戻りを処理（必要に応じて）
-getRedirectResult(auth).catch((e) => {
-  console.warn('getRedirectResult error:', e);
-});
 
 userAvatar.addEventListener('click', () => {
   logoutModal.classList.add('show');
@@ -3187,7 +3171,6 @@ onAuthStateChanged(auth, async (user) => {
       userAvatarImg.src = user.photoURL || '';
       loginError.style.display = 'none';
 
-      // ユーザー情報をDBに保存（失敗しても続行）
       try {
         await set(ref(db, 'users/' + user.uid), {
           uid: user.uid,
@@ -3203,7 +3186,6 @@ onAuthStateChanged(auth, async (user) => {
         console.warn('ユーザー情報の保存に失敗:', dbErr);
       }
 
-      // リスナー開始（失敗してもUIは動かす）
       try { startFriendsListener(); } catch (e) { console.warn('friends listener failed', e); }
       try { startRequestsListener(); } catch (e) { console.warn('requests listener failed', e); }
       try { startInviteListener(); } catch (e) { console.warn('invite listener failed', e); }
@@ -3233,6 +3215,9 @@ function cleanupListeners() {
   pendingRequests = {};
   activeSessionId = null;
   sessionRole = null;
+  shownInviteIds.clear();
+  incomingInviteQueue = [];
+  isShowingInviteModal = false;
 }
 
 // ===== 友達 =====
@@ -3271,30 +3256,56 @@ function startRequestsListener() {
     console.warn('requests listener error:', err);
   });
 }
+
+// ===== 招待リスナー（超重要）=====
+// 相手が別のキャンバスを開いていても通知が届くように、
+// ログイン直後から常時 sessionInvites/{uid} を監視する
 function startInviteListener() {
+  if (invitesUnsubscribe) {
+    try { invitesUnsubscribe(); } catch(e) {}
+    invitesUnsubscribe = null;
+  }
   invitesUnsubscribe = onValue(ref(db, 'sessionInvites/' + currentUser.uid), async (snap) => {
     try {
       const invites = snap.val() || {};
+      // invites: { sessionId: true, ... } または削除済み
       const sessionIds = Object.keys(invites).filter(id => invites[id] === true);
+      
+      // 新しい招待を抽出してキューへ
       for (const sid of sessionIds) {
-        if (pendingInviteShown === sid) continue;
+        if (shownInviteIds.has(sid)) continue;
         try {
           const sSnap = await get(ref(db, 'sessions/' + sid));
           if (sSnap.exists()) {
             const s = sSnap.val();
             if (s.status === 'pending' && s.guestId === currentUser.uid) {
-              pendingInviteShown = sid;
-              showIncomingInvite(sid, s);
-              return;
+              shownInviteIds.add(sid);
+              incomingInviteQueue.push({ sessionId: sid, session: s });
+              console.log('[招待検知]', sid, s.ownerName);
             }
           }
-        } catch (e) {}
+        } catch (e) {
+          console.warn('invite fetch error:', e);
+        }
       }
-    } catch (e) { console.warn('invite listener error:', e); }
+      
+      processInviteQueue();
+    } catch (e) {
+      console.warn('invite listener error:', e);
+    }
   }, (err) => {
     console.warn('invite listener error:', err);
   });
 }
+
+// キューから1件ずつモーダル表示
+function processInviteQueue() {
+  if (isShowingInviteModal) return;
+  if (incomingInviteQueue.length === 0) return;
+  const next = incomingInviteQueue.shift();
+  showIncomingInvite(next.sessionId, next.session);
+}
+
 function renderFriendsList() {
   const ids = Object.keys(friends);
   friendCount.textContent = ids.length + '人';
@@ -3491,7 +3502,9 @@ async function inviteFriendToCanvas(friendUid) {
       startedAt: null
     };
     await set(sessionRef, sessionData);
+    // 招待通知を送信
     await set(ref(db, 'sessionInvites/' + friendUid + '/' + sessionId), true);
+    // 自分のセッションとして登録
     activeSessionId = sessionId;
     sessionRole = 'owner';
     await attachSessionListener(sessionId);
@@ -3533,20 +3546,47 @@ async function attachSessionListener(sessionId) {
   });
 }
 
+// ===== 招待モーダル表示 =====
 function showIncomingInvite(sessionId, session) {
-  incomingInviteBody.innerHTML = `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>参加しますか？`;
+  isShowingInviteModal = true;
+  
+  const alreadyInSession = !!activeSessionId;
+  
+  if (alreadyInSession) {
+    incomingInviteBody.innerHTML = 
+      `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>` +
+      `<span style="color:#ffb366;">※現在、別のキャンバスで描画中です。「参加」を押すと既存のセッションを終了して切り替わります。</span>`;
+  } else {
+    incomingInviteBody.innerHTML = 
+      `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>参加しますか？`;
+  }
+  
   const newAccept = inviteAcceptBtn.cloneNode(true);
   const newDecline = inviteDeclineBtn.cloneNode(true);
   inviteAcceptBtn.parentNode.replaceChild(newAccept, inviteAcceptBtn);
   inviteDeclineBtn.parentNode.replaceChild(newDecline, inviteDeclineBtn);
+  
+  if (alreadyInSession) {
+    newAccept.textContent = '既存を終了して参加';
+  } else {
+    newAccept.textContent = '参加';
+  }
 
   newAccept.addEventListener('click', async () => {
     incomingInviteModal.classList.remove('show');
-    pendingInviteShown = null;
+    isShowingInviteModal = false;
+    
+    // 既存セッションをクリーンアップ
+    if (activeSessionId) {
+      await cleanupSession();
+    }
+    
     try {
       showLoading(true);
       await update(ref(db, 'sessions/' + sessionId), { status: 'active', startedAt: Date.now() });
       await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId));
+      shownInviteIds.delete(sessionId);
+      
       activeSessionId = sessionId;
       sessionRole = 'guest';
       await attachSessionListener(sessionId);
@@ -3559,19 +3599,25 @@ function showIncomingInvite(sessionId, session) {
       showToast('参加に失敗: ' + e.message, 'error');
     } finally {
       showLoading(false);
+      processInviteQueue();
     }
   });
+  
   newDecline.addEventListener('click', async () => {
     incomingInviteModal.classList.remove('show');
-    pendingInviteShown = null;
+    isShowingInviteModal = false;
     try {
       await update(ref(db, 'sessions/' + sessionId), { status: 'declined' });
       await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId));
+      shownInviteIds.delete(sessionId);
     } catch (e) { console.error(e); }
+    processInviteQueue();
   });
+  
   incomingInviteModal.classList.add('show');
 }
 
+// ===== ストローク同期 =====
 function startStrokesListener(sessionId) {
   if (strokesUnsubscribe) { try { strokesUnsubscribe(); } catch(e){} strokesUnsubscribe = null; }
   const strokesRef = ref(db, 'strokes/' + sessionId);
