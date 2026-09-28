@@ -374,7 +374,7 @@
   .image-edit-handle.tl { top: -8px; left: -8px; cursor: nwse-resize; }
   .image-edit-handle.tr { top: -8px; right: -8px; cursor: nesw-resize; }
   .image-edit-handle.bl { bottom: -8px; left: -8px; cursor: nesw-resize; }
-  .image-edit-handle.br { bottom: -8px; right: -8px; cursor: nwse-resize; }
+  .image-edit-handle.br { bottom: -8px; right: -8px; cursor: nesw-resize; }
   .image-edit-handle.rotate {
     top: -36px; left: 50%; transform: translateX(-50%);
     width: 16px; height: 16px;
@@ -1263,7 +1263,6 @@ const STORAGE_KEY_INDEX = 'drawingApp_works_index_v10';
 const STORAGE_KEY_WORK_PREFIX = 'drawingApp_work_v10_';
 const BASE_W = 900, BASE_H = 675;
 
-// ===== 要素取得 =====
 const $ = (id) => document.getElementById(id);
 const loginScreen = $('loginScreen');
 const homeScreen = $('homeScreen');
@@ -1340,7 +1339,6 @@ const collabBadge = $('collabBadge');
 const collabBadgeText = $('collabBadgeText');
 const toastEl = $('toast');
 const loadingIndicator = $('loadingIndicator');
-
 const friendsBtn = $('friendsBtn');
 const friendNotifBadge = $('friendNotifBadge');
 const friendsPanel = $('friendsPanel');
@@ -1412,34 +1410,31 @@ let imageEditState = null;
 let friends = {};
 let pendingRequests = {};
 let activeSessionId = null;
+let activeSessionOwnerId = null;   // ★ セッションの作成者ID（キャンバスの保存先）
 let sessionRole = null;
 let sessionUnsubscribe = null;
 let strokesUnsubscribe = null;
 let invitesUnsubscribe = null;
 let requestsUnsubscribe = null;
 let friendsUnsubscribe = null;
+let resendRequestUnsubscribe = null;   // 再送要求監視
 
-// リモートストロークの進行状態（uid ごと）
-// { lastX, lastY, color, size, brush, opacity, eraser, seed }
-let remoteStrokeState = {};
+// リモートストローク
+let remoteStrokesById = {};
 
-// 送信側の strokeId を管理（1つのストロークを1つのIDで送る）
+// 送信側
 let myCurrentStrokeId = null;
-let myCurrentStrokePoints = [];   // 送信待ちの点
+let myCurrentStrokeSeed = null;
 let myLastSentPoint = null;
 
-// 受信側の strokeId ごとの状態
-let remoteStrokesById = {};       // { strokeId: { points, color, ... } }
+const STROKE_MIN_DIST = 3;
 
 // 招待管理
 const shownInviteIds = new Set();
 let incomingInviteQueue = [];
 let isShowingInviteModal = false;
 
-// 送信間引き
-const STROKE_MIN_DIST = 3;
-
-// ===== 乱数生成（シード付き） =====
+// 乱数（シード）
 function mulberry32(seed) {
   return function() {
     seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
@@ -1537,17 +1532,14 @@ function syncColorUI(source) {
   const rgb = hexToRgb(currentColor);
   if (!rgb) { isSyncingColor = false; return; }
   const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
-
   colorSwatchFill.style.background = currentColor;
   hexInput.value = currentColor.replace('#','').toUpperCase();
-
   if (source !== 'rgb') {
     sliderR.value = rgb.r; sliderG.value = rgb.g; sliderB.value = rgb.b;
   }
   valR.textContent = Math.round(rgb.r);
   valG.textContent = Math.round(rgb.g);
   valB.textContent = Math.round(rgb.b);
-
   if (source !== 'hsl') {
     sliderH.value = Math.round(hsl.h);
     sliderS.value = Math.round(hsl.s);
@@ -1556,7 +1548,6 @@ function syncColorUI(source) {
   valH.textContent = Math.round(hsl.h);
   valS.textContent = Math.round(hsl.s);
   valL.textContent = Math.round(hsl.l);
-
   document.querySelectorAll('.color-preset').forEach(el => {
     el.classList.toggle('active', el.dataset.color.toLowerCase() === currentColor.toLowerCase());
   });
@@ -1640,8 +1631,7 @@ function serializeCurrentWork() {
   }));
   return {
     version: 10, baseWidth: BASE_W, baseHeight: BASE_H, width: W, height: H,
-    layers: serializedLayers,
-    activeLayerId, layerCounter,
+    layers: serializedLayers, activeLayerId, layerCounter,
     savedAt: Date.now(), title: artTitleEl.textContent || '無題の作品'
   };
 }
@@ -2039,7 +2029,6 @@ function attachDragReorder(item, layerId) {
   let dragging = false, ghost = null, pointerId = null;
   let startX = 0, startY = 0, dropTargetId = null, dropPosition = null;
   const MOVE_THRESHOLD = 5;
-
   function onPointerDown(e) {
     if (e.target.closest('.mini-btn')) return;
     if (e.pointerType === 'mouse' && e.button !== 0) return;
@@ -2284,20 +2273,7 @@ function floodFill(layer, startX, startY, fillColorHex, tolerance) {
   return false;
 }
 
-// ===== ブラシ描画（シード対応版） =====
-function softDab(c, x, y, radius, color, softness, alpha) {
-  if (radius <= 0) return;
-  const grad = c.createRadialGradient(x, y, 0, x, y, radius);
-  const inner = Math.max(0, 1 - softness);
-  grad.addColorStop(0, color);
-  grad.addColorStop(Math.max(0.001, inner * 0.65), color);
-  grad.addColorStop(1, 'rgba(255,255,255,0)');
-  c.save();
-  c.globalAlpha = alpha;
-  c.fillStyle = grad;
-  c.beginPath(); c.arc(x, y, radius, 0, Math.PI*2); c.fill();
-  c.restore();
-}
+// ===== ブラシ描画 =====
 function drawPen(c, x0, y0, x1, y1, size, color, alpha) {
   c.save();
   c.globalAlpha = alpha;
@@ -2306,7 +2282,6 @@ function drawPen(c, x0, y0, x1, y1, size, color, alpha) {
   c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
   c.restore();
 }
-// 乱数生成器を受け取る形に変更（シード共有用）
 function drawPencil(c, x0, y0, x1, y1, size, color, alpha, rng) {
   const dist = Math.hypot(x1-x0, y1-y0);
   const steps = Math.max(1, Math.floor(dist / 0.7));
@@ -2459,8 +2434,7 @@ function blurAt(c, cx, cy, radius) {
   c.putImageData(srcData, minX, minY);
 }
 
-// ===== 描画：ストロークをレイヤーに適用（シード対応） =====
-// seed を渡すとそのシードから乱数を生成して両者同じ結果になる
+// ===== ストロークをレイヤーに適用 =====
 function drawStrokeToLayer(layer, x0, y0, x1, y1, params, seed) {
   const c = layer.ctx;
   const { color, size, brush, alpha, eraser } = params;
@@ -2476,7 +2450,6 @@ function drawStrokeToLayer(layer, x0, y0, x1, y1, params, seed) {
     return;
   }
   if (brush === 'blur') { blurAt(c, x1, y1, scaledSize * 0.8); return; }
-  // シードから乱数生成（両者で同じ結果）
   const rng = (typeof seed === 'number') ? mulberry32(seed) : Math.random;
   c.save();
   if (brush === 'pen') drawPen(c, x0, y0, x1, y1, scaledSize, color, alpha);
@@ -2487,7 +2460,7 @@ function drawStrokeToLayer(layer, x0, y0, x1, y1, params, seed) {
   c.restore();
 }
 
-// ===== 描画：自分の描画（ローカル＋送信） =====
+// ===== 描画イベント =====
 function startDrawing(e) {
   if (e.button !== undefined && e.button !== 0) return;
   e.preventDefault();
@@ -2508,11 +2481,6 @@ function startDrawing(e) {
     if (ok) {
       composite(); scheduleAutoSave(); pushHistory();
       showToast('塗りつぶしました', 'success');
-      // 共同描画中なら、塗りつぶしをアクションとして送信
-      if (activeSessionId) {
-        // 塗りつぶしはローカルのみ。相手には見えないので、ストローク扱いで送る必要なし
-        // （拡張するなら塗りつぶし画像を送る）
-      }
     }
     setFillMode(false);
     return;
@@ -2528,29 +2496,25 @@ function startDrawing(e) {
   isDrawing = true;
   lastX = coords.x; lastY = coords.y;
 
-  // 共同描画用：ストロークIDを新規発行、シードを生成
   const strokeId = generateId();
   const seed = Math.floor(Math.random() * 2147483647);
   myCurrentStrokeId = strokeId;
+  myCurrentStrokeSeed = seed;
   myLastSentPoint = { x: coords.x, y: coords.y };
 
-  // ローカルに即時描画
   drawStrokeToLayer(layer, coords.x, coords.y, coords.x + 0.01, coords.y, {
     color: currentColor, size: currentSize, brush: currentBrush, alpha: currentOpacity, eraser: isEraser
   }, seed);
 
-  // 共同描画：start 送信（シード付き）
   if (activeSessionId) {
     sendStrokeEvent({
-      type: 'start',
-      strokeId: strokeId,
+      type: 'start', strokeId,
       x: coords.x, y: coords.y,
       color: currentColor, size: currentSize,
       brush: currentBrush, opacity: currentOpacity, eraser: isEraser,
-      seed: seed
+      seed
     });
   }
-
   composite(); scheduleAutoSave();
 }
 
@@ -2573,21 +2537,15 @@ function draw(e) {
     return;
   }
 
-  // ローカルに線分追加
-  const seed = myCurrentStrokeSeed || 0;
-  // 前回の点から今回の点へ線分を描画
-  // シードは start 時に固定して使う
   drawStrokeToLayer(layer, lastX, lastY, coords.x, coords.y, {
     color: currentColor, size: currentSize, brush: currentBrush, alpha: currentOpacity, eraser: isEraser
   }, myCurrentStrokeSeed);
 
-  // 共同描画：move 送信（間引き）
   if (activeSessionId && myCurrentStrokeId) {
     const dist = Math.hypot(coords.x - myLastSentPoint.x, coords.y - myLastSentPoint.y);
     if (dist >= STROKE_MIN_DIST) {
       sendStrokeEvent({
-        type: 'move',
-        strokeId: myCurrentStrokeId,
+        type: 'move', strokeId: myCurrentStrokeId,
         x: coords.x, y: coords.y
       });
       myLastSentPoint = { x: coords.x, y: coords.y };
@@ -2608,14 +2566,11 @@ function stopDrawing(e) {
     sendStrokeEvent({ type: 'end', strokeId: myCurrentStrokeId });
   }
   myCurrentStrokeId = null;
-  myLastSentPoint = null;
   myCurrentStrokeSeed = null;
+  myLastSentPoint = null;
   scheduleAutoSave();
   pushHistory();
 }
-
-// 追加：start時にseedを保持するグローバル
-let myCurrentStrokeSeed = null;
 
 // ===== 画像編集 =====
 function enterImageEditMode(img, layerId) {
@@ -3163,14 +3118,11 @@ async function handleLogin() {
   loginError.style.display = 'none';
   loginError.textContent = '';
   googleLoginBtn.disabled = true;
-
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
-
   try {
-    try {
-      await setPersistence(auth, browserLocalPersistence);
-    } catch (e) { console.warn('setPersistence failed', e); }
+    try { await setPersistence(auth, browserLocalPersistence); }
+    catch (e) { console.warn('setPersistence failed', e); }
     await signInWithPopup(auth, provider);
   } catch (e) {
     console.error('Login error:', e);
@@ -3224,7 +3176,6 @@ onAuthStateChanged(auth, async (user) => {
       editorScreen.classList.remove('active');
       userAvatarImg.src = user.photoURL || '';
       loginError.style.display = 'none';
-
       try {
         await set(ref(db, 'users/' + user.uid), {
           uid: user.uid,
@@ -3236,14 +3187,10 @@ onAuthStateChanged(auth, async (user) => {
         if (user.email) {
           await set(ref(db, 'userEmails/' + emailToKey(user.email)), user.uid);
         }
-      } catch (dbErr) {
-        console.warn('ユーザー情報の保存に失敗:', dbErr);
-      }
-
+      } catch (dbErr) { console.warn('ユーザー情報の保存に失敗:', dbErr); }
       try { startFriendsListener(); } catch (e) { console.warn('friends listener failed', e); }
       try { startRequestsListener(); } catch (e) { console.warn('requests listener failed', e); }
       try { startInviteListener(); } catch (e) { console.warn('invite listener failed', e); }
-
       renderGallery();
     } else {
       currentUser = null;
@@ -3258,21 +3205,19 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// ===== リスナー後始末 =====
 function cleanupListeners() {
   if (friendsUnsubscribe) { try { friendsUnsubscribe(); } catch(e){} friendsUnsubscribe = null; }
   if (requestsUnsubscribe) { try { requestsUnsubscribe(); } catch(e){} requestsUnsubscribe = null; }
   if (invitesUnsubscribe) { try { invitesUnsubscribe(); } catch(e){} invitesUnsubscribe = null; }
   if (sessionUnsubscribe) { try { sessionUnsubscribe(); } catch(e){} sessionUnsubscribe = null; }
   if (strokesUnsubscribe) { try { strokesUnsubscribe(); } catch(e){} strokesUnsubscribe = null; }
-  friends = {};
-  pendingRequests = {};
-  activeSessionId = null;
+  if (resendRequestUnsubscribe) { try { resendRequestUnsubscribe(); } catch(e){} resendRequestUnsubscribe = null; }
+  friends = {}; pendingRequests = {};
+  activeSessionId = null; activeSessionOwnerId = null;
   sessionRole = null;
   shownInviteIds.clear();
   incomingInviteQueue = [];
   isShowingInviteModal = false;
-  remoteStrokeState = {};
   remoteStrokesById = {};
 }
 
@@ -3308,17 +3253,12 @@ function startRequestsListener() {
       renderRequestsPanel();
       updateFriendBadge();
     } catch (e) { console.warn('requests listener error:', e); }
-  }, (err) => {
-    console.warn('requests listener error:', err);
-  });
+  }, (err) => { console.warn('requests listener error:', err); });
 }
 
 // ===== 招待リスナー =====
 function startInviteListener() {
-  if (invitesUnsubscribe) {
-    try { invitesUnsubscribe(); } catch(e) {}
-    invitesUnsubscribe = null;
-  }
+  if (invitesUnsubscribe) { try { invitesUnsubscribe(); } catch(e){} invitesUnsubscribe = null; }
   invitesUnsubscribe = onValue(ref(db, 'sessionInvites/' + currentUser.uid), async (snap) => {
     try {
       const invites = snap.val() || {};
@@ -3335,17 +3275,11 @@ function startInviteListener() {
               console.log('[招待検知]', sid, s.ownerName);
             }
           }
-        } catch (e) {
-          console.warn('invite fetch error:', e);
-        }
+        } catch (e) { console.warn('invite fetch error:', e); }
       }
       processInviteQueue();
-    } catch (e) {
-      console.warn('invite listener error:', e);
-    }
-  }, (err) => {
-    console.warn('invite listener error:', err);
-  });
+    } catch (e) { console.warn('invite listener error:', e); }
+  }, (err) => { console.warn('invite listener error:', err); });
 }
 
 function processInviteQueue() {
@@ -3404,9 +3338,7 @@ function renderRequestsPanel() {
     try {
       const uSnap = await get(ref(db, 'users/' + r.from));
       return { rid, u: uSnap.val() || {} };
-    } catch (e) {
-      return { rid, u: {} };
-    }
+    } catch (e) { return { rid, u: {} }; }
   })).then(items => {
     requestList.innerHTML = items.map(({rid, u}) => `
       <div class="friend-item">
@@ -3491,10 +3423,8 @@ addFriendBtn.addEventListener('click', async () => {
     }
     const targetUid = uidSnap.val();
     if (targetUid === currentUser.uid) { addFriendMsg.textContent = '自分自身は追加できません'; addFriendMsg.classList.add('error'); return; }
-
     const alreadyFriend = await get(ref(db, 'friends/' + currentUser.uid + '/' + targetUid));
     if (alreadyFriend.exists()) { addFriendMsg.textContent = '既に友達です'; addFriendMsg.classList.add('error'); return; }
-
     const sentSnap = await get(ref(db, 'friendRequests'));
     const reqs = sentSnap.val() || {};
     const existing = Object.entries(reqs).find(([id, r]) =>
@@ -3503,7 +3433,6 @@ addFriendBtn.addEventListener('click', async () => {
        (r.from === targetUid && r.to === currentUser.uid))
     );
     if (existing) { addFriendMsg.textContent = '既にリクエスト送信済み、または受信しています'; addFriendMsg.classList.add('error'); return; }
-
     const newReqRef = push(ref(db, 'friendRequests'));
     const reqId = newReqRef.key;
     const updates = {};
@@ -3514,7 +3443,6 @@ addFriendBtn.addEventListener('click', async () => {
     updates['userFriendRequests/' + targetUid + '/' + reqId] = true;
     updates['userFriendRequests/' + currentUser.uid + '/' + reqId] = true;
     await update(ref(db), updates);
-
     addFriendMsg.textContent = '友達リクエストを送信しました';
     addFriendMsg.classList.add('success');
     friendEmailInput.value = '';
@@ -3526,7 +3454,7 @@ addFriendBtn.addEventListener('click', async () => {
 });
 
 // =====================================================
-// ===== 招待とセッション =====
+// ===== 招待とセッション（キャンバス保存先をオーナーに） =====
 // =====================================================
 inviteBtn.addEventListener('click', () => {
   if (activeSessionId) { showToast('既に共同描画セッション中です', 'error'); return; }
@@ -3536,7 +3464,7 @@ inviteCancelBtn.addEventListener('click', () => {
   inviteModal.classList.remove('show');
 });
 
-// キャンバススナップショットを取得
+// キャンバスのスナップショットを取得（サイズを抑えて確実に送れるように）
 function captureCanvasSnapshot() {
   const snapshot = document.createElement('canvas');
   snapshot.width = W;
@@ -3551,8 +3479,8 @@ function captureCanvasSnapshot() {
     sctx.drawImage(layer.canvas, 0, 0);
     sctx.restore();
   }
-  // 縮小してサイズ削減（最大1200px）
-  const maxDim = 1200;
+  // 最大 800x600 に縮小、JPEG品質0.7 → 確実に100KB未満に
+  const maxDim = 800;
   let tw = W, th = H;
   if (Math.max(W, H) > maxDim) {
     const r = maxDim / Math.max(W, H);
@@ -3561,11 +3489,14 @@ function captureCanvasSnapshot() {
   }
   const small = document.createElement('canvas');
   small.width = tw; small.height = th;
-  small.getContext('2d').drawImage(snapshot, 0, 0, tw, th);
-  return small.toDataURL('image/jpeg', 0.85);
+  const smctx = small.getContext('2d');
+  smctx.fillStyle = '#ffffff';
+  smctx.fillRect(0, 0, tw, th);
+  smctx.drawImage(snapshot, 0, 0, tw, th);
+  return small.toDataURL('image/jpeg', 0.7);
 }
 
-// スナップショットを自分のキャンバスに適用
+// スナップショットを自分のキャンバスに反映
 async function applyCanvasSnapshot(dataURL) {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -3597,7 +3528,7 @@ async function applyCanvasSnapshot(dataURL) {
       newCtx.drawImage(img, 0, 0, W, H);
       const newLayer = {
         id: 'layer_' + layerCounter,
-        name: '相手のキャンバス',
+        name: '共同キャンバス',
         canvas: newCanvas, ctx: newCtx,
         visible: true, opacity: 1
       };
@@ -3615,38 +3546,96 @@ async function applyCanvasSnapshot(dataURL) {
   });
 }
 
-// オーナー：スナップショットを保存
-async function uploadCanvasSnapshotToSession(sessionId) {
-  if (!sessionId) return;
+// スナップショットをオーナーのデータとして保存
+// ★ userWorks/{ownerId}/{sessionId} に保存 → 作成者の作品として残る
+async function uploadCanvasSnapshotToSession(sessionId, ownerId) {
+  if (!sessionId || !ownerId) return;
   try {
     const dataURL = captureCanvasSnapshot();
-    await set(ref(db, 'sessionSnapshots/' + sessionId), {
+    // オーナーの保存領域に保存
+    await set(ref(db, 'userWorks/' + ownerId + '/' + sessionId), {
       dataURL: dataURL,
       updatedAt: Date.now(),
-      ownerId: currentUser.uid
+      ownerId: ownerId,
+      sessionId: sessionId
     });
-    console.log('[snapshot] uploaded', sessionId, 'size:', dataURL.length);
+    // セッションにも参照を張る（ゲストが見るため）
+    await set(ref(db, 'sessionSnapshots/' + sessionId), {
+      ownerId: ownerId,
+      updatedAt: Date.now()
+    });
+    console.log('[snapshot] uploaded', sessionId, 'owner:', ownerId, 'size:', dataURL.length);
   } catch (e) {
     console.error('スナップショット保存失敗:', e);
+    throw e;
   }
 }
 
-// ゲスト：スナップショットを取得
-async function downloadCanvasSnapshotFromSession(sessionId) {
-  try {
-    const snap = await get(ref(db, 'sessionSnapshots/' + sessionId));
-    if (snap.exists()) {
+// スナップショットを取得（リトライ付き）
+async function downloadCanvasSnapshotFromSession(sessionId, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      // sessionSnapshots から ownerId を取得
+      const metaSnap = await get(ref(db, 'sessionSnapshots/' + sessionId));
+      if (!metaSnap.exists()) {
+        console.warn(`[snapshot] attempt ${attempt}: meta not found`);
+        if (attempt < maxRetries) {
+          await new Promise(r => setTimeout(r, 500 * attempt));
+          continue;
+        }
+        return false;
+      }
+      const meta = metaSnap.val();
+      const ownerId = meta.ownerId;
+      if (!ownerId) {
+        console.warn(`[snapshot] attempt ${attempt}: ownerId not found`);
+        if (attempt < maxRetries) {
+          await new Promise(r => setTimeout(r, 500 * attempt));
+          continue;
+        }
+        return false;
+      }
+      // オーナーの作品から dataURL を取得
+      const snap = await get(ref(db, 'userWorks/' + ownerId + '/' + sessionId));
+      if (!snap.exists()) {
+        console.warn(`[snapshot] attempt ${attempt}: userWork not found`);
+        if (attempt < maxRetries) {
+          await new Promise(r => setTimeout(r, 500 * attempt));
+          continue;
+        }
+        return false;
+      }
       const data = snap.val();
       if (data && data.dataURL) {
         await applyCanvasSnapshot(data.dataURL);
-        console.log('[snapshot] applied', sessionId);
+        console.log('[snapshot] applied', sessionId, 'attempt:', attempt);
         return true;
       }
+    } catch (e) {
+      console.warn(`[snapshot] attempt ${attempt} error:`, e);
+      if (attempt < maxRetries) {
+        await new Promise(r => setTimeout(r, 500 * attempt));
+      }
     }
-  } catch (e) {
-    console.error('スナップショット取得失敗:', e);
   }
   return false;
+}
+
+// オーナー側：ゲストから再送要求が来たらスナップショットを再アップロード
+function startResendListener(sessionId, ownerId) {
+  if (resendRequestUnsubscribe) { try { resendRequestUnsubscribe(); } catch(e){} resendRequestUnsubscribe = null; }
+  resendRequestUnsubscribe = onValue(ref(db, 'snapshotResendRequests/' + sessionId), async (snap) => {
+    if (snap.exists() && snap.val() === true) {
+      console.log('[snapshot] resend request received');
+      try {
+        await uploadCanvasSnapshotToSession(sessionId, ownerId);
+        // フラグをクリア
+        await remove(ref(db, 'snapshotResendRequests/' + sessionId));
+      } catch (e) {
+        console.error('再送失敗:', e);
+      }
+    }
+  });
 }
 
 async function inviteFriendToCanvas(friendUid) {
@@ -3666,14 +3655,18 @@ async function inviteFriendToCanvas(friendUid) {
       startedAt: null
     };
     await set(sessionRef, sessionData);
-    // スナップショット保存
-    await uploadCanvasSnapshotToSession(sessionId);
+    // ★ スナップショットをオーナーの保存領域に保存
+    await uploadCanvasSnapshotToSession(sessionId, currentUser.uid);
     // 招待通知
     await set(ref(db, 'sessionInvites/' + friendUid + '/' + sessionId), true);
 
     activeSessionId = sessionId;
+    activeSessionOwnerId = currentUser.uid;
     sessionRole = 'owner';
     await attachSessionListener(sessionId);
+    // 再送要求リスナー開始（オーナーのみ）
+    startResendListener(sessionId, currentUser.uid);
+
     showToast(`${friend.displayName} さんに招待を送信しました`, 'success');
     inviteModal.classList.remove('show');
   } catch (e) {
@@ -3695,7 +3688,10 @@ async function attachSessionListener(sessionId) {
       return;
     }
     const s = snap.val();
-    if (activeSessionId !== sessionId) activeSessionId = sessionId;
+    if (activeSessionId !== sessionId) {
+      activeSessionId = sessionId;
+      activeSessionOwnerId = s.ownerId;
+    }
     if (s.status === 'active') {
       collabBadge.classList.add('show');
       collabBadgeText.textContent = `共同描画中: ${sessionRole === 'owner' ? s.guestName : s.ownerName}`;
@@ -3740,20 +3736,40 @@ function showIncomingInvite(sessionId, session) {
     }
     try {
       showLoading(true);
+      // セッションを active に更新
       await update(ref(db, 'sessions/' + sessionId), { status: 'active', startedAt: Date.now() });
       await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId));
       shownInviteIds.delete(sessionId);
 
       activeSessionId = sessionId;
+      activeSessionOwnerId = session.ownerId;
       sessionRole = 'guest';
 
-      // 相手のキャンバスを取得
+      // 相手のキャンバスを取得（リトライ付き）
       showToast('相手のキャンバスを読み込んでいます...', 'success');
-      const applied = await downloadCanvasSnapshotFromSession(sessionId);
+      let applied = await downloadCanvasSnapshotFromSession(sessionId, 3);
+
+      // 失敗したら再送要求を送って、もう一度取得
+      if (!applied) {
+        console.warn('[snapshot] first attempts failed, requesting resend');
+        showToast('再取得を試みています...', 'success');
+        try {
+          await set(ref(db, 'snapshotResendRequests/' + sessionId), true);
+          // 再送要求をセットして少し待つ
+          await new Promise(r => setTimeout(r, 1500));
+          applied = await downloadCanvasSnapshotFromSession(sessionId, 5);
+        } catch (e) {
+          console.warn('resend request error:', e);
+        }
+      }
+
       if (applied) {
         showToast('相手のキャンバスに参加しました', 'success');
       } else {
-        showToast('キャンバスの読み込みに失敗しました', 'error');
+        // それでもダメなら、相手のストロークを最初から再生するようにする
+        // （キャンバスは白紙だが、以降のストロークは反映される）
+        showToast('キャンバスの読み込みに失敗しました。以降の描画は同期されます', 'error');
+        console.warn('[snapshot] all attempts failed');
       }
 
       await attachSessionListener(sessionId);
@@ -3783,8 +3799,7 @@ function showIncomingInvite(sessionId, session) {
   incomingInviteModal.classList.add('show');
 }
 
-// ===== ストローク同期（完全一致） =====
-// 送信側：strokes/{sessionId}/{autoKey} に1イベントずつ push
+// ===== ストローク同期 =====
 async function sendStrokeEvent(event) {
   if (!activeSessionId) return;
   try {
@@ -3797,15 +3812,9 @@ async function sendStrokeEvent(event) {
   } catch (e) { console.error('stroke送信失敗', e); }
 }
 
-// 受信側：イベント順に再生。strokeId ごとに進行状態を管理
-// 「start」= ストローク開始。色・サイズ・ブラシ・シードを確定
-// 「move」= 始点から現点までの線分を描画
-// 「end」= 終了
 function startStrokesListener(sessionId) {
   if (strokesUnsubscribe) { try { strokesUnsubscribe(); } catch(e){} strokesUnsubscribe = null; }
   const strokesRef = ref(db, 'strokes/' + sessionId);
-
-  // 既存のキー（自分が参加する前に書かれたもの）はスキップ
   const existingKeys = new Set();
   const initialLoad = new Promise((resolve) => {
     get(strokesRef).then((snap) => {
@@ -3822,27 +3831,24 @@ function startStrokesListener(sessionId) {
     if (existingKeys.has(key)) return;
     const ev = childSnap.val();
     if (!ev) return;
-    if (ev.uid === currentUser.uid) return; // 自分のイベントは無視（既にローカルに反映済み）
+    if (ev.uid === currentUser.uid) return;
     applyRemoteStrokeEvent(ev);
   }, (err) => {
     console.warn('strokes listener error:', err);
   });
 }
 
-// リモートイベントの適用
 function applyRemoteStrokeEvent(ev) {
   const layer = getActiveLayer();
   if (!layer || !layer.visible) return;
 
   if (ev.type === 'start') {
-    // 新規ストロークを登録
     remoteStrokesById[ev.strokeId] = {
       lastX: ev.x, lastY: ev.y,
       color: ev.color, size: ev.size,
       brush: ev.brush, opacity: ev.opacity, eraser: ev.eraser,
       seed: ev.seed
     };
-    // 始点を打つ
     drawStrokeToLayer(layer, ev.x, ev.y, ev.x + 0.01, ev.y, {
       color: ev.color, size: ev.size,
       brush: ev.brush, alpha: ev.opacity || 1, eraser: ev.eraser
@@ -3851,7 +3857,6 @@ function applyRemoteStrokeEvent(ev) {
   } else if (ev.type === 'move') {
     const s = remoteStrokesById[ev.strokeId];
     if (!s) return;
-    // 線分を描画（送信側と同じシードで同じ結果になる）
     drawStrokeToLayer(layer, s.lastX, s.lastY, ev.x, ev.y, {
       color: s.color, size: s.size,
       brush: s.brush, alpha: s.opacity || 1, eraser: s.eraser
@@ -3867,6 +3872,7 @@ function applyRemoteStrokeEvent(ev) {
 async function cleanupSession() {
   if (sessionUnsubscribe) { try { sessionUnsubscribe(); } catch(e){} sessionUnsubscribe = null; }
   if (strokesUnsubscribe) { try { strokesUnsubscribe(); } catch(e){} strokesUnsubscribe = null; }
+  if (resendRequestUnsubscribe) { try { resendRequestUnsubscribe(); } catch(e){} resendRequestUnsubscribe = null; }
   remoteStrokesById = {};
   collabBadge.classList.remove('show');
   if (activeSessionId) {
@@ -3875,9 +3881,12 @@ async function cleanupSession() {
       await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + activeSessionId));
       await remove(ref(db, 'strokes/' + activeSessionId));
       await remove(ref(db, 'sessionSnapshots/' + activeSessionId));
+      await remove(ref(db, 'snapshotResendRequests/' + activeSessionId));
+      // ★ userWorks は削除しない（オーナーの作品として残す）
     } catch (e) {}
   }
   activeSessionId = null;
+  activeSessionOwnerId = null;
   sessionRole = null;
 }
 
