@@ -4,14 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>どんぐりペイント</title>
-<link id="faviconLink" rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAGuElEQVR4AcSWC3BU1RnHf9/dPDYh5AGRDQZLEGZCEaG1QW0l09RBSAeGh8CY0ZrRGR+DQwdtKx2nTK0zSjvQRmpH+5jOaNGGALX1lRKtA2JokbYCEoHYBAl5bBLy2s3uZnezu3d77m7uejfZxdYZxzP3nO873/P/fefuuavxBY8vHkA0xdB1PUmq68n7JKVlo+v/m53FJZrUAaWIHYiIxKi5iCTvTblBTR+DF0lvt3frbdTdU2WYJU3NuhNJH8BqZ+VFPt3nuXurKJ13NXOK8nl05WKrOwqAniQwN9bKTNlkWl48c7Io5T4cChIa8XH85DlcI6NYYysA6knhJnLlyqLKZ9XNC7mhKEdx6Z9dm5dx/bJyhoZcdPWN0BMAkU9iq+xTO7CpYh6z7UrFxJgwMZEbtO7+at4+egKXP640ZIa1QY1p8j3OXoKDPtov9VN542L+2tJpqBJTZVHPxLb6qwvYsKSELLXP06OsX1LE7RXzWb/UoSQkkC+7ys7b75xBj2bzcSAYa6lIvCoRSdjtr3+Rb9y1lb2vNNPa0c+2F48yeajsRjOJBTl++gLzyx2c7uimuLSYzIw8vr7cwfbvraF21TIqSopZnJPNAoeDLU/W0er1xeKJSIxOXn73q18Q8bn5yK3TPBROUptd0kypiODSdTrbB8kvmMGaVWXc8q25+Lxhdte9zrCzj57+IWo2V/HW+W7W3lFjuqak0WiEVxue5+/H3sUbCtHdP5xkJxIHrQDEGQORiHDgVA8lucLcaxwcaTpPy3tdXDUrnzdaLuFUAH9/4Ahaho2Zynb/D9fR+MSdscCGf4yZWB6uWUvTywc5/I8WWp3x5JNtDFMFwCAkzg01XmnpY2XtHl49O8TLHzqp/cEudUTCwvxcNC3Cj+9ZQdV1JaD7+feZdnasvo6d31nOI2sWKe/4U/fcMxw9fIS8wumJ2CLxYuMW8TUBIL79ZJ11zYKJjXBL9Qa2rljK0rlFPP7QZmZkjnN/TSX73viAmyvKuenGJaxbX83dNavZduu1bNl4G40HGggGI/yrrWciDqqI+PuWEChGAYimVChd4vnp3Sv44Gw7HzkHmF1ko/6dNvTQODu2bSB3up39jSe4cPI4T/2snn1HLtJ8+jx79vya3755LBHDYERSdkBiLbKej8kb9EvKyT00ws5Ha8jKtPPE0/XUfnspT/3mELU/eonHnqznvjsqefzZJg6ddbL9gWrywz4GgiE0W7aRN1GgEc+YhtCkmrExpogYJDZF4nyppnHf6hvo7B1kr3r5Ni9fiK3AwS+fbyLLPg3fqF91Isqep/9ElyfKzhXz6esfRNQNf6atC2MYiUTi8UQEETHECZoAEJNaFsNxhj2ThuYW1lZ+GY9njMYTbVzs7Mduy+LaTJ0tFQ7WLyxk4+oqXnvmERZVfpOO91s52e1GMo3rjEQi0oy0AESEsE249Stl7H3tPbpGI+iqrZWOHL5WnI0jN0OFFN7tcPPYH95i189f4PafvEBBUQHbb1K/EKU1ilAkcQQGP3lqkwXWfas3SMmcOVx0hdECXvJsUVB3gDcUxR+JYFMgq8qv5tnvb+KBe9fSuPu7PLjtQbJtEVaWFiSqF4m33Rrb5DWTSUd3/PEwZbMLKSvKxRPUiYQjaBkaOfZsRTMUtTPc2Unfhf8w0H0JG0HyptkpskeuWLnZnbQATAPUOHTuEvMWV6iKbHgiEAhE1AyiaRrZmqj73k84EFBH5MU90MO06ZnUbFqn7EV5p35E4rqUAIzkInEDw120DIZDGvnqEz1NVS420JR+cMSFZrMxrr6IhHX8Hh8jvU6IwsG/vG64TplGbKswJQARidlYjQ82/Y15s2fg9gXp9wbwjKssEmXgchc+9wjj/hBjbi8u5xChkPqPIPZYjMmLSDy2KU8JwFRa6WV19pFCB/nTc8jJtBEMh1E3LaP+iDrrCKGAH029AeOBMGN+eKm12+qelp8CwFq1SDLa5RvvJLewgJEwRLVMXGOqUpU2qsxE9d3r9dLTO4AUFKNJVtqkVsUUACIqmtXCwt/10MPsO3WR0pkz6fIE8YUidLhCdA6rqseDOC+76XF51LfggsXryqwCYFSR2sjaDdMipP6qNZzrYdbcMjLyC3GpO2HYH6b1sp+zQx7O+Wz8uW3ANE+iqeIpAOkrFkmtC+oRGv75IR+rs27u93PKG6JHvZjXL1nEid6RpKTWjcjUeFcEYHWeygvH2rsYVS9j6+AYh/v87H7z/almFonZAZMaKvVzls88NO3/czftTWokVh0wcHx+89Mi/xcAAP//mnLYxgAAAAZJREFUAwDKRCBu548o7QAAAABJRU5ErkJggg==">
 <style>
   * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
   html, body {
     margin: 0; height: 100%; overflow: hidden;
     font-family: 'Segoe UI', Roboto, 'Helvetica Neue', 'Hiragino Sans', 'Yu Gothic', sans-serif;
-    background: #1e1f24;
-    color: #e6e7ea;
+    background: #1e1f24; color: #e6e7ea;
   }
   .icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
   .icon-sm { width: 16px; height: 16px; }
@@ -19,873 +17,255 @@
   button { font-family: inherit; }
   input { font-family: inherit; }
 
-  #loginScreen {
-    position: fixed; inset: 0;
-    background: linear-gradient(150deg, #2a2d34 0%, #1a1c21 100%);
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 24px;
-    z-index: 100;
-  }
+  #loginScreen { position: fixed; inset: 0; background: linear-gradient(150deg, #2a2d34 0%, #1a1c21 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 24px; z-index: 100; }
   #loginScreen.hidden { display: none; }
-  .login-box {
-    background: #26282e; border-radius: 20px; padding: 40px 50px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    border: 1px solid #383b42;
-    text-align: center; max-width: 420px;
-  }
-  .login-box h1 {
-    margin: 0 0 8px; font-size: 1.8rem; font-weight: 600;
-    color: #fff; letter-spacing: 1px;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-  }
+  .login-box { background: #26282e; border-radius: 20px; padding: 40px 50px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); border: 1px solid #383b42; text-align: center; max-width: 420px; }
+  .login-box h1 { margin: 0 0 8px; font-size: 1.8rem; font-weight: 600; color: #fff; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 10px; }
   .login-box p { color: #8592a3; font-size: 0.9rem; margin: 0 0 28px; }
-  .google-btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: #fff; color: #333; border: none;
-    padding: 12px 24px; border-radius: 40px;
-    font-size: 0.95rem; font-weight: 600;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    transition: all 0.15s; cursor: pointer;
-  }
+  .google-btn { display: inline-flex; align-items: center; gap: 10px; background: #fff; color: #333; border: none; padding: 12px 24px; border-radius: 40px; font-size: 0.95rem; font-weight: 600; box-shadow: 0 6px 20px rgba(0,0,0,0.3); transition: all 0.15s; cursor: pointer; }
   .google-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.4); }
-  .google-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .google-btn:disabled { opacity: 0.6; cursor: not-allowed; }
   .google-btn svg { width: 20px; height: 20px; }
-  .login-error {
-    margin-top: 16px; padding: 10px 14px;
-    background: #3a2222; border: 1px solid #5a2a2a;
-    border-radius: 8px; color: #ff9a8f;
-    font-size: 0.78rem; text-align: left;
-    line-height: 1.5;
-  }
+  .login-error { margin-top: 16px; padding: 10px 14px; background: #3a2222; border: 1px solid #5a2a2a; border-radius: 8px; color: #ff9a8f; font-size: 0.78rem; text-align: left; line-height: 1.5; }
 
-  #homeScreen {
-    position: fixed; inset: 0;
-    background: linear-gradient(150deg, #f4f6fa 0%, #dfe6f0 100%);
-    overflow-y: auto;
-    padding: 40px 24px 80px;
-    color: #2b3440;
-    display: block;
-    z-index: 10;
-  }
+  #homeScreen { position: fixed; inset: 0; background: linear-gradient(150deg, #f4f6fa 0%, #dfe6f0 100%); overflow-y: auto; padding: 40px 24px 80px; color: #2b3440; display: block; z-index: 10; }
   #homeScreen.hidden { display: none; }
   .home-header { max-width: 1100px; margin: 0 auto 40px; text-align: center; }
-  .home-header h1 {
-    font-size: 2rem; font-weight: 600; margin: 0 0 8px;
-    letter-spacing: 1px; color: #2b3440;
-    display: flex; align-items: center; justify-content: center; gap: 12px;
-  }
+  .home-header h1 { font-size: 2rem; font-weight: 600; margin: 0 0 8px; letter-spacing: 1px; color: #2b3440; display: flex; align-items: center; justify-content: center; gap: 12px; }
   .home-header p { color: #6b7686; margin: 0; font-size: 0.9rem; }
-
-  .home-actions {
-    max-width: 1100px; margin: 0 auto 50px;
-    display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
-  }
-  .home-action-btn {
-    width: 220px; height: 200px;
-    background: #ffffff;
-    border: 1.5px solid #d5dde8;
-    border-radius: 20px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 14px; cursor: pointer;
-    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s;
-    box-shadow: 0 6px 18px rgba(30,50,80,0.08);
-    color: #2b3440;
-  }
-  .home-action-btn:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 32px rgba(30,50,80,0.15);
-    border-color: #3a4a5e;
-  }
+  .home-actions { max-width: 1100px; margin: 0 auto 50px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+  .home-action-btn { width: 220px; height: 200px; background: #ffffff; border: 1.5px solid #d5dde8; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; cursor: pointer; transition: all 0.18s ease; box-shadow: 0 6px 18px rgba(30,50,80,0.08); color: #2b3440; }
+  .home-action-btn:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(30,50,80,0.15); border-color: #3a4a5e; }
   .home-action-btn .big-icon { width: 56px; height: 56px; color: #2b3440; }
   .home-action-btn .label { font-size: 1.05rem; font-weight: 600; }
   .home-action-btn .sublabel { font-size: 0.75rem; color: #8592a3; }
-
-  .home-section-title {
-    max-width: 1100px; margin: 0 auto 16px;
-    display: flex; align-items: baseline; gap: 10px;
-    font-size: 1.05rem; font-weight: 600; color: #2b3440; padding-left: 4px;
-  }
+  .home-section-title { max-width: 1100px; margin: 0 auto 16px; display: flex; align-items: baseline; gap: 10px; font-size: 1.05rem; font-weight: 600; color: #2b3440; padding-left: 4px; }
   .home-section-title .count { font-size: 0.85rem; color: #8592a3; font-weight: 400; }
-
-  .gallery {
-    max-width: 1100px; margin: 0 auto;
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-    gap: 18px;
-  }
-  .gallery-item {
-    background: #fff; border-radius: 16px; overflow: hidden;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 12px rgba(30,50,80,0.06);
-    cursor: pointer; transition: all 0.18s ease;
-    position: relative; display: flex; flex-direction: column;
-  }
+  .gallery { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; }
+  .gallery-item { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(30,50,80,0.06); cursor: pointer; transition: all 0.18s ease; position: relative; display: flex; flex-direction: column; }
   .gallery-item:hover { transform: translateY(-4px); box-shadow: 0 12px 26px rgba(30,50,80,0.14); }
   .gallery-thumb { width: 100%; aspect-ratio: 4/3; background: #f4f6fa; object-fit: contain; display: block; }
   .gallery-info { padding: 10px 12px; }
   .gallery-name { font-size: 0.85rem; font-weight: 600; color: #2b3440; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .gallery-date { font-size: 0.68rem; color: #8592a3; margin-top: 2px; }
-  .gallery-delete {
-    position: absolute; top: 8px; right: 8px;
-    width: 28px; height: 28px; border-radius: 50%;
-    background: rgba(255,255,255,0.95);
-    border: 1px solid #e2e8f0; color: #c0392b;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; opacity: 0; transition: opacity 0.15s;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-  }
+  .gallery-delete { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.95); border: 1px solid #e2e8f0; color: #c0392b; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: opacity 0.15s; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
   .gallery-item:hover .gallery-delete { opacity: 1; }
-  .gallery-delete:hover { background: #fff; transform: scale(1.08); }
+  .empty-gallery { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: #8592a3; font-size: 0.9rem; background: rgba(255,255,255,0.6); border-radius: 16px; border: 1px dashed #c8d2df; }
 
-  .empty-gallery {
-    grid-column: 1 / -1; text-align: center; padding: 60px 20px;
-    color: #8592a3; font-size: 0.9rem;
-    background: rgba(255,255,255,0.6);
-    border-radius: 16px; border: 1px dashed #c8d2df;
-  }
-
-  #editorScreen {
-    position: fixed; inset: 0;
-    background: #1e1f24;
-    display: none;
-    flex-direction: column;
-    overflow: hidden;
-  }
+  #editorScreen { position: fixed; inset: 0; background: #1e1f24; display: none; flex-direction: column; overflow: hidden; }
   #editorScreen.active { display: flex; }
-
-  .top-bar {
-    height: 56px;
-    background: #1e1f24;
-    display: flex; align-items: center; padding: 0 14px;
-    gap: 12px;
-    border-bottom: 1px solid #2c2e34;
-    flex-shrink: 0;
-    z-index: 20;
-  }
-  .top-btn {
-    width: 40px; height: 40px; border-radius: 50%;
-    background: transparent; border: none;
-    color: #d0d4dc; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s;
-    flex-shrink: 0;
-  }
+  .top-bar { height: 56px; background: #1e1f24; display: flex; align-items: center; padding: 0 14px; gap: 12px; border-bottom: 1px solid #2c2e34; flex-shrink: 0; z-index: 20; }
+  .top-btn { width: 40px; height: 40px; border-radius: 50%; background: transparent; border: none; color: #d0d4dc; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }
   .top-btn:hover { background: #2c2e34; color: #fff; }
   .top-btn.primary { background: #3b4048; color: #fff; }
   .top-btn.primary:hover { background: #4a505a; }
   .top-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-  .top-title {
-    flex: 1; text-align: center;
-    font-size: 0.85rem; font-weight: 500; color: #b6bcc7;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    cursor: text; padding: 0 10px;
-    min-width: 0;
-  }
-  .top-title:hover { color: #fff; }
+  .top-title { flex: 1; text-align: center; font-size: 0.85rem; font-weight: 500; color: #b6bcc7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: text; padding: 0 10px; min-width: 0; }
   .top-group { display: flex; gap: 6px; align-items: center; flex-shrink: 0; position: relative; }
-  .zoom-display {
-    font-size: 0.75rem; color: #9aa1ad;
-    background: #2c2e34; padding: 5px 10px;
-    border-radius: 20px; font-weight: 600;
-    min-width: 52px; text-align: center;
-    font-variant-numeric: tabular-nums;
-    cursor: pointer;
-    transition: background 0.12s;
-  }
-  .zoom-display:hover { background: #3b4048; color: #fff; }
-
-  .user-avatar {
-    width: 36px; height: 36px; border-radius: 50%;
-    border: 2px solid #454952; cursor: pointer;
-    background: #2b2d33;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden; flex-shrink: 0;
-    transition: border-color 0.15s;
-  }
+  .zoom-display { font-size: 0.75rem; color: #9aa1ad; background: #2c2e34; padding: 5px 10px; border-radius: 20px; font-weight: 600; min-width: 52px; text-align: center; font-variant-numeric: tabular-nums; cursor: pointer; transition: background 0.12s; }
+  .user-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #454952; cursor: pointer; background: #2b2d33; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; transition: border-color 0.15s; }
   .user-avatar:hover { border-color: #5b8def; }
   .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .notif-badge { position: absolute; top: 2px; right: 2px; min-width: 18px; height: 18px; padding: 0 5px; background: #e74c3c; color: #fff; border-radius: 10px; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #1e1f24; pointer-events: none; }
 
-  .notif-badge {
-    position: absolute; top: 2px; right: 2px;
-    min-width: 18px; height: 18px; padding: 0 5px;
-    background: #e74c3c; color: #fff;
-    border-radius: 10px; font-size: 0.65rem; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    border: 2px solid #1e1f24;
-    pointer-events: none;
-  }
-
-  .editor-body {
-    flex: 1; display: flex;
-    overflow: hidden;
-    position: relative;
-    min-height: 0;
-  }
-
-  .left-toolbar {
-    width: 64px;
-    background: #26282e;
-    border-right: 1px solid #2c2e34;
-    display: flex; flex-direction: column; align-items: center;
-    padding: 12px 0;
-    gap: 6px;
-    flex-shrink: 0;
-    overflow-y: auto;
-    z-index: 15;
-  }
-  .tool-btn {
-    width: 46px; height: 46px; border-radius: 12px;
-    background: transparent; border: none;
-    color: #aab0bb; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
-    position: relative;
-    flex-shrink: 0;
-  }
+  .editor-body { flex: 1; display: flex; overflow: hidden; position: relative; min-height: 0; }
+  .left-toolbar { width: 64px; background: #26282e; border-right: 1px solid #2c2e34; display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 6px; flex-shrink: 0; overflow-y: auto; z-index: 15; }
+  .tool-btn { width: 46px; height: 46px; border-radius: 12px; background: transparent; border: none; color: #aab0bb; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; position: relative; flex-shrink: 0; }
   .tool-btn:hover { background: #32353c; color: #fff; }
   .tool-btn.active { background: #3b4048; color: #fff; }
-  .tool-btn.active::before {
-    content: ''; position: absolute; left: -12px; top: 50%;
-    transform: translateY(-50%);
-    width: 3px; height: 22px;
-    background: #5b8def;
-    border-radius: 2px;
-  }
+  .tool-btn.active::before { content: ''; position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 3px; height: 22px; background: #5b8def; border-radius: 2px; }
   .tool-separator { width: 30px; height: 1px; background: #383b42; margin: 6px 0; flex-shrink: 0; }
 
-  .brush-panel {
-    width: 220px;
-    background: #2b2d33;
-    border-right: 1px solid #2c2e34;
-    padding: 14px 12px;
-    flex-shrink: 0;
-    overflow-y: auto;
-    z-index: 14;
-    display: none;
-    flex-direction: column;
-  }
+  .brush-panel { width: 220px; background: #2b2d33; border-right: 1px solid #2c2e34; padding: 14px 12px; flex-shrink: 0; overflow-y: auto; z-index: 14; display: none; flex-direction: column; }
   .brush-panel.show { display: flex; }
-  .panel-section-title {
-    font-size: 0.7rem; font-weight: 600; color: #7e8694;
-    letter-spacing: 1px; text-transform: uppercase;
-    margin: 4px 0 10px;
-  }
-  .brush-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
-  }
-  .brush-item {
-    display: flex; flex-direction: column; align-items: center; gap: 5px;
-    padding: 10px 6px; border-radius: 10px;
-    background: #232529; border: 1px solid transparent;
-    color: #c8cdd6; cursor: pointer;
-    font-size: 0.72rem;
-    transition: all 0.12s;
-  }
+  .panel-section-title { font-size: 0.7rem; font-weight: 600; color: #7e8694; letter-spacing: 1px; text-transform: uppercase; margin: 4px 0 10px; }
+  .brush-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .brush-item { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 6px; border-radius: 10px; background: #232529; border: 1px solid transparent; color: #c8cdd6; cursor: pointer; font-size: 0.72rem; transition: all 0.12s; }
   .brush-item:hover { background: #34373e; color: #fff; }
   .brush-item.active { background: #343b48; border-color: #5b8def; color: #fff; }
-  .brush-item .icon { color: #9aa1ad; }
   .brush-item.active .icon { color: #5b8def; }
 
-  .canvas-area {
-    flex: 1;
-    overflow: hidden;
-    background: #14151a;
-    position: relative;
-    min-width: 0;
-    display: block;
-  }
-  .canvas-viewport {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    overflow: hidden;
-    transform: translateZ(0);
-  }
-  .canvas-transform {
-    position: absolute;
-    top: 0; left: 0;
-    transform-origin: 0 0;
-    will-change: transform;
-  }
-  .canvas-frame {
-    position: relative;
-    background:
-      repeating-conic-gradient(#c8cdd6 0% 25%, #ffffff 0% 50%) 50% / 16px 16px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-    line-height: 0;
-    border-radius: 2px;
-  }
-  #drawCanvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 2px;
-    cursor: crosshair;
-    touch-action: none;
-    background: transparent;
-  }
+  .canvas-area { flex: 1; overflow: hidden; background: #14151a; position: relative; min-width: 0; display: block; }
+  .canvas-viewport { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; transform: translateZ(0); }
+  .canvas-transform { position: absolute; top: 0; left: 0; transform-origin: 0 0; will-change: transform; }
+  .canvas-frame { position: relative; background: repeating-conic-gradient(#c8cdd6 0% 25%, #ffffff 0% 50%) 50% / 16px 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); line-height: 0; border-radius: 2px; }
+  #drawCanvas { display: block; width: 100%; height: 100%; border-radius: 2px; cursor: crosshair; touch-action: none; background: transparent; }
   #drawCanvas.eraser-mode { cursor: cell; }
   #drawCanvas.move-mode { cursor: move; }
   #drawCanvas.eyedropper-mode { cursor: copy; }
   #drawCanvas.fill-mode { cursor: cell; }
 
-  .collab-badge {
-    position: absolute; top: 16px; left: 16px;
-    background: #2b2d33; border: 1px solid #5b8def;
-    padding: 8px 14px; border-radius: 30px;
-    font-size: 0.78rem; color: #fff; font-weight: 500;
-    display: none; align-items: center; gap: 8px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-    z-index: 25;
-  }
+  .collab-badge { position: absolute; top: 16px; left: 16px; background: #2b2d33; border: 1px solid #5b8def; padding: 8px 14px; border-radius: 30px; font-size: 0.78rem; color: #fff; font-weight: 500; display: none; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); z-index: 25; }
   .collab-badge.show { display: flex; }
-  .collab-badge .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #5bdf8d;
-    animation: pulse 1.5s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
+  .collab-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #5bdf8d; animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-  .image-edit-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    pointer-events: none;
-    display: none;
-    z-index: 50;
-  }
+  .image-edit-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; display: none; z-index: 50; }
   .image-edit-overlay.active { display: block; }
-  .image-edit-box {
-    position: absolute;
-    border: 2px dashed #5b8def;
-    pointer-events: auto;
-    cursor: move;
-    box-sizing: border-box;
-  }
-  .image-edit-handle {
-    position: absolute;
-    width: 14px; height: 14px;
-    background: #fff;
-    border: 2px solid #5b8def;
-    border-radius: 50%;
-    pointer-events: auto;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-  }
+  .image-edit-box { position: absolute; border: 2px dashed #5b8def; pointer-events: auto; cursor: move; box-sizing: border-box; }
+  .image-edit-handle { position: absolute; width: 14px; height: 14px; background: #fff; border: 2px solid #5b8def; border-radius: 50%; pointer-events: auto; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
   .image-edit-handle.tl { top: -8px; left: -8px; cursor: nwse-resize; }
   .image-edit-handle.tr { top: -8px; right: -8px; cursor: nesw-resize; }
   .image-edit-handle.bl { bottom: -8px; left: -8px; cursor: nesw-resize; }
   .image-edit-handle.br { bottom: -8px; right: -8px; cursor: nesw-resize; }
-  .image-edit-handle.rotate {
-    top: -36px; left: 50%; transform: translateX(-50%);
-    width: 16px; height: 16px;
-    background: #5b8def; border-color: #fff;
-    cursor: grab;
-    border-radius: 50%;
-  }
-  .image-edit-handle.rotate::after {
-    content: ''; position: absolute;
-    top: 100%; left: 50%; transform: translateX(-50%);
-    width: 2px; height: 22px;
-    background: #5b8def;
-  }
-  .image-edit-toolbar {
-    position: absolute;
-    background: #2b2d33;
-    border: 1px solid #383b42;
-    border-radius: 10px;
-    padding: 6px;
-    display: flex; gap: 4px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-    pointer-events: auto;
-    z-index: 100;
-    transform: translate(-50%, -100%);
-  }
-  .image-edit-toolbar button {
-    width: 34px; height: 34px; border-radius: 6px;
-    background: transparent; border: none;
-    color: #c8cdd6; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.12s;
-  }
+  .image-edit-handle.rotate { top: -36px; left: 50%; transform: translateX(-50%); width: 16px; height: 16px; background: #5b8def; border-color: #fff; cursor: grab; border-radius: 50%; }
+  .image-edit-handle.rotate::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 2px; height: 22px; background: #5b8def; }
+  .image-edit-toolbar { position: absolute; background: #2b2d33; border: 1px solid #383b42; border-radius: 10px; padding: 6px; display: flex; gap: 4px; box-shadow: 0 6px 20px rgba(0,0,0,0.5); pointer-events: auto; z-index: 100; transform: translate(-50%, -100%); }
+  .image-edit-toolbar button { width: 34px; height: 34px; border-radius: 6px; background: transparent; border: none; color: #c8cdd6; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.12s; }
   .image-edit-toolbar button:hover { background: #3b4048; color: #fff; }
   .image-edit-toolbar button.confirm { color: #5bdf8d; }
-  .image-edit-toolbar button.confirm:hover { background: #2a4a34; }
   .image-edit-toolbar button.cancel { color: #ff8b7f; }
-  .image-edit-toolbar button.cancel:hover { background: #4a2a2a; }
 
-  .zoom-controls {
-    position: absolute;
-    bottom: 16px; right: 16px;
-    display: flex; flex-direction: column; gap: 4px;
-    background: #2b2d33;
-    border-radius: 10px;
-    padding: 4px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-    border: 1px solid #383b42;
-    z-index: 20;
-  }
-  .zoom-btn {
-    width: 34px; height: 34px; border-radius: 6px;
-    background: transparent; border: none;
-    color: #c8cdd6; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.12s;
-  }
+  .zoom-controls { position: absolute; bottom: 16px; right: 16px; display: flex; flex-direction: column; gap: 4px; background: #2b2d33; border-radius: 10px; padding: 4px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); border: 1px solid #383b42; z-index: 20; }
+  .zoom-btn { width: 34px; height: 34px; border-radius: 6px; background: transparent; border: none; color: #c8cdd6; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.12s; }
   .zoom-btn:hover { background: #3b4048; color: #fff; }
   .zoom-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
-  .right-panels {
-    width: 280px;
-    background: #26282e;
-    border-left: 1px solid #2c2e34;
-    overflow-y: auto;
-    flex-shrink: 0;
-    padding: 14px;
-    display: flex; flex-direction: column; gap: 14px;
-    z-index: 15;
-  }
-  .panel {
-    background: #2b2d33;
-    border-radius: 12px;
-    border: 1px solid #383b42;
-    padding: 14px;
-    color: #d0d4dc;
-    font-size: 0.82rem;
-  }
-  .panel-title {
-    font-size: 0.72rem; font-weight: 600; color: #9aa1ad;
-    letter-spacing: 0.5px; text-transform: uppercase;
-    margin-bottom: 12px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
+  .right-panels { width: 280px; background: #26282e; border-left: 1px solid #2c2e34; overflow-y: auto; flex-shrink: 0; padding: 14px; display: flex; flex-direction: column; gap: 14px; z-index: 15; }
+  .panel { background: #2b2d33; border-radius: 12px; border: 1px solid #383b42; padding: 14px; color: #d0d4dc; font-size: 0.82rem; }
+  .panel-title { font-size: 0.72rem; font-weight: 600; color: #9aa1ad; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
 
   .color-section { margin-bottom: 14px; }
   .color-main-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-  .color-swatch-big {
-    width: 48px; height: 48px; border-radius: 10px;
-    border: 2px solid #454952;
-    cursor: pointer; position: relative;
-    overflow: hidden; flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-  .color-swatch-big .checker {
-    position: absolute; inset: 0;
-    background: repeating-conic-gradient(#c8c8c8 0% 25%, #ffffff 0% 50%) 50% / 10px 10px;
-    z-index: 0;
-  }
-  .color-swatch-big .fill {
-    position: absolute; inset: 0;
-    z-index: 1;
-  }
-  .color-hex-row {
-    flex: 1;
-    display: flex; align-items: center;
-    background: #1e1f24;
-    border-radius: 8px;
-    border: 1px solid #383b42;
-    padding: 0 10px;
-    height: 40px;
-    min-width: 0;
-  }
-  .color-hex-row .hash {
-    color: #7e8694; font-size: 0.85rem; font-weight: 600; margin-right: 2px;
-  }
-  .color-hex-row input {
-    flex: 1;
-    background: transparent; border: none;
-    color: #e6e7ea; font-size: 0.85rem;
-    font-family: 'Menlo', 'Consolas', monospace;
-    outline: none;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    min-width: 0;
-  }
-  .eyedropper-btn {
-    width: 40px; height: 40px; border-radius: 8px;
-    background: #1e1f24;
-    border: 1px solid #383b42;
-    color: #c8cdd6;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; flex-shrink: 0;
-    transition: all 0.12s;
-  }
+  .color-swatch-big { width: 48px; height: 48px; border-radius: 10px; border: 2px solid #454952; cursor: pointer; position: relative; overflow: hidden; flex-shrink: 0; }
+  .color-swatch-big .checker { position: absolute; inset: 0; background: repeating-conic-gradient(#c8c8c8 0% 25%, #ffffff 0% 50%) 50% / 10px 10px; z-index: 0; }
+  .color-swatch-big .fill { position: absolute; inset: 0; z-index: 1; }
+  .color-hex-row { flex: 1; display: flex; align-items: center; background: #1e1f24; border-radius: 8px; border: 1px solid #383b42; padding: 0 10px; height: 40px; min-width: 0; }
+  .color-hex-row .hash { color: #7e8694; font-size: 0.85rem; font-weight: 600; margin-right: 2px; }
+  .color-hex-row input { flex: 1; background: transparent; border: none; color: #e6e7ea; font-size: 0.85rem; font-family: 'Menlo', 'Consolas', monospace; outline: none; text-transform: uppercase; letter-spacing: 1px; min-width: 0; }
+  .eyedropper-btn { width: 40px; height: 40px; border-radius: 8px; background: #1e1f24; border: 1px solid #383b42; color: #c8cdd6; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: all 0.12s; }
   .eyedropper-btn:hover { background: #34373e; color: #fff; }
-  .eyedropper-btn.active {
-    background: #3b4048; color: #5b8def;
-    border-color: #5b8def;
-    box-shadow: 0 0 0 1px #5b8def;
-  }
 
-  .picker-tabs {
-    display: flex; gap: 4px; margin-bottom: 10px;
-    background: #1e1f24; padding: 3px; border-radius: 8px;
-  }
-  .picker-tab {
-    flex: 1; padding: 6px 8px; border-radius: 6px;
-    background: transparent; border: none;
-    color: #8592a3; cursor: pointer;
-    font-size: 0.72rem; font-weight: 600;
-    transition: all 0.12s;
-  }
-  .picker-tab:hover { color: #d0d4dc; }
+  .picker-tabs { display: flex; gap: 4px; margin-bottom: 10px; background: #1e1f24; padding: 3px; border-radius: 8px; }
+  .picker-tab { flex: 1; padding: 6px 8px; border-radius: 6px; background: transparent; border: none; color: #8592a3; cursor: pointer; font-size: 0.72rem; font-weight: 600; transition: all 0.12s; }
   .picker-tab.active { background: #3b4048; color: #fff; }
-
   .picker-panel { display: none; }
   .picker-panel.active { display: block; }
-
-  .chan-row {
-    display: flex; align-items: center; gap: 8px;
-    margin-bottom: 8px;
-  }
-  .chan-label {
-    width: 22px; font-size: 0.72rem; font-weight: 700;
-    color: #9aa1ad; text-align: center;
-  }
-  .chan-row input[type="range"] {
-    flex: 1;
-    -webkit-appearance: none; appearance: none;
-    height: 6px; border-radius: 3px;
-    outline: none; cursor: pointer;
-  }
-  .chan-row input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; appearance: none;
-    width: 14px; height: 14px; border-radius: 50%;
-    background: #fff;
-    border: 2px solid #2b2d33;
-    box-shadow: 0 0 0 1px #fff, 0 2px 6px rgba(0,0,0,0.4);
-    cursor: pointer;
-  }
-  .chan-value {
-    width: 36px; font-size: 0.72rem;
-    color: #e6e7ea; text-align: right;
-    font-family: 'Menlo', 'Consolas', monospace;
-  }
-
+  .chan-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .chan-label { width: 22px; font-size: 0.72rem; font-weight: 700; color: #9aa1ad; text-align: center; }
+  .chan-row input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; outline: none; cursor: pointer; }
+  .chan-row input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid #2b2d33; box-shadow: 0 0 0 1px #fff, 0 2px 6px rgba(0,0,0,0.4); cursor: pointer; }
+  .chan-value { width: 36px; font-size: 0.72rem; color: #e6e7ea; text-align: right; font-family: 'Menlo', 'Consolas', monospace; }
   #sliderR { background: linear-gradient(to right, #000, #ff0000); }
   #sliderG { background: linear-gradient(to right, #000, #00ff00); }
   #sliderB { background: linear-gradient(to right, #000, #0000ff); }
   #sliderH { background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%); }
   #sliderS { background: linear-gradient(to right, hsl(0,0%,50%), hsl(0,100%,50%)); }
   #sliderL { background: linear-gradient(to right, #000, #888, #fff); }
-
-  .preset-title {
-    font-size: 0.68rem; font-weight: 600; color: #7e8694;
-    letter-spacing: 0.5px; text-transform: uppercase;
-    margin: 12px 0 8px;
-  }
-  .color-presets {
-    display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px;
-  }
-  .color-preset {
-    aspect-ratio: 1; border-radius: 6px;
-    border: 2px solid transparent;
-    cursor: pointer; padding: 0;
-    box-shadow: 0 0 0 1px #454952;
-    transition: transform 0.1s;
-    position: relative;
-    overflow: hidden;
-  }
-  .color-preset:hover { transform: scale(1.12); }
+  .preset-title { font-size: 0.68rem; font-weight: 600; color: #7e8694; letter-spacing: 0.5px; text-transform: uppercase; margin: 12px 0 8px; }
+  .color-presets { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; }
+  .color-preset { aspect-ratio: 1; border-radius: 6px; border: 2px solid transparent; cursor: pointer; padding: 0; box-shadow: 0 0 0 1px #454952; transition: transform 0.1s; position: relative; overflow: hidden; }
   .color-preset.active { border-color: #fff; transform: scale(1.12); }
-  .color-preset .checker {
-    position: absolute; inset: 0;
-    background: repeating-conic-gradient(#c8c8c8 0% 25%, #ffffff 0% 50%) 50% / 6px 6px;
-    z-index: 0;
-  }
+  .color-preset .checker { position: absolute; inset: 0; background: repeating-conic-gradient(#c8c8c8 0% 25%, #ffffff 0% 50%) 50% / 6px 6px; z-index: 0; }
   .color-preset .fill { position: absolute; inset: 0; z-index: 1; }
 
   .slider-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .slider-row:last-child { margin-bottom: 0; }
   .slider-label { width: 46px; font-size: 0.75rem; color: #b6bcc7; flex-shrink: 0; }
-  .slider-row input[type="range"] {
-    flex: 1;
-    -webkit-appearance: none; appearance: none;
-    height: 3px; border-radius: 3px;
-    background: #4a4e57;
-    outline: none;
-    cursor: pointer;
-  }
-  .slider-row input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; appearance: none;
-    width: 14px; height: 14px; border-radius: 50%;
-    background: #5b8def;
-    border: 2px solid #2b2d33;
-    box-shadow: 0 0 0 1px #5b8def;
-    cursor: pointer;
-  }
-  .size-preview {
-    width: 44px; height: 36px;
-    background: #1e1f24;
-    border-radius: 6px;
-    border: 1px solid #383b42;
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-  }
-  #sizePreviewCanvas, #opacityPreviewCanvas { display: block; }
+  .slider-row input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 3px; border-radius: 3px; background: #4a4e57; outline: none; cursor: pointer; }
+  .slider-row input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #5b8def; border: 2px solid #2b2d33; box-shadow: 0 0 0 1px #5b8def; cursor: pointer; }
+  .size-preview { width: 44px; height: 36px; background: #1e1f24; border-radius: 6px; border: 1px solid #383b42; flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .tolerance-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
 
-  .tolerance-row {
-    display: flex; align-items: center; gap: 10px;
-    margin-top: 10px;
-  }
-
-  .layer-list {
-    display: flex; flex-direction: column; gap: 5px;
-    max-height: 260px; overflow-y: auto;
-    margin-bottom: 10px;
-    padding-right: 2px;
-  }
-  .layer-item {
-    display: flex; align-items: center; gap: 8px;
-    padding: 7px 8px; border-radius: 8px;
-    background: #232529;
-    border: 1px solid transparent;
-    cursor: pointer; transition: all 0.12s;
-    touch-action: none;
-    position: relative;
-  }
-  .layer-item:hover { background: #2f323a; }
+  .layer-list { display: flex; flex-direction: column; gap: 5px; max-height: 260px; overflow-y: auto; margin-bottom: 10px; padding-right: 2px; }
+  .layer-item { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 8px; background: #232529; border: 1px solid transparent; cursor: pointer; transition: all 0.12s; touch-action: none; position: relative; }
   .layer-item.selected { background: #343b48; border-color: #5b8def; }
-  .layer-thumb {
-    width: 34px; height: 28px; border-radius: 4px;
-    background:
-      repeating-conic-gradient(#c8cdd6 0% 25%, #ffffff 0% 50%) 50% / 6px 6px;
-    object-fit: contain; flex-shrink: 0;
-    box-shadow: 0 0 0 1px #454952;
-    pointer-events: none;
-  }
+  .layer-thumb { width: 34px; height: 28px; border-radius: 4px; background: repeating-conic-gradient(#c8cdd6 0% 25%, #ffffff 0% 50%) 50% / 6px 6px; object-fit: contain; flex-shrink: 0; box-shadow: 0 0 0 1px #454952; pointer-events: none; }
   .layer-info { flex: 1; min-width: 0; pointer-events: none; }
-  .layer-name {
-    font-size: 0.78rem; color: #e6e7ea; font-weight: 500;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .layer-item.selected .layer-name { color: #fff; }
+  .layer-name { font-size: 0.78rem; color: #e6e7ea; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .layer-meta { font-size: 0.65rem; color: #7e8694; margin-top: 1px; }
   .layer-actions { display: flex; gap: 2px; flex-shrink: 0; }
-  .mini-btn {
-    width: 24px; height: 24px; border-radius: 6px;
-    background: transparent; border: none;
-    color: #9aa1ad; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.12s;
-  }
+  .mini-btn { width: 24px; height: 24px; border-radius: 6px; background: transparent; border: none; color: #9aa1ad; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.12s; }
   .mini-btn:hover { background: #3b4048; color: #fff; }
   .mini-btn.danger:hover { background: #4a2a2a; color: #ff8b7f; }
   .mini-btn.visibility.off { opacity: 0.4; }
-
-  .layer-item.dragging { opacity: 0.35; }
-  .layer-item.drop-target {
-    border-color: #5b8def;
-    background: #2f3d52;
-    box-shadow: 0 0 0 2px #5b8def inset;
-  }
-  .layer-item.insert-above::before,
-  .layer-item.insert-below::after {
-    content: ''; position: absolute; left: 4px; right: 4px;
-    height: 2px; background: #5b8def;
-    border-radius: 2px;
-    box-shadow: 0 0 6px #5b8def;
-  }
+  .layer-item.insert-above::before, .layer-item.insert-below::after { content: ''; position: absolute; left: 4px; right: 4px; height: 2px; background: #5b8def; border-radius: 2px; box-shadow: 0 0 6px #5b8def; }
   .layer-item.insert-above::before { top: -3px; }
   .layer-item.insert-below::after { bottom: -3px; }
 
   .layer-controls { display: flex; gap: 6px; }
-  .layer-controls button {
-    flex: 1; height: 32px; border-radius: 8px;
-    background: #232529; border: 1px solid #383b42;
-    color: #d0d4dc; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 5px;
-    font-size: 0.72rem; font-weight: 500;
-    transition: all 0.12s;
-  }
+  .layer-controls button { flex: 1; height: 32px; border-radius: 8px; background: #232529; border: 1px solid #383b42; color: #d0d4dc; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.72rem; font-weight: 500; transition: all 0.12s; }
   .layer-controls button:hover { background: #34373e; border-color: #4a4e57; color: #fff; }
 
   .friend-list { display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto; }
-  .friend-item {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px; border-radius: 8px;
-    background: #232529; border: 1px solid #383b42;
-  }
-  .friend-item img {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: #1e1f24; flex-shrink: 0;
-  }
+  .friend-item { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 8px; background: #232529; border: 1px solid #383b42; }
+  .friend-item img { width: 32px; height: 32px; border-radius: 50%; background: #1e1f24; flex-shrink: 0; }
   .friend-item .friend-info { flex: 1; min-width: 0; }
-  .friend-item .name {
-    font-size: 0.8rem; color: #e6e7ea; font-weight: 500;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
+  .friend-item .name { font-size: 0.8rem; color: #e6e7ea; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .friend-item .email { font-size: 0.65rem; color: #7e8694; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .friend-item button {
-    background: #3b4048; border: none; color: #fff;
-    padding: 5px 12px; border-radius: 6px;
-    font-size: 0.7rem; font-weight: 600;
-    transition: background 0.12s; cursor: pointer;
-    flex-shrink: 0;
-  }
+  .friend-item button { background: #3b4048; border: none; color: #fff; padding: 5px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; cursor: pointer; flex-shrink: 0; }
   .friend-item button:hover { background: #5b8def; }
   .friend-item button.accept { background: #2a7a4a; }
-  .friend-item button.accept:hover { background: #3a9a5f; }
   .friend-empty { text-align: center; color: #7e8694; font-size: 0.78rem; padding: 16px 8px; }
 
   .add-friend-row { display: flex; gap: 6px; margin-top: 10px; }
-  .add-friend-row input {
-    flex: 1; background: #1e1f24; border: 1px solid #383b42;
-    color: #e6e7ea; padding: 8px 12px; border-radius: 8px;
-    font-size: 0.78rem; outline: none; min-width: 0;
-  }
-  .add-friend-row input:focus { border-color: #5b8def; }
-  .add-friend-row button {
-    background: #5b8def; border: none; color: #fff;
-    padding: 8px 14px; border-radius: 8px;
-    font-size: 0.78rem; font-weight: 600;
-    cursor: pointer; transition: background 0.12s;
-  }
-  .add-friend-row button:hover { background: #4a7bd6; }
+  .add-friend-row input { flex: 1; background: #1e1f24; border: 1px solid #383b42; color: #e6e7ea; padding: 8px 12px; border-radius: 8px; font-size: 0.78rem; outline: none; min-width: 0; }
+  .add-friend-row button { background: #5b8def; border: none; color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
   .add-friend-msg { font-size: 0.72rem; color: #8592a3; margin-top: 8px; min-height: 1em; }
   .add-friend-msg.error { color: #ff8b7f; }
   .add-friend-msg.success { color: #5bdf8d; }
 
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.75);
-    display: none; align-items: center; justify-content: center;
-    z-index: 1000;
-    backdrop-filter: blur(4px);
-  }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(4px); }
   .modal-overlay.show { display: flex; }
-  .modal {
-    background: #2b2d33; border-radius: 16px;
-    border: 1px solid #383b42; padding: 24px;
-    min-width: 320px; max-width: 90vw;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-    max-height: 80vh; overflow-y: auto;
-  }
+  .modal { background: #2b2d33; border-radius: 16px; border: 1px solid #383b42; padding: 24px; min-width: 320px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0,0,0,0.7); max-height: 80vh; overflow-y: auto; }
   .modal h3 { margin: 0 0 8px; font-size: 1.05rem; color: #fff; }
   .modal p { margin: 0 0 20px; color: #b6bcc7; font-size: 0.85rem; }
   .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
-  .modal-btn {
-    padding: 8px 20px; border-radius: 8px;
-    border: none; font-size: 0.85rem; font-weight: 600;
-    transition: all 0.12s; cursor: pointer;
-  }
+  .modal-btn { padding: 8px 20px; border-radius: 8px; border: none; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
   .modal-btn.primary { background: #5b8def; color: #fff; }
-  .modal-btn.primary:hover { background: #4a7bd6; }
   .modal-btn.secondary { background: #383b42; color: #d0d4dc; }
-  .modal-btn.secondary:hover { background: #4a4e57; }
   .modal-btn.danger { background: #e74c3c; color: #fff; }
-  .modal-btn.danger:hover { background: #c0392b; }
 
-  .toast {
-    position: fixed; bottom: 20px; left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: #2b2d33; color: #fff;
-    padding: 12px 24px; border-radius: 30px;
-    font-size: 0.82rem; font-weight: 500;
-    border: 1px solid #383b42;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s, transform 0.3s;
-    z-index: 2000;
-    max-width: 90vw;
-    text-align: center;
-  }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(20px); background: #2b2d33; color: #fff; padding: 12px 24px; border-radius: 30px; font-size: 0.82rem; font-weight: 500; border: 1px solid #383b42; box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s; z-index: 2000; max-width: 90vw; text-align: center; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .toast.success { border-color: #5bdf8d; }
   .toast.error { border-color: #ff8b7f; }
 
-  #loadingIndicator {
-    position: fixed; inset: 0;
-    background: rgba(20,21,26,0.85);
-    backdrop-filter: blur(4px);
-    display: none; align-items: center; justify-content: center;
-    z-index: 3000; flex-direction: column; gap: 16px;
-    color: #d0d4dc;
-  }
+  #loadingIndicator { position: fixed; inset: 0; background: rgba(20,21,26,0.85); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 3000; flex-direction: column; gap: 16px; color: #d0d4dc; }
   #loadingIndicator.show { display: flex; }
-  .spinner {
-    width: 44px; height: 44px;
-    border: 3px solid #383b42;
-    border-top-color: #5b8def;
-    border-radius: 50%;
-    animation: spin 0.9s linear infinite;
-  }
+  .spinner { width: 44px; height: 44px; border: 3px solid #383b42; border-top-color: #5b8def; border-radius: 50%; animation: spin 0.9s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  @media (max-width: 900px) {
-    .brush-panel { display: none !important; }
-    .right-panels { width: 240px; }
-  }
-  @media (max-width: 700px) {
-    .right-panels { display: none; }
-  }
-
-  .layer-list::-webkit-scrollbar,
-  .right-panels::-webkit-scrollbar,
-  .friend-list::-webkit-scrollbar { width: 8px; }
-  .layer-list::-webkit-scrollbar-thumb,
-  .right-panels::-webkit-scrollbar-thumb,
-  .friend-list::-webkit-scrollbar-thumb { background: #454952; border-radius: 8px; }
+  @media (max-width: 900px) { .brush-panel { display: none !important; } .right-panels { width: 240px; } }
+  @media (max-width: 700px) { .right-panels { display: none; } }
+  .layer-list::-webkit-scrollbar, .right-panels::-webkit-scrollbar, .friend-list::-webkit-scrollbar { width: 8px; }
+  .layer-list::-webkit-scrollbar-thumb, .right-panels::-webkit-scrollbar-thumb, .friend-list::-webkit-scrollbar-thumb { background: #454952; border-radius: 8px; }
 </style>
 </head>
 <body>
 
-<!-- ログイン画面 -->
 <div id="loginScreen">
   <div class="login-box">
-    <h1>
-      <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
-      どんぐりペイント
-    </h1>
+    <h1>どんぐりペイント</h1>
     <p>友達と一緒に絵を描こう</p>
     <button class="google-btn" id="googleLoginBtn">
-      <svg viewBox="0 0 48 48">
-        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-      </svg>
+      <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
       Googleでログイン
     </button>
     <div id="loginError" class="login-error" style="display:none;"></div>
   </div>
 </div>
 
-<!-- ホーム画面 -->
 <div id="homeScreen" class="hidden">
   <div class="home-header">
-    <h1>
-      <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
-      どんぐりペイント
-    </h1>
+    <h1>どんぐりペイント</h1>
     <p>あなたの作品を描いて、保存して、いつでも続きから</p>
   </div>
   <div class="home-actions">
     <div class="home-action-btn" id="newArtBtn">
-      <svg class="big-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-      </svg>
+      <svg class="big-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       <div class="label">作成＋</div>
       <div class="sublabel">白紙から新しく描く</div>
     </div>
     <div class="home-action-btn" id="imageStartBtn">
-      <svg class="big-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="18" height="18" rx="2"/>
-        <circle cx="8.5" cy="8.5" r="1.5"/>
-        <path d="M21 15l-5-5L5 21"/>
-      </svg>
+      <svg class="big-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
       <div class="label">画像から始める</div>
       <div class="sublabel">画像を読み込んで編集</div>
     </div>
   </div>
-  <div class="home-section-title">
-    <span>自分の作品</span>
-    <span class="count" id="galleryCount"></span>
-  </div>
+  <div class="home-section-title"><span>自分の作品</span><span class="count" id="galleryCount"></span></div>
   <div class="gallery" id="gallery"></div>
 </div>
 
-<!-- エディタ画面 -->
 <div id="editorScreen">
   <div class="top-bar">
     <button class="top-btn" id="backHomeBtn" title="作品一覧へ">
@@ -912,98 +292,45 @@
       <button class="top-btn" id="saveBtn" title="PNG保存">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       </button>
-      <div class="user-avatar" id="userAvatar" title="アカウント">
-        <img id="userAvatarImg" src="" alt="">
-      </div>
+      <div class="user-avatar" id="userAvatar" title="アカウント"><img id="userAvatarImg" src="" alt=""></div>
     </div>
   </div>
 
   <div class="editor-body">
     <div class="left-toolbar">
       <button class="tool-btn active" id="brushToggleBtn" title="ブラシ">
-        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 114.03 4.03l-8.06 8.08"/>
-          <path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 00-3-3.02z"/>
-        </svg>
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 114.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 00-3-3.02z"/></svg>
       </button>
-      <button class="tool-btn" id="fillToggle" title="塗りつぶし（バケツ）">
-        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 11l-8-8-8.5 8.5a2 2 0 000 2.8l5.2 5.2a2 2 0 002.8 0L19 11z"/>
-          <path d="M5 2l3 3"/>
-          <path d="M2 13h15"/>
-          <path d="M20 15c-1.5 2-2 3-2 4a2 2 0 104 0c0-1-.5-2-2-4z"/>
-        </svg>
+      <button class="tool-btn" id="fillToggle" title="塗りつぶし">
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 11l-8-8-8.5 8.5a2 2 0 000 2.8l5.2 5.2a2 2 0 002.8 0L19 11z"/><path d="M5 2l3 3"/><path d="M2 13h15"/><path d="M20 15c-1.5 2-2 3-2 4a2 2 0 104 0c0-1-.5-2-2-4z"/></svg>
       </button>
       <button class="tool-btn" id="eraserToggle" title="消しゴム">
-        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 20H7L3 16a2 2 0 010-3L13 3a2 2 0 013 0l5 5a2 2 0 010 3l-9 9"/>
-          <line x1="8" y1="12" x2="14" y2="18"/>
-        </svg>
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H7L3 16a2 2 0 010-3L13 3a2 2 0 013 0l5 5a2 2 0 010 3l-9 9"/><line x1="8" y1="12" x2="14" y2="18"/></svg>
       </button>
       <button class="tool-btn" id="eyedropperToolBtn" title="スポイト">
-        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M11 12l-7 7-1 3 3-1 7-7"/>
-          <path d="M13 10l4-4a2.83 2.83 0 114 4l-4 4"/>
-          <path d="M11 12l1-1"/>
-          <path d="M14 7l3 3"/>
-        </svg>
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 12l-7 7-1 3 3-1 7-7"/><path d="M13 10l4-4a2.83 2.83 0 114 4l-4 4"/><path d="M11 12l1-1"/><path d="M14 7l3 3"/></svg>
       </button>
       <button class="tool-btn" id="moveToggle" title="移動">
-        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/>
-          <polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/>
-          <line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/>
-        </svg>
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/></svg>
       </button>
       <div class="tool-separator"></div>
       <button class="tool-btn" id="uploadBtn" title="画像を追加">
-        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2"/>
-          <circle cx="8.5" cy="8.5" r="1.5"/>
-          <path d="M21 15l-5-5L5 21"/>
-        </svg>
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
       </button>
       <button class="tool-btn" id="clearBtn" title="レイヤーを消去">
-        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="3 6 5 6 21 6"/>
-          <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
-          <path d="M10 11v6M14 11v6"/>
-        </svg>
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
       </button>
     </div>
 
     <div class="brush-panel show" id="brushPanel">
       <div class="panel-section-title">ブラシ</div>
       <div class="brush-grid">
-        <button class="brush-item active" data-brush="pen">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
-          ペン
-        </button>
-        <button class="brush-item" data-brush="pencil">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.85 0 114 4L7.5 20.5 2 22l1.5-5.5z"/><line x1="15" y1="5" x2="19" y2="9"/></svg>
-          鉛筆
-        </button>
-        <button class="brush-item" data-brush="marker">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 11l-5 5v4h4l5-5"/><path d="M13 7l4 4"/><path d="M15 5l4 4a2 2 0 010 3l-3 3-7-7 3-3a2 2 0 013 0z"/>
-          </svg>
-          マーカー
-        </button>
-        <button class="brush-item" data-brush="chalk">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="8" rx="2" transform="rotate(-20 12 14)"/></svg>
-          チョーク
-        </button>
-        <button class="brush-item" data-brush="blur">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7" opacity="0.6"/><circle cx="12" cy="12" r="10" opacity="0.3"/></svg>
-          ぼかし
-        </button>
-        <button class="brush-item" data-brush="spray">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="9" r="1"/><circle cx="15" cy="7" r="1"/><circle cx="17" cy="13" r="1"/>
-            <circle cx="13" cy="15" r="1"/><circle cx="7" cy="14" r="1"/><circle cx="11" cy="11" r="1"/>
-          </svg>
-          スプレー
-        </button>
+        <button class="brush-item active" data-brush="pen"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>ペン</button>
+        <button class="brush-item" data-brush="pencil"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 3a2.85 2.85 0 114 4L7.5 20.5 2 22l1.5-5.5z"/><line x1="15" y1="5" x2="19" y2="9"/></svg>鉛筆</button>
+        <button class="brush-item" data-brush="marker"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l-5 5v4h4l5-5"/><path d="M13 7l4 4"/><path d="M15 5l4 4a2 2 0 010 3l-3 3-7-7 3-3a2 2 0 013 0z"/></svg>マーカー</button>
+        <button class="brush-item" data-brush="chalk"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="10" width="18" height="8" rx="2" transform="rotate(-20 12 14)"/></svg>チョーク</button>
+        <button class="brush-item" data-brush="blur"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7" opacity="0.6"/><circle cx="12" cy="12" r="10" opacity="0.3"/></svg>ぼかし</button>
+        <button class="brush-item" data-brush="spray"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="1"/><circle cx="15" cy="7" r="1"/><circle cx="17" cy="13" r="1"/><circle cx="13" cy="15" r="1"/><circle cx="7" cy="14" r="1"/><circle cx="11" cy="11" r="1"/></svg>スプレー</button>
       </div>
     </div>
 
@@ -1030,31 +357,16 @@
           <div class="image-edit-handle rotate" data-handle="rotate"></div>
         </div>
         <div class="image-edit-toolbar" id="imageEditToolbar">
-          <button id="imgConfirmBtn" title="確定" class="confirm">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </button>
-          <button id="imgResetBtn" title="リセット">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-          </button>
-          <button id="imgCancelBtn" title="キャンセル" class="cancel">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
+          <button id="imgConfirmBtn" class="confirm"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg></button>
+          <button id="imgResetBtn"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></button>
+          <button id="imgCancelBtn" class="cancel"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
       </div>
 
       <div class="zoom-controls">
-        <button class="zoom-btn" id="zoomInBtn" title="拡大">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        </button>
-        <button class="zoom-btn" id="zoomOutBtn" title="縮小">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        </button>
-        <button class="zoom-btn" id="zoomResetBtn" title="100%に戻す">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4" y="4" width="16" height="16" rx="2"/>
-            <rect x="9" y="9" width="6" height="6" rx="1"/>
-          </svg>
-        </button>
+        <button class="zoom-btn" id="zoomInBtn" title="拡大"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <button class="zoom-btn" id="zoomOutBtn" title="縮小"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <button class="zoom-btn" id="zoomResetBtn" title="100%に戻す"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg></button>
       </div>
     </div>
 
@@ -1063,22 +375,9 @@
         <div class="panel-title">カラー</div>
         <div class="color-section">
           <div class="color-main-row">
-            <div class="color-swatch-big" id="colorSwatchBig">
-              <div class="checker"></div>
-              <div class="fill" id="colorSwatchFill" style="background:#1e2b3c"></div>
-            </div>
-            <div class="color-hex-row">
-              <span class="hash">#</span>
-              <input type="text" id="hexInput" maxlength="6" value="1E2B3C" spellcheck="false">
-            </div>
-            <button class="eyedropper-btn" id="eyedropperBtn" title="スポイト">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M11 12l-7 7-1 3 3-1 7-7"/>
-                <path d="M13 10l4-4a2.83 2.83 0 114 4l-4 4"/>
-                <path d="M11 12l1-1"/>
-                <path d="M14 7l3 3"/>
-              </svg>
-            </button>
+            <div class="color-swatch-big" id="colorSwatchBig"><div class="checker"></div><div class="fill" id="colorSwatchFill" style="background:#1e2b3c"></div></div>
+            <div class="color-hex-row"><span class="hash">#</span><input type="text" id="hexInput" maxlength="6" value="1E2B3C" spellcheck="false"></div>
+            <button class="eyedropper-btn" id="eyedropperBtn" title="スポイト"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 12l-7 7-1 3 3-1 7-7"/><path d="M13 10l4-4a2.83 2.83 0 114 4l-4 4"/></svg></button>
           </div>
           <div class="picker-tabs">
             <button class="picker-tab active" data-tab="rgb">RGB</button>
@@ -1098,100 +397,37 @@
           <div class="color-presets" id="colorPresets"></div>
         </div>
         <div class="panel-title" style="margin-top:14px;">ブラシ設定</div>
-        <div class="slider-row">
-          <div class="slider-label">サイズ</div>
-          <input type="range" id="sizeSlider" min="1" max="120" value="10" step="1">
-          <div class="size-preview"><canvas id="sizePreviewCanvas" width="44" height="36"></canvas></div>
-        </div>
-        <div class="slider-row">
-          <div class="slider-label">不透明度</div>
-          <input type="range" id="opacitySlider" min="1" max="100" value="100" step="1">
-          <div class="size-preview"><canvas id="opacityPreviewCanvas" width="44" height="36"></canvas></div>
-        </div>
-        <div class="slider-row tolerance-row" id="toleranceRow" style="display:none;">
-          <div class="slider-label">許容値</div>
-          <input type="range" id="toleranceSlider" min="0" max="100" value="32" step="1">
-          <div class="chan-value" id="toleranceValue">32</div>
-        </div>
+        <div class="slider-row"><div class="slider-label">サイズ</div><input type="range" id="sizeSlider" min="1" max="120" value="10"><div class="size-preview"><canvas id="sizePreviewCanvas" width="44" height="36"></canvas></div></div>
+        <div class="slider-row"><div class="slider-label">不透明度</div><input type="range" id="opacitySlider" min="1" max="100" value="100"><div class="size-preview"><canvas id="opacityPreviewCanvas" width="44" height="36"></canvas></div></div>
+        <div class="slider-row tolerance-row" id="toleranceRow" style="display:none;"><div class="slider-label">許容値</div><input type="range" id="toleranceSlider" min="0" max="100" value="32"><div class="chan-value" id="toleranceValue">32</div></div>
       </div>
 
       <div class="panel" id="friendsPanel">
-        <div class="panel-title">
-          <span>友達</span>
-          <span id="friendCount" style="font-size:0.7rem; color:#7e8694; text-transform:none;">0人</span>
-        </div>
+        <div class="panel-title"><span>友達</span><span id="friendCount" style="font-size:0.7rem; color:#7e8694; text-transform:none;">0人</span></div>
         <div class="friend-list" id="friendList"></div>
-        <div class="add-friend-row">
-          <input type="email" id="friendEmailInput" placeholder="メールアドレス">
-          <button id="addFriendBtn">追加</button>
-        </div>
+        <div class="add-friend-row"><input type="email" id="friendEmailInput" placeholder="メールアドレス"><button id="addFriendBtn">追加</button></div>
         <div class="add-friend-msg" id="addFriendMsg"></div>
       </div>
 
-      <div class="panel" id="requestsPanel" style="display:none;">
-        <div class="panel-title">友達リクエスト</div>
-        <div class="friend-list" id="requestList"></div>
-      </div>
+      <div class="panel" id="requestsPanel" style="display:none;"><div class="panel-title">友達リクエスト</div><div class="friend-list" id="requestList"></div></div>
 
       <div class="panel" style="padding-bottom:10px;">
-        <div class="panel-title">
-          <span>レイヤー</span>
-          <span id="layerCount" style="font-size:0.7rem; color:#7e8694; text-transform:none; letter-spacing:0;">1 枚</span>
-        </div>
+        <div class="panel-title"><span>レイヤー</span><span id="layerCount" style="font-size:0.7rem; color:#7e8694; text-transform:none;">1 枚</span></div>
         <div class="layer-list" id="layerList"></div>
         <div class="layer-controls">
-          <button id="addLayerBtn" title="レイヤーを追加">
-            <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            追加
-          </button>
-          <button id="dupLayerBtn" title="複製">
-            <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-            複製
-          </button>
-          <button id="mergeDownBtn" title="下のレイヤーと結合">
-            <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/><line x1="5" y1="21" x2="19" y2="21"/></svg>
-            結合
-          </button>
+          <button id="addLayerBtn"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>追加</button>
+          <button id="dupLayerBtn"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>複製</button>
+          <button id="mergeDownBtn"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/><line x1="5" y1="21" x2="19" y2="21"/></svg>結合</button>
         </div>
       </div>
     </div>
   </div>
-
   <input type="file" id="fileInput" accept="image/*" style="display:none">
 </div>
 
-<div class="modal-overlay" id="inviteModal">
-  <div class="modal">
-    <h3>友達を招待</h3>
-    <p>一緒に描く友達を選んでください</p>
-    <div class="friend-list" id="inviteFriendList"></div>
-    <div class="modal-actions" style="margin-top:16px;">
-      <button class="modal-btn secondary" id="inviteCancelBtn">キャンセル</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="incomingInviteModal">
-  <div class="modal">
-    <h3>招待が届きました</h3>
-    <p id="incomingInviteBody"></p>
-    <div class="modal-actions">
-      <button class="modal-btn secondary" id="inviteDeclineBtn">無視</button>
-      <button class="modal-btn primary" id="inviteAcceptBtn">参加</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="logoutModal">
-  <div class="modal">
-    <h3>ログアウト</h3>
-    <p>ログアウトしますか？</p>
-    <div class="modal-actions">
-      <button class="modal-btn secondary" id="logoutCancelBtn">キャンセル</button>
-      <button class="modal-btn danger" id="logoutConfirmBtn">ログアウト</button>
-    </div>
-  </div>
-</div>
+<div class="modal-overlay" id="inviteModal"><div class="modal"><h3>友達を招待</h3><p>一緒に描く友達を選んでください</p><div class="friend-list" id="inviteFriendList"></div><div class="modal-actions" style="margin-top:16px;"><button class="modal-btn secondary" id="inviteCancelBtn">キャンセル</button></div></div></div>
+<div class="modal-overlay" id="incomingInviteModal"><div class="modal"><h3>招待が届きました</h3><p id="incomingInviteBody"></p><div class="modal-actions"><button class="modal-btn secondary" id="inviteDeclineBtn">無視</button><button class="modal-btn primary" id="inviteAcceptBtn">参加</button></div></div></div>
+<div class="modal-overlay" id="logoutModal"><div class="modal"><h3>ログアウト</h3><p>ログアウトしますか？</p><div class="modal-actions"><button class="modal-btn secondary" id="logoutCancelBtn">キャンセル</button><button class="modal-btn danger" id="logoutConfirmBtn">ログアウト</button></div></div></div>
 
 <div class="toast" id="toast"></div>
 <div id="loadingIndicator"><div class="spinner"></div><div>処理中...</div></div>
@@ -1220,6 +456,7 @@ const db = getDatabase(app);
 
 const STORAGE_KEY_INDEX = 'drawingApp_works_index_v10';
 const STORAGE_KEY_WORK_PREFIX = 'drawingApp_work_v10_';
+// ★ 論理キャンバスサイズ（全員共通の座標系）
 const BASE_W = 900, BASE_H = 675;
 
 const $ = (id) => document.getElementById(id);
@@ -1320,19 +557,23 @@ const logoutModal = $('logoutModal');
 const logoutCancelBtn = $('logoutCancelBtn');
 const logoutConfirmBtn = $('logoutConfirmBtn');
 
+// ===== 状態 =====
 let currentUser = null;
 let layers = [];
 let activeLayerId = null;
 let layerCounter = 0;
-let W = BASE_W, H = BASE_H;
+// 内部解像度（DPR倍のピクセル数）と論理座標の関係を明確化
+let W = BASE_W, H = BASE_H;   // 内部解像度
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
 let isDrawing = false;
-let lastX = 0, lastY = 0;
+let lastX = 0, lastY = 0;     // 内部座標（ピクセル）
+let lastLogicalX = 0, lastLogicalY = 0;  // 論理座標（0-900, 0-675）
 let isEraser = false;
 let isMoveMode = false;
 let isEyedropperMode = false;
 let isFillMode = false;
-let currentSize = 10;
+let currentSize = 10;          // 論理サイズ
 let currentColor = '#1e2b3c';
 let currentBrush = 'pen';
 let currentOpacity = 1;
@@ -1361,7 +602,6 @@ const MIN_ZOOM = 0.1, MAX_ZOOM = 16;
 
 let pinchState = null;
 const pointerState = new Map();
-
 let imageEditState = null;
 
 // ソーシャル
@@ -1372,18 +612,21 @@ let activeSessionOwnerId = null;
 let sessionRole = null;
 let sessionUnsubscribe = null;
 let strokesUnsubscribe = null;
+let layerEventsUnsubscribe = null;   // ★ レイヤーイベント監視
 let invitesUnsubscribe = null;
 let requestsUnsubscribe = null;
 let friendsUnsubscribe = null;
 let resendRequestUnsubscribe = null;
-let snapshotAutoUpdateTimer = null;
 
+// 受信側の状態
 let remoteStrokesById = {};
+let isApplyingRemote = false;        // ★ リモート適用中フラグ（自分の操作と区別）
+
+// 送信側
 let myCurrentStrokeId = null;
 let myCurrentStrokeSeed = null;
-let myLastSentPoint = null;
-
-const STROKE_MIN_DIST = 3;
+let myLastSentLogical = null;        // 論理座標での最終送信位置
+const STROKE_MIN_LOGICAL_DIST = 2;   // 論理座標で2px以上動いたら送信
 
 const shownInviteIds = new Set();
 let incomingInviteQueue = [];
@@ -1398,13 +641,9 @@ function mulberry32(seed) {
   };
 }
 
-const PRESET_COLORS = [
-  '#000000', '#ffffff', '#7f8c8d', '#e74c3c',
-  '#e67e22', '#f1c40f', '#2ecc71', '#3498db',
-  '#9b59b6', '#e84393', '#1e2b3c', '#95a5a6',
-  '#e91e63', '#00bcd4', '#4caf50', '#ff5722'
-];
+const PRESET_COLORS = ['#000000','#ffffff','#7f8c8d','#e74c3c','#e67e22','#f1c40f','#2ecc71','#3498db','#9b59b6','#e84393','#1e2b3c','#95a5a6','#e91e63','#00bcd4','#4caf50','#ff5722'];
 
+// ===== ユーティリティ =====
 function showToast(msg, type = '') {
   toastEl.textContent = msg;
   toastEl.className = 'toast show ' + type;
@@ -1412,7 +651,7 @@ function showToast(msg, type = '') {
   showToast._t = setTimeout(() => { toastEl.className = 'toast ' + type; }, 2500);
 }
 function showLoading(show) { loadingIndicator.classList.toggle('show', show); }
-function generateId() { return 'work_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8); }
+function generateId() { return 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 function formatDate(ts) {
   const d = new Date(ts);
   const pad = (n) => n.toString().padStart(2, '0');
@@ -1440,11 +679,7 @@ function rgbToHsl(r,g,b) {
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r: h = (g-b)/d + (g<b?6:0); break;
-      case g: h = (b-r)/d + 2; break;
-      case b: h = (r-g)/d + 4; break;
-    }
+    switch (max) { case r: h = (g-b)/d + (g<b?6:0); break; case g: h = (b-r)/d + 2; break; case b: h = (r-g)/d + 4; break; }
     h /= 6;
   }
   return { h: h*360, s: s*100, l: l*100 };
@@ -1455,8 +690,7 @@ function hslToRgb(h,s,l) {
   if (s === 0) { r = g = b = l; }
   else {
     const hue2rgb = (p,q,t) => {
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
+      if (t < 0) t += 1; if (t > 1) t -= 1;
       if (t < 1/6) return p + (q-p) * 6 * t;
       if (t < 1/2) return q;
       if (t < 2/3) return p + (q-p) * (2/3-t) * 6;
@@ -1464,16 +698,23 @@ function hslToRgb(h,s,l) {
     };
     const q = l < 0.5 ? l * (1+s) : l + s - l*s;
     const p = 2 * l - q;
-    r = hue2rgb(p,q,h+1/3);
-    g = hue2rgb(p,q,h);
-    b = hue2rgb(p,q,h-1/3);
+    r = hue2rgb(p,q,h+1/3); g = hue2rgb(p,q,h); b = hue2rgb(p,q,h-1/3);
   }
   return { r: r*255, g: g*255, b: b*255 };
 }
-function emailToKey(email) {
-  return email.toLowerCase().replace(/\./g, ',').replace(/@/g, '_at_');
+function emailToKey(email) { return email.toLowerCase().replace(/\./g, ',').replace(/@/g, '_at_'); }
+
+// ★ 内部座標(ピクセル) ↔ 論理座標(0-900, 0-675)
+function toLogical(px, py) {
+  const s = W / BASE_W;
+  return { x: px / s, y: py / s };
+}
+function toInternal(lx, ly) {
+  const s = W / BASE_W;
+  return { x: lx * s, y: ly * s };
 }
 
+// ===== カラーUI同期 =====
 let isSyncingColor = false;
 function syncColorUI(source) {
   if (isSyncingColor) return;
@@ -1484,13 +725,9 @@ function syncColorUI(source) {
   colorSwatchFill.style.background = currentColor;
   hexInput.value = currentColor.replace('#','').toUpperCase();
   if (source !== 'rgb') { sliderR.value = rgb.r; sliderG.value = rgb.g; sliderB.value = rgb.b; }
-  valR.textContent = Math.round(rgb.r);
-  valG.textContent = Math.round(rgb.g);
-  valB.textContent = Math.round(rgb.b);
+  valR.textContent = Math.round(rgb.r); valG.textContent = Math.round(rgb.g); valB.textContent = Math.round(rgb.b);
   if (source !== 'hsl') { sliderH.value = Math.round(hsl.h); sliderS.value = Math.round(hsl.s); sliderL.value = Math.round(hsl.l); }
-  valH.textContent = Math.round(hsl.h);
-  valS.textContent = Math.round(hsl.s);
-  valL.textContent = Math.round(hsl.l);
+  valH.textContent = Math.round(hsl.h); valS.textContent = Math.round(hsl.s); valL.textContent = Math.round(hsl.l);
   document.querySelectorAll('.color-preset').forEach(el => {
     el.classList.toggle('active', el.dataset.color.toLowerCase() === currentColor.toLowerCase());
   });
@@ -1506,6 +743,7 @@ function setColor(hex, source) {
   syncColorUI(source);
 }
 
+// ===== キャンバス解像度 =====
 function computeInternalSize() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   return { w: Math.round(BASE_W * dpr), h: Math.round(BASE_H * dpr), dpr };
@@ -1522,6 +760,7 @@ function setInternalResolution() {
 }
 function getScaleFactor() { return W / BASE_W; }
 
+// ===== ズーム・パン =====
 function updateZoomUI() {
   canvasTransform.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
   zoomDisplay.textContent = Math.round(zoom * 100) + '%';
@@ -1553,9 +792,9 @@ function setZoom(newZoom, clientX, clientY) {
   if (imageEditState) updateImageEditBox();
 }
 
+// ===== ローカルストレージ =====
 function getWorksIndex() {
-  try { const raw = localStorage.getItem(STORAGE_KEY_INDEX); return raw ? JSON.parse(raw) : []; }
-  catch (e) { return []; }
+  try { const raw = localStorage.getItem(STORAGE_KEY_INDEX); return raw ? JSON.parse(raw) : []; } catch (e) { return []; }
 }
 function setWorksIndex(index) {
   try { localStorage.setItem(STORAGE_KEY_INDEX, JSON.stringify(index)); } catch (e) {}
@@ -1565,22 +804,17 @@ function serializeCurrentWork() {
     id: l.id, name: l.name, visible: l.visible, opacity: l.opacity,
     dataURL: l.canvas.toDataURL('image/png')
   }));
-  return {
-    version: 10, baseWidth: BASE_W, baseHeight: BASE_H, width: W, height: H,
-    layers: serializedLayers, activeLayerId, layerCounter,
-    savedAt: Date.now(), title: artTitleEl.textContent || '無題の作品'
-  };
+  return { version: 10, baseWidth: BASE_W, baseHeight: BASE_H, width: W, height: H,
+    layers: serializedLayers, activeLayerId, layerCounter, savedAt: Date.now(), title: artTitleEl.textContent || '無題の作品' };
 }
 function generateThumbnail(maxSize) {
   const tmp = document.createElement('canvas');
   const ratio = BASE_W / BASE_H;
   let tw, th;
-  if (ratio >= 1) { tw = maxSize; th = Math.round(maxSize / ratio); }
-  else { th = maxSize; tw = Math.round(maxSize * ratio); }
+  if (ratio >= 1) { tw = maxSize; th = Math.round(maxSize / ratio); } else { th = maxSize; tw = Math.round(maxSize * ratio); }
   tmp.width = tw; tmp.height = th;
   const tctx = tmp.getContext('2d');
-  tctx.fillStyle = '#ffffff';
-  tctx.fillRect(0, 0, tw, th);
+  tctx.fillStyle = '#ffffff'; tctx.fillRect(0, 0, tw, th);
   for (const layer of layers) {
     if (!layer.visible) continue;
     tctx.save(); tctx.globalAlpha = layer.opacity;
@@ -1635,8 +869,7 @@ function flushSaveSync() {
   } catch (e) {}
 }
 async function loadWork(workId) {
-  isLoading = true;
-  showLoading(true);
+  isLoading = true; showLoading(true);
   try {
     const raw = localStorage.getItem(STORAGE_KEY_WORK_PREFIX + workId);
     if (!raw) { showToast('作品が見つかりません', 'error'); return false; }
@@ -1647,8 +880,7 @@ async function loadWork(workId) {
     setInternalResolution();
     const loadPromises = data.layers.map((layerData, idx) => {
       return new Promise((resolve) => {
-        const c = document.createElement('canvas');
-        c.width = W; c.height = H;
+        const c = document.createElement('canvas'); c.width = W; c.height = H;
         const lctx = c.getContext('2d', { willReadFrequently: true });
         const img = new Image();
         const finalize = () => resolve({
@@ -1674,14 +906,12 @@ async function loadWork(workId) {
     artTitleEl.textContent = data.title || '無題の作品';
     history = []; historyIndex = -1;
     renderLayerList(); composite(); pushHistory();
-    isLoading = false;
-    showLoading(false);
+    isLoading = false; showLoading(false);
     requestAnimationFrame(() => requestAnimationFrame(() => autoFitCanvas()));
     return true;
   } catch (e) {
     console.error(e); showToast('読み込み失敗', 'error');
-    isLoading = false; showLoading(false);
-    return false;
+    isLoading = false; showLoading(false); return false;
   }
 }
 function deleteWork(workId) {
@@ -1724,29 +954,17 @@ function renderGallery() {
   }
   index.sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
   index.forEach(work => {
-    const item = document.createElement('div');
-    item.className = 'gallery-item';
-    const thumb = document.createElement('img');
-    thumb.className = 'gallery-thumb'; thumb.src = work.thumbnail || '';
-    const info = document.createElement('div');
-    info.className = 'gallery-info';
-    const name = document.createElement('div');
-    name.className = 'gallery-name'; name.textContent = work.title || '無題の作品';
-    const date = document.createElement('div');
-    date.className = 'gallery-date'; date.textContent = work.updatedAt ? formatDate(work.updatedAt) : '';
+    const item = document.createElement('div'); item.className = 'gallery-item';
+    const thumb = document.createElement('img'); thumb.className = 'gallery-thumb'; thumb.src = work.thumbnail || '';
+    const info = document.createElement('div'); info.className = 'gallery-info';
+    const name = document.createElement('div'); name.className = 'gallery-name'; name.textContent = work.title || '無題の作品';
+    const date = document.createElement('div'); date.className = 'gallery-date'; date.textContent = work.updatedAt ? formatDate(work.updatedAt) : '';
     info.appendChild(name); info.appendChild(date);
-    const del = document.createElement('button');
-    del.className = 'gallery-delete'; del.title = '削除';
-    del.innerHTML = '<svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-    del.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (confirm(`「${work.title || '無題の作品'}」を削除しますか？`)) deleteWork(work.id);
-    });
+    const del = document.createElement('button'); del.className = 'gallery-delete';
+    del.innerHTML = '<svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    del.addEventListener('click', (e) => { e.stopPropagation(); if (confirm(`「${work.title || '無題の作品'}」を削除しますか？`)) deleteWork(work.id); });
     item.appendChild(thumb); item.appendChild(info); item.appendChild(del);
-    item.addEventListener('click', async () => {
-      const ok = await loadWork(work.id);
-      if (ok) showEditorScreen();
-    });
+    item.addEventListener('click', async () => { const ok = await loadWork(work.id); if (ok) showEditorScreen(); });
     galleryEl.appendChild(item);
   });
 }
@@ -1777,8 +995,14 @@ function createNewWork(backgroundImage) {
   setTimeout(() => saveCurrentWork(true), 100);
 }
 
+// ===== レイヤー操作（同期対応） =====
 function addLayer(name, opts = {}) {
-  const id = 'layer_' + (++layerCounter);
+  const id = opts.id || ('layer_' + (++layerCounter));
+  if (opts.id) {
+    // リモートから指定されたIDを使用
+    const num = parseInt(opts.id.replace('layer_', '')) || 0;
+    if (num > layerCounter) layerCounter = num;
+  }
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const lctx = c.getContext('2d', { willReadFrequently: true });
   const layer = {
@@ -1787,7 +1011,8 @@ function addLayer(name, opts = {}) {
     visible: opts.visible !== undefined ? opts.visible : true,
     opacity: opts.opacity !== undefined ? opts.opacity : 1
   };
-  layers.push(layer); activeLayerId = id;
+  layers.push(layer);
+  if (!opts.noActive) activeLayerId = id;
   renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
   return layer;
 }
@@ -1852,17 +1077,11 @@ function pushHistory() {
 }
 async function restoreHistory(idx) {
   if (idx < 0 || idx >= history.length) return;
-  suppressAutoSave = true;
-  isLoading = true;
+  suppressAutoSave = true; isLoading = true;
   const state = history[idx];
-  if (state.W && state.H) {
-    W = state.W; H = state.H;
-    canvas.width = W; canvas.height = H;
-    applyCanvasCSSSize();
-  }
+  if (state.W && state.H) { W = state.W; H = state.H; canvas.width = W; canvas.height = H; applyCanvasCSSSize(); }
   const loadPromises = state.layers.map(layerData => new Promise(resolve => {
-    const c = document.createElement('canvas');
-    c.width = W; c.height = H;
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
     const lctx = c.getContext('2d', { willReadFrequently: true });
     const img = new Image();
     const finalize = () => resolve({ id: layerData.id, name: layerData.name, canvas: c, ctx: lctx, visible: layerData.visible, opacity: layerData.opacity });
@@ -1873,9 +1092,7 @@ async function restoreHistory(idx) {
   layers = await Promise.all(loadPromises);
   activeLayerId = state.activeLayerId;
   layerCounter = state.layerCounter;
-  isLoading = false;
-  suppressAutoSave = false;
-  historyIndex = idx;
+  isLoading = false; suppressAutoSave = false; historyIndex = idx;
   renderLayerList(); composite(); updateUndoRedo();
   scheduleAutoSave();
 }
@@ -1888,10 +1105,8 @@ function composite() {
   ctx.clearRect(0, 0, W, H);
   for (const layer of layers) {
     if (!layer.visible) continue;
-    ctx.save();
-    ctx.globalAlpha = layer.opacity;
-    ctx.drawImage(layer.canvas, 0, 0);
-    ctx.restore();
+    ctx.save(); ctx.globalAlpha = layer.opacity;
+    ctx.drawImage(layer.canvas, 0, 0); ctx.restore();
   }
 }
 
@@ -1902,11 +1117,9 @@ function renderLayerList() {
     const item = document.createElement('div');
     item.className = 'layer-item' + (layer.id === activeLayerId ? ' selected' : '');
     item.dataset.layerId = layer.id;
-    const thumb = document.createElement('img');
-    thumb.className = 'layer-thumb';
+    const thumb = document.createElement('img'); thumb.className = 'layer-thumb';
     try {
-      const tc = document.createElement('canvas');
-      tc.width = 68; tc.height = 56;
+      const tc = document.createElement('canvas'); tc.width = 68; tc.height = 56;
       const tctx = tc.getContext('2d');
       tctx.clearRect(0, 0, 68, 56);
       tctx.drawImage(layer.canvas, 0, 0, W, H, 0, 0, 68, 56);
@@ -1914,30 +1127,31 @@ function renderLayerList() {
     } catch (e) {
       thumb.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
     }
-    const info = document.createElement('div');
-    info.className = 'layer-info';
-    const name = document.createElement('div');
-    name.className = 'layer-name'; name.textContent = layer.name;
-    const meta = document.createElement('div');
-    meta.className = 'layer-meta'; meta.textContent = `${Math.round(layer.opacity*100)}%`;
+    const info = document.createElement('div'); info.className = 'layer-info';
+    const name = document.createElement('div'); name.className = 'layer-name'; name.textContent = layer.name;
+    const meta = document.createElement('div'); meta.className = 'layer-meta'; meta.textContent = `${Math.round(layer.opacity*100)}%`;
     info.appendChild(name); info.appendChild(meta);
-    const actions = document.createElement('div');
-    actions.className = 'layer-actions';
+    const actions = document.createElement('div'); actions.className = 'layer-actions';
     const visBtn = document.createElement('button');
     visBtn.className = 'mini-btn visibility' + (layer.visible ? '' : ' off');
     visBtn.innerHTML = layer.visible
-      ? '<svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
-      : '<svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+      ? '<svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+      : '<svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
     visBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       layer.visible = !layer.visible;
       renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
+      // ★ レイヤー可視性イベントを送信
+      sendLayerEvent({ type: 'visibility', layerId: layer.id, visible: layer.visible });
     });
     const delBtn = document.createElement('button');
     delBtn.className = 'mini-btn danger';
-    delBtn.innerHTML = '<svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    delBtn.innerHTML = '<svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
     delBtn.addEventListener('click', (e) => {
-      e.stopPropagation(); deleteLayer(layer.id);
+      e.stopPropagation();
+      deleteLayer(layer.id);
+      // ★ レイヤー削除イベントを送信
+      sendLayerEvent({ type: 'delete', layerId: layer.id });
     });
     actions.appendChild(visBtn); actions.appendChild(delBtn);
     item.appendChild(thumb); item.appendChild(info); item.appendChild(actions);
@@ -1958,8 +1172,7 @@ function attachDragReorder(item, layerId) {
   function onPointerDown(e) {
     if (e.target.closest('.mini-btn')) return;
     if (e.pointerType === 'mouse' && e.button !== 0) return;
-    pointerId = e.pointerId;
-    startX = e.clientX; startY = e.clientY;
+    pointerId = e.pointerId; startX = e.clientX; startY = e.clientY;
     try { item.setPointerCapture(e.pointerId); } catch (err) {}
     item.addEventListener('pointermove', onPointerMove);
     item.addEventListener('pointerup', onPointerUp);
@@ -1969,8 +1182,7 @@ function attachDragReorder(item, layerId) {
     if (e.pointerId !== pointerId) return;
     if (!dragging) {
       if (Math.hypot(e.clientX - startX, e.clientY - startY) < MOVE_THRESHOLD) return;
-      beginDrag(e.clientX, e.clientY);
-      return;
+      beginDrag(e.clientX, e.clientY); return;
     }
     e.preventDefault();
     updateGhost(e.clientX, e.clientY);
@@ -1992,18 +1204,11 @@ function attachDragReorder(item, layerId) {
     dragging = true;
     const rect = item.getBoundingClientRect();
     ghost = item.cloneNode(true);
-    ghost.style.position = 'fixed';
-    ghost.style.left = rect.left + 'px';
-    ghost.style.top = rect.top + 'px';
-    ghost.style.width = rect.width + 'px';
-    ghost.style.height = rect.height + 'px';
-    ghost.style.pointerEvents = 'none';
-    ghost.style.opacity = '0.9';
-    ghost.style.zIndex = '10000';
-    ghost.style.transform = 'scale(1.02)';
-    ghost.style.boxShadow = '0 12px 30px rgba(0,0,0,0.6)';
-    ghost.style.borderRadius = '8px';
-    ghost.style.background = '#2b2d33';
+    ghost.style.position = 'fixed'; ghost.style.left = rect.left + 'px'; ghost.style.top = rect.top + 'px';
+    ghost.style.width = rect.width + 'px'; ghost.style.height = rect.height + 'px';
+    ghost.style.pointerEvents = 'none'; ghost.style.opacity = '0.9'; ghost.style.zIndex = '10000';
+    ghost.style.transform = 'scale(1.02)'; ghost.style.boxShadow = '0 12px 30px rgba(0,0,0,0.6)';
+    ghost.style.borderRadius = '8px'; ghost.style.background = '#2b2d33';
     document.body.appendChild(ghost);
     item.style.opacity = '0.3';
   }
@@ -2025,7 +1230,6 @@ function attachDragReorder(item, layerId) {
     const midY = r.top + r.height / 2;
     if (cy < midY) { targetItem.classList.add('insert-above'); dropPosition = 'above'; }
     else { targetItem.classList.add('insert-below'); dropPosition = 'below'; }
-    targetItem.classList.add('drop-target');
   }
   function finalizeDrop() {
     if (ghost && ghost.parentNode) ghost.parentNode.removeChild(ghost);
@@ -2036,6 +1240,10 @@ function attachDragReorder(item, layerId) {
       item.dataset.dragged = '1';
       setTimeout(() => { delete item.dataset.dragged; }, 100);
       reorderLayers(layerId, dropTargetId, dropPosition);
+      // ★ レイヤー並び替えイベントを送信
+      const fromIdx = getLayerIndex(layerId);
+      const toIdx = getLayerIndex(dropTargetId);
+      sendLayerEvent({ type: 'reorder', layerId, targetId: dropTargetId, position: dropPosition, fromIdx, toIdx });
     }
     dropTargetId = null; dropPosition = null;
   }
@@ -2045,8 +1253,7 @@ function attachDragReorder(item, layerId) {
 function updateSizePreview() {
   const pw = sizePreviewCanvas.width, ph = sizePreviewCanvas.height;
   sizePreviewCtx.clearRect(0, 0, pw, ph);
-  sizePreviewCtx.fillStyle = '#1e1f24';
-  sizePreviewCtx.fillRect(0, 0, pw, ph);
+  sizePreviewCtx.fillStyle = '#1e1f24'; sizePreviewCtx.fillRect(0, 0, pw, ph);
   const cx = pw/2, cy = ph/2;
   const maxR = Math.min(pw, ph) / 2 - 2;
   const r = Math.min(currentSize / 2, maxR);
@@ -2058,15 +1265,12 @@ function updateSizePreview() {
     sizePreviewCtx.strokeStyle = '#8891a0'; sizePreviewCtx.lineWidth = 1; sizePreviewCtx.stroke();
   } else if (currentBrush === 'blur') {
     const grad = sizePreviewCtx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(1, r));
-    grad.addColorStop(0, 'rgba(91,141,239,0.6)');
-    grad.addColorStop(0.5, 'rgba(91,141,239,0.25)');
-    grad.addColorStop(1, 'rgba(91,141,239,0)');
+    grad.addColorStop(0, 'rgba(91,141,239,0.6)'); grad.addColorStop(0.5, 'rgba(91,141,239,0.25)'); grad.addColorStop(1, 'rgba(91,141,239,0)');
     sizePreviewCtx.fillStyle = grad;
     sizePreviewCtx.beginPath(); sizePreviewCtx.arc(cx, cy, Math.max(1, r), 0, Math.PI*2); sizePreviewCtx.fill();
   } else if (currentBrush === 'marker') {
     const half = Math.max(1, r);
-    sizePreviewCtx.globalAlpha = 0.85;
-    sizePreviewCtx.fillStyle = color;
+    sizePreviewCtx.globalAlpha = 0.85; sizePreviewCtx.fillStyle = color;
     sizePreviewCtx.fillRect(cx - half, cy - half * 0.75, half * 2, half * 1.5);
   } else {
     sizePreviewCtx.beginPath(); sizePreviewCtx.arc(cx, cy, Math.max(1, r), 0, Math.PI*2);
@@ -2078,8 +1282,7 @@ function updateSizePreview() {
 function updateOpacityPreview() {
   const pw = opacityPreviewCanvas.width, ph = opacityPreviewCanvas.height;
   opacityPreviewCtx.clearRect(0, 0, pw, ph);
-  opacityPreviewCtx.fillStyle = '#1e1f24';
-  opacityPreviewCtx.fillRect(0, 0, pw, ph);
+  opacityPreviewCtx.fillStyle = '#1e1f24'; opacityPreviewCtx.fillRect(0, 0, pw, ph);
   const cx = pw/2, cy = ph/2;
   const r = Math.min(pw, ph) / 2 - 4;
   const color = isEraser ? '#8891a0' : currentColor;
@@ -2090,6 +1293,7 @@ function updateOpacityPreview() {
   opacityPreviewCtx.restore();
 }
 
+// ★ ポインタから内部座標 AND 論理座標 を返す
 function getCanvasCoords(e) {
   const rect = canvas.getBoundingClientRect();
   const scaleX = W / rect.width, scaleY = H / rect.height;
@@ -2098,9 +1302,14 @@ function getCanvasCoords(e) {
     if (e.touches.length === 0) return null;
     clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
   } else { clientX = e.clientX; clientY = e.clientY; }
+  const px = (clientX - rect.left) * scaleX;
+  const py = (clientY - rect.top) * scaleY;
+  const s = W / BASE_W;
   return {
-    x: Math.min(Math.max((clientX - rect.left) * scaleX, 0), W),
-    y: Math.min(Math.max((clientY - rect.top) * scaleY, 0), H)
+    x: Math.min(Math.max(px, 0), W),
+    y: Math.min(Math.max(py, 0), H),
+    logicalX: Math.min(Math.max(px / s, 0), BASE_W),
+    logicalY: Math.min(Math.max(py / s, 0), BASE_H)
   };
 }
 
@@ -2115,43 +1324,34 @@ function pickColorAt(x, y) {
 }
 async function pickColorFromScreen() {
   if (window.EyeDropper) {
-    try {
-      const ed = new EyeDropper();
-      const result = await ed.open();
-      if (result && result.sRGBHex) return result.sRGBHex;
-    } catch (e) { if (e.name === 'AbortError') return null; }
+    try { const ed = new EyeDropper(); const result = await ed.open(); if (result && result.sRGBHex) return result.sRGBHex; }
+    catch (e) { if (e.name === 'AbortError') return null; }
   }
   return null;
 }
 function setEyedropperMode(on) {
   isEyedropperMode = on;
   if (on) {
-    setFillMode(false);
-    isEraser = false; isMoveMode = false;
+    setFillMode(false); isEraser = false; isMoveMode = false;
     eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode');
     moveToggle.classList.remove('active'); canvas.classList.remove('move-mode');
     canvas.classList.add('eyedropper-mode');
-    eyedropperBtn.classList.add('active');
-    eyedropperToolBtn.classList.add('active');
+    eyedropperBtn.classList.add('active'); eyedropperToolBtn.classList.add('active');
   } else {
     canvas.classList.remove('eyedropper-mode');
-    eyedropperBtn.classList.remove('active');
-    eyedropperToolBtn.classList.remove('active');
+    eyedropperBtn.classList.remove('active'); eyedropperToolBtn.classList.remove('active');
   }
 }
 function setFillMode(on) {
   isFillMode = on;
   if (on) {
-    setEyedropperMode(false);
-    isEraser = false; isMoveMode = false;
+    setEyedropperMode(false); isEraser = false; isMoveMode = false;
     eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode');
     moveToggle.classList.remove('active'); canvas.classList.remove('move-mode');
-    canvas.classList.add('fill-mode');
-    fillToggle.classList.add('active');
+    canvas.classList.add('fill-mode'); fillToggle.classList.add('active');
     toleranceRow.style.display = 'flex';
   } else {
-    canvas.classList.remove('fill-mode');
-    fillToggle.classList.remove('active');
+    canvas.classList.remove('fill-mode'); fillToggle.classList.remove('active');
     toleranceRow.style.display = 'none';
   }
 }
@@ -2194,13 +1394,12 @@ function floodFill(layer, startX, startY, fillColorHex, tolerance) {
   return false;
 }
 
+// ===== ブラシ描画（内部座標で動作） =====
 function drawPen(c, x0, y0, x1, y1, size, color, alpha) {
-  c.save();
-  c.globalAlpha = alpha;
+  c.save(); c.globalAlpha = alpha;
   c.lineCap = 'round'; c.lineJoin = 'round';
   c.strokeStyle = color; c.lineWidth = size;
-  c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
-  c.restore();
+  c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke(); c.restore();
 }
 function drawPencil(c, x0, y0, x1, y1, size, color, alpha, rng) {
   const dist = Math.hypot(x1-x0, y1-y0);
@@ -2212,8 +1411,7 @@ function drawPencil(c, x0, y0, x1, y1, size, color, alpha, rng) {
   const nx = -dy/len, ny = dx/len;
   for (let s = 0; s <= steps; s++) {
     const t = steps === 0 ? 0 : s/steps;
-    const px = x0 + (x1-x0)*t;
-    const py = y0 + (y1-y0)*t;
+    const px = x0 + (x1-x0)*t, py = y0 + (y1-y0)*t;
     for (let i = 0; i < 3; i++) {
       const offset = (rng() - 0.5) * baseW * 1.6;
       const along = (rng() - 0.5) * 1.2;
@@ -2228,12 +1426,10 @@ function drawPencil(c, x0, y0, x1, y1, size, color, alpha, rng) {
 }
 function drawMarker(c, x0, y0, x1, y1, size, color, alpha) {
   c.save();
-  c.globalAlpha = alpha * 0.55;
-  c.lineCap = 'square'; c.lineJoin = 'round';
+  c.globalAlpha = alpha * 0.55; c.lineCap = 'square'; c.lineJoin = 'round';
   c.strokeStyle = color; c.lineWidth = size * 1.15;
   c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
-  c.globalAlpha = alpha * 0.35;
-  c.lineWidth = size * 0.55;
+  c.globalAlpha = alpha * 0.35; c.lineWidth = size * 0.55;
   c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
   c.restore();
 }
@@ -2246,8 +1442,7 @@ function drawChalk(c, x0, y0, x1, y1, size, color, alpha, rng) {
   c.save(); c.fillStyle = color;
   for (let s = 0; s <= steps; s++) {
     const t = steps === 0 ? 0 : s/steps;
-    const px = x0 + (x1-x0)*t;
-    const py = y0 + (y1-y0)*t;
+    const px = x0 + (x1-x0)*t, py = y0 + (y1-y0)*t;
     const count = Math.max(4, Math.floor(size * 0.6));
     for (let i = 0; i < count; i++) {
       let off = 0;
@@ -2268,8 +1463,7 @@ function drawSpray(c, x0, y0, x1, y1, size, color, alpha, rng) {
   c.save(); c.fillStyle = color;
   for (let s = 0; s <= steps; s++) {
     const t = steps === 0 ? 0 : s/steps;
-    const px = x0 + (x1-x0)*t;
-    const py = y0 + (y1-y0)*t;
+    const px = x0 + (x1-x0)*t, py = y0 + (y1-y0)*t;
     const count = Math.max(6, Math.floor(size * 1.4));
     for (let i = 0; i < count; i++) {
       let rr = 0;
@@ -2288,10 +1482,8 @@ function drawSpray(c, x0, y0, x1, y1, size, color, alpha, rng) {
 }
 function blurAt(c, cx, cy, radius) {
   const r = Math.max(2, Math.round(radius));
-  const minX = Math.max(0, Math.floor(cx - r));
-  const minY = Math.max(0, Math.floor(cy - r));
-  const maxX = Math.min(W-1, Math.ceil(cx + r));
-  const maxY = Math.min(H-1, Math.ceil(cy + r));
+  const minX = Math.max(0, Math.floor(cx - r)), minY = Math.max(0, Math.floor(cy - r));
+  const maxX = Math.min(W-1, Math.ceil(cx + r)), maxY = Math.min(H-1, Math.ceil(cy + r));
   const bw = maxX - minX + 1, bh = maxY - minY + 1;
   if (bw < 3 || bh < 3) return;
   const srcData = c.getImageData(minX, minY, bw, bh);
@@ -2336,8 +1528,7 @@ function blurAt(c, cx, cy, radius) {
   const maskSoft = r * 0.35;
   for (let y = 0; y < bh; y++) {
     for (let x = 0; x < bw; x++) {
-      const dx = x + minX - cx;
-      const dy = y + minY - cy;
+      const dx = x + minX - cx, dy = y + minY - cy;
       const d = Math.hypot(dx, dy);
       let m;
       if (d <= r - maskSoft) m = 1;
@@ -2354,10 +1545,17 @@ function blurAt(c, cx, cy, radius) {
   c.putImageData(srcData, minX, minY);
 }
 
-function drawStrokeToLayer(layer, x0, y0, x1, y1, params, seed) {
+// ★ 描画の中核：論理座標で受け取り、内部座標に変換して描画
+function drawStrokeToLayer(layer, lx0, ly0, lx1, ly1, params, seed) {
   const c = layer.ctx;
   const { color, size, brush, alpha, eraser } = params;
-  const scaledSize = size * getScaleFactor();
+  // 論理座標 → 内部座標
+  const p0 = toInternal(lx0, ly0);
+  const p1 = toInternal(lx1, ly1);
+  const x0 = p0.x, y0 = p0.y, x1 = p1.x, y1 = p1.y;
+  // サイズも論理 → 内部スケール
+  const scale = getScaleFactor();
+  const scaledSize = size * scale;
   if (eraser) {
     c.save();
     c.globalCompositeOperation = 'destination-out';
@@ -2379,6 +1577,7 @@ function drawStrokeToLayer(layer, x0, y0, x1, y1, params, seed) {
   c.restore();
 }
 
+// ===== 描画イベント =====
 function startDrawing(e) {
   if (e.button !== undefined && e.button !== 0) return;
   e.preventDefault();
@@ -2409,21 +1608,25 @@ function startDrawing(e) {
   }
   isDrawing = true;
   lastX = coords.x; lastY = coords.y;
+  lastLogicalX = coords.logicalX; lastLogicalY = coords.logicalY;
 
   const strokeId = generateId();
   const seed = Math.floor(Math.random() * 2147483647);
   myCurrentStrokeId = strokeId;
   myCurrentStrokeSeed = seed;
-  myLastSentPoint = { x: coords.x, y: coords.y };
+  myLastSentLogical = { x: coords.logicalX, y: coords.logicalY };
 
-  drawStrokeToLayer(layer, coords.x, coords.y, coords.x + 0.01, coords.y, {
+  // ローカル描画（論理座標で）
+  drawStrokeToLayer(layer, coords.logicalX, coords.logicalY, coords.logicalX + 0.01, coords.logicalY, {
     color: currentColor, size: currentSize, brush: currentBrush, alpha: currentOpacity, eraser: isEraser
   }, seed);
 
+  // ★ アクティブレイヤーIDを含めて送信
   if (activeSessionId) {
     sendStrokeEvent({
       type: 'start', strokeId,
-      x: coords.x, y: coords.y,
+      layerId: layer.id,       // ★ 重要：どのレイヤーに描いたか
+      x: coords.logicalX, y: coords.logicalY,
       color: currentColor, size: currentSize,
       brush: currentBrush, opacity: currentOpacity, eraser: isEraser,
       seed
@@ -2448,17 +1651,25 @@ function draw(e) {
     composite(); scheduleAutoSave();
     return;
   }
-  drawStrokeToLayer(layer, lastX, lastY, coords.x, coords.y, {
+  // 論理座標で描画
+  drawStrokeToLayer(layer, lastLogicalX, lastLogicalY, coords.logicalX, coords.logicalY, {
     color: currentColor, size: currentSize, brush: currentBrush, alpha: currentOpacity, eraser: isEraser
   }, myCurrentStrokeSeed);
+
   if (activeSessionId && myCurrentStrokeId) {
-    const dist = Math.hypot(coords.x - myLastSentPoint.x, coords.y - myLastSentPoint.y);
-    if (dist >= STROKE_MIN_DIST) {
-      sendStrokeEvent({ type: 'move', strokeId: myCurrentStrokeId, x: coords.x, y: coords.y });
-      myLastSentPoint = { x: coords.x, y: coords.y };
+    // 論理座標で間引き
+    const dist = Math.hypot(coords.logicalX - myLastSentLogical.x, coords.logicalY - myLastSentLogical.y);
+    if (dist >= STROKE_MIN_LOGICAL_DIST) {
+      sendStrokeEvent({
+        type: 'move', strokeId: myCurrentStrokeId,
+        x: coords.logicalX, y: coords.logicalY
+      });
+      myLastSentLogical = { x: coords.logicalX, y: coords.logicalY };
     }
   }
+
   lastX = coords.x; lastY = coords.y;
+  lastLogicalX = coords.logicalX; lastLogicalY = coords.logicalY;
   composite(); scheduleAutoSave();
 }
 function stopDrawing(e) {
@@ -2472,21 +1683,20 @@ function stopDrawing(e) {
   }
   myCurrentStrokeId = null;
   myCurrentStrokeSeed = null;
-  myLastSentPoint = null;
+  myLastSentLogical = null;
   scheduleAutoSave();
   pushHistory();
 }
 
+// ===== 画像編集 =====
 function enterImageEditMode(img, layerId) {
   imageEditState = { layerId, img, x: 0, y: 0, w: BASE_W, h: BASE_H, rotation: 0 };
   const imgRatio = img.width / img.height;
   const canvasRatio = BASE_W / BASE_H;
   let dw, dh;
-  if (imgRatio > canvasRatio) { dw = BASE_W; dh = BASE_W / imgRatio; }
-  else { dh = BASE_H; dw = BASE_H * imgRatio; }
+  if (imgRatio > canvasRatio) { dw = BASE_W; dh = BASE_W / imgRatio; } else { dh = BASE_H; dw = BASE_H * imgRatio; }
   imageEditState.w = dw; imageEditState.h = dh;
-  imageEditState.x = (BASE_W - dw) / 2;
-  imageEditState.y = (BASE_H - dh) / 2;
+  imageEditState.x = (BASE_W - dw) / 2; imageEditState.y = (BASE_H - dh) / 2;
   const layer = layers.find(l => l.id === layerId);
   if (layer) {
     layer._preEditData = layer.ctx.getImageData(0, 0, W, H);
@@ -2499,14 +1709,10 @@ function enterImageEditMode(img, layerId) {
 function updateImageEditBox() {
   if (!imageEditState) return;
   const s = imageEditState;
-  const bx = panX + s.x * zoom;
-  const by = panY + s.y * zoom;
-  const bw = s.w * zoom;
-  const bh = s.h * zoom;
-  imageEditBox.style.left = bx + 'px';
-  imageEditBox.style.top = by + 'px';
-  imageEditBox.style.width = bw + 'px';
-  imageEditBox.style.height = bh + 'px';
+  const bx = panX + s.x * zoom, by = panY + s.y * zoom;
+  const bw = s.w * zoom, bh = s.h * zoom;
+  imageEditBox.style.left = bx + 'px'; imageEditBox.style.top = by + 'px';
+  imageEditBox.style.width = bw + 'px'; imageEditBox.style.height = bh + 'px';
   imageEditBox.style.transform = `rotate(${s.rotation}deg)`;
   imageEditBox.style.transformOrigin = 'center center';
   imageEditToolbar.style.left = (bx + bw/2) + 'px';
@@ -2521,8 +1727,7 @@ function renderImageEditPreview() {
   const s = imageEditState;
   const scale = getScaleFactor();
   layer.ctx.save();
-  const cx = (s.x + s.w/2) * scale;
-  const cy = (s.y + s.h/2) * scale;
+  const cx = (s.x + s.w/2) * scale, cy = (s.y + s.h/2) * scale;
   layer.ctx.translate(cx, cy);
   layer.ctx.rotate(s.rotation * Math.PI / 180);
   layer.ctx.drawImage(s.img, -(s.w/2)*scale, -(s.h/2)*scale, s.w*scale, s.h*scale);
@@ -2541,12 +1746,8 @@ function confirmImageEdit() {
 function cancelImageEdit() {
   if (!imageEditState) return;
   const layer = layers.find(l => l.id === imageEditState.layerId);
-  if (layer && layer._preEditData) {
-    layer.ctx.putImageData(layer._preEditData, 0, 0);
-    delete layer._preEditData;
-  }
-  imageEditOverlay.classList.remove('active');
-  imageEditState = null;
+  if (layer && layer._preEditData) { layer.ctx.putImageData(layer._preEditData, 0, 0); delete layer._preEditData; }
+  imageEditOverlay.classList.remove('active'); imageEditState = null;
   composite(); renderLayerList();
 }
 function resetImageEdit() {
@@ -2555,11 +1756,9 @@ function resetImageEdit() {
   const imgRatio = img.width / img.height;
   const canvasRatio = BASE_W / BASE_H;
   let dw, dh;
-  if (imgRatio > canvasRatio) { dw = BASE_W; dh = BASE_W / imgRatio; }
-  else { dh = BASE_H; dw = BASE_H * imgRatio; }
+  if (imgRatio > canvasRatio) { dw = BASE_W; dh = BASE_W / imgRatio; } else { dh = BASE_H; dw = BASE_H * imgRatio; }
   imageEditState.w = dw; imageEditState.h = dh;
-  imageEditState.x = (BASE_W - dw) / 2;
-  imageEditState.y = (BASE_H - dh) / 2;
+  imageEditState.x = (BASE_W - dw) / 2; imageEditState.y = (BASE_H - dh) / 2;
   imageEditState.rotation = 0;
   updateImageEditBox();
 }
@@ -2586,8 +1785,7 @@ function setupImageEditInteractions() {
     if (!imageEditState || e.pointerId !== activePid) return;
     e.preventDefault();
     const p = getViewportPoint(e);
-    const dx = (p.x - startX) / zoom;
-    const dy = (p.y - startY) / zoom;
+    const dx = (p.x - startX) / zoom, dy = (p.y - startY) / zoom;
     if (dragMode === 'move') {
       imageEditState.x = startState.x + dx;
       imageEditState.y = startState.y + dy;
@@ -2653,8 +1851,7 @@ function renderColorPresets() {
   colorPresets.innerHTML = '';
   PRESET_COLORS.forEach(c => {
     const b = document.createElement('button');
-    b.className = 'color-preset';
-    b.dataset.color = c;
+    b.className = 'color-preset'; b.dataset.color = c;
     const checker = document.createElement('div'); checker.className = 'checker';
     const fill = document.createElement('div'); fill.className = 'fill'; fill.style.background = c;
     b.appendChild(checker); b.appendChild(fill);
@@ -2709,9 +1906,7 @@ function toggleEyedropper() {
     pickColorFromScreen().then(hex => {
       if (hex) { setColor(hex, 'preset'); showToast(`色を取得: ${hex.toUpperCase()}`, 'success'); }
     });
-  } else {
-    setEyedropperMode(!isEyedropperMode);
-  }
+  } else { setEyedropperMode(!isEyedropperMode); }
 }
 eyedropperBtn.addEventListener('click', toggleEyedropper);
 eyedropperToolBtn.addEventListener('click', toggleEyedropper);
@@ -2721,27 +1916,15 @@ toleranceSlider.addEventListener('input', (e) => {
   toleranceValue.textContent = currentTolerance;
 });
 
-zoomInBtn.addEventListener('click', () => {
-  const rect = canvasViewport.getBoundingClientRect();
-  setZoom(zoom * 1.25, rect.left + rect.width/2, rect.top + rect.height/2);
-});
-zoomOutBtn.addEventListener('click', () => {
-  const rect = canvasViewport.getBoundingClientRect();
-  setZoom(zoom / 1.25, rect.left + rect.width/2, rect.top + rect.height/2);
-});
+zoomInBtn.addEventListener('click', () => { const rect = canvasViewport.getBoundingClientRect(); setZoom(zoom * 1.25, rect.left + rect.width/2, rect.top + rect.height/2); });
+zoomOutBtn.addEventListener('click', () => { const rect = canvasViewport.getBoundingClientRect(); setZoom(zoom / 1.25, rect.left + rect.width/2, rect.top + rect.height/2); });
 zoomResetBtn.addEventListener('click', autoFitCanvas);
 zoomDisplay.addEventListener('click', autoFitCanvas);
 canvasViewport.addEventListener('wheel', (e) => {
   e.preventDefault();
-  if (e.ctrlKey || e.metaKey) {
-    setZoom(zoom * Math.exp(-e.deltaY * 0.01), e.clientX, e.clientY);
-  } else if (e.altKey) {
-    setZoom(zoom * (e.deltaY < 0 ? 1.1 : 1/1.1), e.clientX, e.clientY);
-  } else {
-    panX -= e.deltaX; panY -= e.deltaY;
-    updateZoomUI();
-    if (imageEditState) updateImageEditBox();
-  }
+  if (e.ctrlKey || e.metaKey) setZoom(zoom * Math.exp(-e.deltaY * 0.01), e.clientX, e.clientY);
+  else if (e.altKey) setZoom(zoom * (e.deltaY < 0 ? 1.1 : 1/1.1), e.clientX, e.clientY);
+  else { panX -= e.deltaX; panY -= e.deltaY; updateZoomUI(); if (imageEditState) updateImageEditBox(); }
 }, { passive: false });
 
 canvas.addEventListener('pointerdown', (e) => {
@@ -2749,10 +1932,7 @@ canvas.addEventListener('pointerdown', (e) => {
   if (imageEditState) return;
   e.preventDefault();
   pointerState.set(e.pointerId, { x: e.clientX, y: e.clientY });
-  if (pointerState.size >= 2) {
-    if (isDrawing) { isDrawing = false; moveSnapshot = null; }
-    startPinch(); return;
-  }
+  if (pointerState.size >= 2) { if (isDrawing) { isDrawing = false; moveSnapshot = null; } startPinch(); return; }
   activePointerId = e.pointerId;
   try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
   startDrawing(e);
@@ -2769,39 +1949,24 @@ canvas.addEventListener('pointermove', (e) => {
 function handlePointerUp(e) {
   if (!pointerState.has(e.pointerId)) return;
   pointerState.delete(e.pointerId);
-  if (pinchState) {
-    if (pointerState.size >= 2) restartPinch();
-    else endPinch();
-  }
+  if (pinchState) { if (pointerState.size >= 2) restartPinch(); else endPinch(); }
   if (activePointerId === e.pointerId) {
     try { canvas.releasePointerCapture(e.pointerId); } catch (err) {}
-    activePointerId = null;
-    stopDrawing(e);
+    activePointerId = null; stopDrawing(e);
   }
 }
 canvas.addEventListener('pointerup', handlePointerUp);
 canvas.addEventListener('pointercancel', handlePointerUp);
-canvas.addEventListener('lostpointercapture', (e) => {
-  if (activePointerId === e.pointerId) { activePointerId = null; stopDrawing(e); }
-});
+canvas.addEventListener('lostpointercapture', (e) => { if (activePointerId === e.pointerId) { activePointerId = null; stopDrawing(e); } });
 window.addEventListener('pointerup', (e) => { if (pointerState.has(e.pointerId)) handlePointerUp(e); });
 
 function startPinch() {
   const pts = Array.from(pointerState.values());
   if (pts.length < 2) return;
   const [p1, p2] = pts;
-  pinchState = {
-    startDist: Math.hypot(p2.x-p1.x, p2.y-p1.y),
-    startZoom: zoom,
-    centerX: (p1.x+p2.x)/2, centerY: (p1.y+p2.y)/2,
-    startPanX: panX, startPanY: panY
-  };
+  pinchState = { startDist: Math.hypot(p2.x-p1.x, p2.y-p1.y), startZoom: zoom, centerX: (p1.x+p2.x)/2, centerY: (p1.y+p2.y)/2, startPanX: panX, startPanY: panY };
 }
-function restartPinch() {
-  const pts = Array.from(pointerState.values());
-  if (pts.length < 2) { endPinch(); return; }
-  startPinch();
-}
+function restartPinch() { const pts = Array.from(pointerState.values()); if (pts.length < 2) { endPinch(); return; } startPinch(); }
 function updatePinch() {
   if (!pinchState) return;
   const pts = Array.from(pointerState.values());
@@ -2810,8 +1975,7 @@ function updatePinch() {
   const dist = Math.hypot(p2.x-p1.x, p2.y-p1.y);
   const cx = (p1.x+p2.x)/2, cy = (p1.y+p2.y)/2;
   const rect = canvasViewport.getBoundingClientRect();
-  const startLocalCx = pinchState.centerX - rect.left;
-  const startLocalCy = pinchState.centerY - rect.top;
+  const startLocalCx = pinchState.centerX - rect.left, startLocalCy = pinchState.centerY - rect.top;
   const startLogicalX = (startLocalCx - pinchState.startPanX) / pinchState.startZoom;
   const startLogicalY = (startLocalCy - pinchState.startPanY) / pinchState.startZoom;
   const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, pinchState.startZoom * (dist / pinchState.startDist)));
@@ -2844,9 +2008,7 @@ eraserToggle.addEventListener('click', () => {
     setEyedropperMode(false); setFillMode(false);
     eraserToggle.classList.add('active'); canvas.classList.add('eraser-mode');
     brushToggleBtn.classList.add('active'); brushPanel.classList.add('show');
-  } else {
-    eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode');
-  }
+  } else { eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode'); }
   updateSizePreview(); updateOpacityPreview();
 });
 moveToggle.addEventListener('click', () => {
@@ -2855,9 +2017,7 @@ moveToggle.addEventListener('click', () => {
     isEraser = false; eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode');
     setEyedropperMode(false); setFillMode(false);
     moveToggle.classList.add('active'); canvas.classList.add('move-mode');
-  } else {
-    moveToggle.classList.remove('active'); canvas.classList.remove('move-mode');
-  }
+  } else { moveToggle.classList.remove('active'); canvas.classList.remove('move-mode'); }
 });
 sizeSlider.addEventListener('input', (e) => { currentSize = parseInt(e.target.value, 10); updateSizePreview(); });
 opacitySlider.addEventListener('input', (e) => { currentOpacity = parseInt(e.target.value, 10) / 100; updateOpacityPreview(); });
@@ -2868,14 +2028,9 @@ clearBtn.addEventListener('click', () => {
   renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
 });
 uploadBtn.addEventListener('click', () => fileInput.click());
-fileInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) loadImageFromFile(file);
-  fileInput.value = '';
-});
+fileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) loadImageFromFile(file); fileInput.value = ''; });
 saveBtn.addEventListener('click', async () => {
-  const tmp = document.createElement('canvas');
-  tmp.width = W; tmp.height = H;
+  const tmp = document.createElement('canvas'); tmp.width = W; tmp.height = H;
   const tctx = tmp.getContext('2d');
   tctx.fillStyle = '#ffffff'; tctx.fillRect(0, 0, W, H);
   for (const layer of layers) {
@@ -2887,10 +2042,13 @@ saveBtn.addEventListener('click', async () => {
   link.download = `お絵かき_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.png`;
   link.href = tmp.toDataURL('image/png');
   link.click();
-  await flushSave('save');
-  showToast('保存しました', 'success');
+  await flushSave('save'); showToast('保存しました', 'success');
 });
-addLayerBtn.addEventListener('click', () => addLayer('レイヤー ' + (layers.length + 1)));
+addLayerBtn.addEventListener('click', () => {
+  const newLayer = addLayer('レイヤー ' + (layers.length + 1));
+  // ★ レイヤー追加イベントを送信
+  sendLayerEvent({ type: 'add', layerId: newLayer.id, name: newLayer.name });
+});
 dupLayerBtn.addEventListener('click', () => { if (activeLayerId) duplicateLayer(activeLayerId); });
 mergeDownBtn.addEventListener('click', () => {
   if (activeLayerId) {
@@ -2902,20 +2060,14 @@ undoBtn.addEventListener('click', () => { if (historyIndex > 0) restoreHistory(h
 redoBtn.addEventListener('click', () => { if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1); });
 artTitleEl.addEventListener('dblclick', () => {
   const newTitle = prompt('作品タイトルを入力', artTitleEl.textContent);
-  if (newTitle !== null && newTitle.trim() !== '') {
-    artTitleEl.textContent = newTitle.trim();
-    scheduleAutoSave();
-  }
+  if (newTitle !== null && newTitle.trim() !== '') { artTitleEl.textContent = newTitle.trim(); scheduleAutoSave(); }
 });
 
 newArtBtn.addEventListener('click', () => createNewWork(null));
 imageStartBtn.addEventListener('click', () => {
-  const inp = document.createElement('input');
-  inp.type = 'file';
-  inp.accept = 'image/*';
+  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
   inp.onchange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
     reader.onload = (ev) => {
       const img = new Image();
@@ -2927,14 +2079,8 @@ imageStartBtn.addEventListener('click', () => {
   inp.click();
 });
 backHomeBtn.addEventListener('click', () => {
-  if (imageEditState) {
-    if (!confirm('編集中の画像は破棄されます。よろしいですか？')) return;
-    cancelImageEdit();
-  }
-  if (activeSessionId) {
-    if (!confirm('共同描画セッションを終了しますか？')) return;
-    cleanupSession();
-  }
+  if (imageEditState) { if (!confirm('編集中の画像は破棄されます。よろしいですか？')) return; cancelImageEdit(); }
+  if (activeSessionId) { if (!confirm('共同描画セッションを終了しますか？')) return; cleanupSession(); }
   showHomeScreen();
 });
 
@@ -2944,12 +2090,7 @@ window.addEventListener('paste', (e) => {
   const items = e.clipboardData && e.clipboardData.items;
   if (!items) return;
   for (const item of items) {
-    if (item.type.startsWith('image/')) {
-      e.preventDefault();
-      const file = item.getAsFile();
-      if (file) loadImageFromFile(file);
-      break;
-    }
+    if (item.type.startsWith('image/')) { e.preventDefault(); const file = item.getAsFile(); if (file) loadImageFromFile(file); break; }
   }
 });
 
@@ -2966,46 +2107,30 @@ window.addEventListener('keydown', (e) => {
   } else if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
     e.preventDefault();
     if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1);
-  } else if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-    e.preventDefault(); saveBtn.click();
-  } else if ((e.ctrlKey || e.metaKey) && (e.key === '=' || e.key === '+')) {
-    e.preventDefault();
-    const rect = canvasViewport.getBoundingClientRect();
+  } else if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveBtn.click(); }
+  else if ((e.ctrlKey || e.metaKey) && (e.key === '=' || e.key === '+')) {
+    e.preventDefault(); const rect = canvasViewport.getBoundingClientRect();
     setZoom(zoom * 1.25, rect.left + rect.width/2, rect.top + rect.height/2);
   } else if ((e.ctrlKey || e.metaKey) && e.key === '-') {
-    e.preventDefault();
-    const rect = canvasViewport.getBoundingClientRect();
+    e.preventDefault(); const rect = canvasViewport.getBoundingClientRect();
     setZoom(zoom / 1.25, rect.left + rect.width/2, rect.top + rect.height/2);
-  } else if ((e.ctrlKey || e.metaKey) && e.key === '0') {
-    e.preventDefault(); autoFitCanvas();
-  } else if (e.key === 'Escape') {
+  } else if ((e.ctrlKey || e.metaKey) && e.key === '0') { e.preventDefault(); autoFitCanvas(); }
+  else if (e.key === 'Escape') {
     if (isEyedropperMode) setEyedropperMode(false);
     if (isFillMode) setFillMode(false);
   }
 });
 
-window.addEventListener('beforeunload', () => {
-  if (editorScreen.classList.contains('active')) flushSaveSync();
-});
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden' && editorScreen.classList.contains('active')) flushSaveSync();
-});
-window.addEventListener('pagehide', () => {
-  if (editorScreen.classList.contains('active')) flushSaveSync();
-});
-window.addEventListener('resize', () => {
-  if (editorScreen.classList.contains('active')) {
-    updateZoomUI();
-    if (imageEditState) updateImageEditBox();
-  }
-});
+window.addEventListener('beforeunload', () => { if (editorScreen.classList.contains('active')) flushSaveSync(); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && editorScreen.classList.contains('active')) flushSaveSync(); });
+window.addEventListener('pagehide', () => { if (editorScreen.classList.contains('active')) flushSaveSync(); });
+window.addEventListener('resize', () => { if (editorScreen.classList.contains('active')) { updateZoomUI(); if (imageEditState) updateImageEditBox(); } });
 
 // =====================================================
 // 認証
 // =====================================================
 async function handleLogin() {
-  loginError.style.display = 'none';
-  loginError.textContent = '';
+  loginError.style.display = 'none'; loginError.textContent = '';
   googleLoginBtn.disabled = true;
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
@@ -3013,17 +2138,13 @@ async function handleLogin() {
     try { await setPersistence(auth, browserLocalPersistence); } catch (e) {}
     await signInWithPopup(auth, provider);
   } catch (e) {
-    console.error('Login error:', e);
     let msg = '';
-    if (e.code === 'auth/unauthorized-domain') msg = 'このドメインは許可されていません。Firebase Console → Authentication → Settings → 承認済みドメイン に ' + window.location.hostname + ' を追加してください。';
-    else if (e.code === 'auth/popup-blocked') msg = 'ポップアップがブロックされました。ブラウザのポップアップ許可をこのサイトに与えてください。';
+    if (e.code === 'auth/unauthorized-domain') msg = 'このドメインは許可されていません。';
+    else if (e.code === 'auth/popup-blocked') msg = 'ポップアップがブロックされました。';
     else if (e.code === 'auth/popup-closed-by-user') msg = 'ログインがキャンセルされました。';
-    else if (e.code === 'auth/cancelled-popup-request') msg = '別のポップアップが開いています。';
     else if (e.code === 'auth/operation-not-allowed') msg = 'Google ログインが有効化されていません。';
-    else if (e.code === 'auth/network-request-failed') msg = 'ネットワークエラー。';
-    else msg = 'ログインに失敗しました: ' + (e.message || e.code || String(e));
-    loginError.textContent = msg;
-    loginError.style.display = 'block';
+    else msg = 'ログインに失敗: ' + (e.message || e.code || String(e));
+    loginError.textContent = msg; loginError.style.display = 'block';
   } finally { googleLoginBtn.disabled = false; }
 }
 googleLoginBtn.addEventListener('click', handleLogin);
@@ -3032,11 +2153,8 @@ userAvatar.addEventListener('click', () => { logoutModal.classList.add('show'); 
 logoutCancelBtn.addEventListener('click', () => { logoutModal.classList.remove('show'); });
 logoutConfirmBtn.addEventListener('click', async () => {
   logoutModal.classList.remove('show');
-  try {
-    await cleanupSession();
-    await signOut(auth);
-    showToast('ログアウトしました', 'success');
-  } catch (e) { showToast('ログアウト失敗: ' + e.message, 'error'); }
+  try { await cleanupSession(); await signOut(auth); showToast('ログアウトしました', 'success'); }
+  catch (e) { showToast('ログアウト失敗: ' + e.message, 'error'); }
 });
 
 onAuthStateChanged(auth, async (user) => {
@@ -3050,14 +2168,11 @@ onAuthStateChanged(auth, async (user) => {
       loginError.style.display = 'none';
       try {
         await set(ref(db, 'users/' + user.uid), {
-          uid: user.uid,
-          displayName: user.displayName || '名無し',
-          email: user.email,
-          photoURL: user.photoURL || '',
-          updatedAt: Date.now()
+          uid: user.uid, displayName: user.displayName || '名無し',
+          email: user.email, photoURL: user.photoURL || '', updatedAt: Date.now()
         });
         if (user.email) await set(ref(db, 'userEmails/' + emailToKey(user.email)), user.uid);
-      } catch (dbErr) { console.warn('ユーザー情報の保存に失敗:', dbErr); }
+      } catch (dbErr) {}
       try { startFriendsListener(); } catch (e) {}
       try { startRequestsListener(); } catch (e) {}
       try { startInviteListener(); } catch (e) {}
@@ -3069,7 +2184,7 @@ onAuthStateChanged(auth, async (user) => {
       homeScreen.classList.add('hidden');
       editorScreen.classList.remove('active');
     }
-  } catch (e) { console.error('onAuthStateChanged error:', e); }
+  } catch (e) {}
 });
 
 function cleanupListeners() {
@@ -3078,13 +2193,11 @@ function cleanupListeners() {
   if (invitesUnsubscribe) { try { invitesUnsubscribe(); } catch(e){} invitesUnsubscribe = null; }
   if (sessionUnsubscribe) { try { sessionUnsubscribe(); } catch(e){} sessionUnsubscribe = null; }
   if (strokesUnsubscribe) { try { strokesUnsubscribe(); } catch(e){} strokesUnsubscribe = null; }
+  if (layerEventsUnsubscribe) { try { layerEventsUnsubscribe(); } catch(e){} layerEventsUnsubscribe = null; }
   if (resendRequestUnsubscribe) { try { resendRequestUnsubscribe(); } catch(e){} resendRequestUnsubscribe = null; }
   friends = {}; pendingRequests = {};
-  activeSessionId = null; activeSessionOwnerId = null;
-  sessionRole = null;
-  shownInviteIds.clear();
-  incomingInviteQueue = [];
-  isShowingInviteModal = false;
+  activeSessionId = null; activeSessionOwnerId = null; sessionRole = null;
+  shownInviteIds.clear(); incomingInviteQueue = []; isShowingInviteModal = false;
   remoteStrokesById = {};
 }
 
@@ -3092,8 +2205,7 @@ function cleanupListeners() {
 function startFriendsListener() {
   friendsUnsubscribe = onValue(ref(db, 'friends/' + currentUser.uid), (snap) => {
     friends = snap.val() || {};
-    renderFriendsList();
-    renderInviteFriendList();
+    renderFriendsList(); renderInviteFriendList();
   }, (err) => { friends = {}; renderFriendsList(); });
 }
 function startRequestsListener() {
@@ -3101,7 +2213,7 @@ function startRequestsListener() {
     try {
       const ids = snap.val() || {};
       pendingRequests = {};
-      const promises = Object.keys(ids).map(async (reqId) => {
+      await Promise.all(Object.keys(ids).map(async (reqId) => {
         try {
           const r = await get(ref(db, 'friendRequests/' + reqId));
           if (r.exists()) {
@@ -3109,14 +2221,11 @@ function startRequestsListener() {
             if (data.status === 'pending' && data.to === currentUser.uid) pendingRequests[reqId] = data;
           }
         } catch (e) {}
-      });
-      await Promise.all(promises);
-      renderRequestsPanel();
-      updateFriendBadge();
+      }));
+      renderRequestsPanel(); updateFriendBadge();
     } catch (e) {}
   });
 }
-
 function startInviteListener() {
   if (invitesUnsubscribe) { try { invitesUnsubscribe(); } catch(e){} invitesUnsubscribe = null; }
   invitesUnsubscribe = onValue(ref(db, 'sessionInvites/' + currentUser.uid), async (snap) => {
@@ -3140,49 +2249,28 @@ function startInviteListener() {
     } catch (e) {}
   });
 }
-
 function processInviteQueue() {
   if (isShowingInviteModal) return;
   if (incomingInviteQueue.length === 0) return;
   const next = incomingInviteQueue.shift();
   showIncomingInvite(next.sessionId, next.session);
 }
-
 function renderFriendsList() {
   const ids = Object.keys(friends);
   friendCount.textContent = ids.length + '人';
-  if (ids.length === 0) {
-    friendList.innerHTML = '<div class="friend-empty">まだ友達がいません。<br>メールアドレスで追加しましょう。</div>';
-    return;
-  }
+  if (ids.length === 0) { friendList.innerHTML = '<div class="friend-empty">まだ友達がいません。</div>'; return; }
   friendList.innerHTML = ids.map(uid => {
     const f = friends[uid];
     const photo = f.photoURL || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%23555%27%3E%3Ccircle cx=%2712%27 cy=%278%27 r=%274%27/%3E%3Cpath d=%27M4 20c0-4 4-6 8-6s8 2 8 6%27/%3E%3C/svg%3E';
-    return `<div class="friend-item">
-      <img src="${photo}">
-      <div class="friend-info">
-        <div class="name">${escapeHtml(f.displayName || '名無し')}</div>
-        <div class="email">${escapeHtml(f.email || '')}</div>
-      </div>
-    </div>`;
+    return `<div class="friend-item"><img src="${photo}"><div class="friend-info"><div class="name">${escapeHtml(f.displayName || '名無し')}</div><div class="email">${escapeHtml(f.email || '')}</div></div></div>`;
   }).join('');
 }
 function renderInviteFriendList() {
   const ids = Object.keys(friends);
-  if (ids.length === 0) {
-    inviteFriendList.innerHTML = '<div class="friend-empty">招待できる友達がいません。</div>';
-    return;
-  }
+  if (ids.length === 0) { inviteFriendList.innerHTML = '<div class="friend-empty">招待できる友達がいません。</div>'; return; }
   inviteFriendList.innerHTML = ids.map(uid => {
     const f = friends[uid];
-    return `<div class="friend-item">
-      <img src="${f.photoURL || ''}">
-      <div class="friend-info">
-        <div class="name">${escapeHtml(f.displayName || '名無し')}</div>
-        <div class="email">${escapeHtml(f.email || '')}</div>
-      </div>
-      <button class="invite-friend-btn" data-uid="${uid}">招待</button>
-    </div>`;
+    return `<div class="friend-item"><img src="${f.photoURL || ''}"><div class="friend-info"><div class="name">${escapeHtml(f.displayName || '名無し')}</div><div class="email">${escapeHtml(f.email || '')}</div></div><button class="invite-friend-btn" data-uid="${uid}">招待</button></div>`;
   }).join('');
   inviteFriendList.querySelectorAll('.invite-friend-btn').forEach(btn => {
     btn.addEventListener('click', () => inviteFriendToCanvas(btn.dataset.uid));
@@ -3194,22 +2282,10 @@ function renderRequestsPanel() {
   requestsPanel.style.display = 'block';
   Promise.all(ids.map(async (rid) => {
     const r = pendingRequests[rid];
-    try {
-      const uSnap = await get(ref(db, 'users/' + r.from));
-      return { rid, u: uSnap.val() || {} };
-    } catch (e) { return { rid, u: {} }; }
+    try { const uSnap = await get(ref(db, 'users/' + r.from)); return { rid, u: uSnap.val() || {} }; }
+    catch (e) { return { rid, u: {} }; }
   })).then(items => {
-    requestList.innerHTML = items.map(({rid, u}) => `
-      <div class="friend-item">
-        <img src="${u.photoURL || ''}">
-        <div class="friend-info">
-          <div class="name">${escapeHtml(u.displayName || '名無し')}</div>
-          <div class="email">${escapeHtml(u.email || '')}</div>
-        </div>
-        <button data-rid="${rid}" data-action="accept" class="accept">承認</button>
-        <button data-rid="${rid}" data-action="reject">拒否</button>
-      </div>
-    `).join('');
+    requestList.innerHTML = items.map(({rid, u}) => `<div class="friend-item"><img src="${u.photoURL || ''}"><div class="friend-info"><div class="name">${escapeHtml(u.displayName || '名無し')}</div><div class="email">${escapeHtml(u.email || '')}</div></div><button data-rid="${rid}" data-action="accept" class="accept">承認</button><button data-rid="${rid}" data-action="reject">拒否</button></div>`).join('');
     requestList.querySelectorAll('button[data-action]').forEach(btn => {
       btn.addEventListener('click', () => handleRequestAction(btn.dataset.rid, btn.dataset.action));
     });
@@ -3224,17 +2300,10 @@ async function handleRequestAction(rid, action) {
       const now = Date.now();
       const fromSnap = await get(ref(db, 'users/' + r.from));
       const toSnap = await get(ref(db, 'users/' + currentUser.uid));
-      const fromUser = fromSnap.val() || {};
-      const toUser = toSnap.val() || {};
+      const fromUser = fromSnap.val() || {}, toUser = toSnap.val() || {};
       const updates = {};
-      updates['friends/' + r.from + '/' + currentUser.uid] = {
-        uid: currentUser.uid, displayName: toUser.displayName || '',
-        email: toUser.email || '', photoURL: toUser.photoURL || '', since: now
-      };
-      updates['friends/' + currentUser.uid + '/' + r.from] = {
-        uid: r.from, displayName: fromUser.displayName || '',
-        email: fromUser.email || '', photoURL: fromUser.photoURL || '', since: now
-      };
+      updates['friends/' + r.from + '/' + currentUser.uid] = { uid: currentUser.uid, displayName: toUser.displayName || '', email: toUser.email || '', photoURL: toUser.photoURL || '', since: now };
+      updates['friends/' + currentUser.uid + '/' + r.from] = { uid: r.from, displayName: fromUser.displayName || '', email: fromUser.email || '', photoURL: fromUser.photoURL || '', since: now };
       updates['friendRequests/' + rid + '/status'] = 'accepted';
       updates['userFriendRequests/' + currentUser.uid + '/' + rid] = null;
       updates['userFriendRequests/' + r.from + '/' + rid] = null;
@@ -3259,26 +2328,18 @@ friendsBtn.addEventListener('click', () => { friendsPanel.scrollIntoView({ behav
 
 addFriendBtn.addEventListener('click', async () => {
   const email = friendEmailInput.value.trim();
-  addFriendMsg.className = 'add-friend-msg';
-  addFriendMsg.textContent = '';
+  addFriendMsg.className = 'add-friend-msg'; addFriendMsg.textContent = '';
   if (!email) { addFriendMsg.textContent = 'メールアドレスを入力してください'; addFriendMsg.classList.add('error'); return; }
   if (!currentUser || !currentUser.email) { addFriendMsg.textContent = 'ログインが必要です'; addFriendMsg.classList.add('error'); return; }
   if (email.toLowerCase() === currentUser.email.toLowerCase()) { addFriendMsg.textContent = '自分自身は追加できません'; addFriendMsg.classList.add('error'); return; }
   try {
     const key = emailToKey(email);
     const uidSnap = await get(ref(db, 'userEmails/' + key));
-    if (!uidSnap.exists()) { addFriendMsg.textContent = 'このメールアドレスのユーザーは見つかりません'; addFriendMsg.classList.add('error'); return; }
+    if (!uidSnap.exists()) { addFriendMsg.textContent = 'ユーザーが見つかりません'; addFriendMsg.classList.add('error'); return; }
     const targetUid = uidSnap.val();
     if (targetUid === currentUser.uid) { addFriendMsg.textContent = '自分自身は追加できません'; addFriendMsg.classList.add('error'); return; }
     const alreadyFriend = await get(ref(db, 'friends/' + currentUser.uid + '/' + targetUid));
     if (alreadyFriend.exists()) { addFriendMsg.textContent = '既に友達です'; addFriendMsg.classList.add('error'); return; }
-    const sentSnap = await get(ref(db, 'friendRequests'));
-    const reqs = sentSnap.val() || {};
-    const existing = Object.entries(reqs).find(([id, r]) =>
-      r.status === 'pending' &&
-      ((r.from === currentUser.uid && r.to === targetUid) || (r.from === targetUid && r.to === currentUser.uid))
-    );
-    if (existing) { addFriendMsg.textContent = '既にリクエスト送信済み'; addFriendMsg.classList.add('error'); return; }
     const newReqRef = push(ref(db, 'friendRequests'));
     const reqId = newReqRef.key;
     const updates = {};
@@ -3286,83 +2347,53 @@ addFriendBtn.addEventListener('click', async () => {
     updates['userFriendRequests/' + targetUid + '/' + reqId] = true;
     updates['userFriendRequests/' + currentUser.uid + '/' + reqId] = true;
     await update(ref(db), updates);
-    addFriendMsg.textContent = '友達リクエストを送信しました';
-    addFriendMsg.classList.add('success');
+    addFriendMsg.textContent = '友達リクエストを送信しました'; addFriendMsg.classList.add('success');
     friendEmailInput.value = '';
-  } catch (e) {
-    addFriendMsg.textContent = 'エラー: ' + e.message;
-    addFriendMsg.classList.add('error');
-  }
+  } catch (e) { addFriendMsg.textContent = 'エラー: ' + e.message; addFriendMsg.classList.add('error'); }
 });
 
 // =====================================================
 // 招待とセッション
 // =====================================================
-inviteBtn.addEventListener('click', () => {
-  if (activeSessionId) { showToast('既に共同描画セッション中です', 'error'); return; }
-  inviteModal.classList.add('show');
-});
+inviteBtn.addEventListener('click', () => { if (activeSessionId) { showToast('既に共同描画セッション中です', 'error'); return; } inviteModal.classList.add('show'); });
 inviteCancelBtn.addEventListener('click', () => { inviteModal.classList.remove('show'); });
 
 function captureCanvasSnapshot() {
   const snapshot = document.createElement('canvas');
-  snapshot.width = W;
-  snapshot.height = H;
+  snapshot.width = W; snapshot.height = H;
   const sctx = snapshot.getContext('2d');
-  sctx.fillStyle = '#ffffff';
-  sctx.fillRect(0, 0, W, H);
+  sctx.fillStyle = '#ffffff'; sctx.fillRect(0, 0, W, H);
   for (const layer of layers) {
     if (!layer.visible) continue;
-    sctx.save();
-    sctx.globalAlpha = layer.opacity;
-    sctx.drawImage(layer.canvas, 0, 0);
-    sctx.restore();
+    sctx.save(); sctx.globalAlpha = layer.opacity;
+    sctx.drawImage(layer.canvas, 0, 0); sctx.restore();
   }
-  // 640x480 に縮小、JPEG品質0.65
-  const maxDim = 640;
+  const maxDim = 800;
   let tw = W, th = H;
-  if (Math.max(W, H) > maxDim) {
-    const r = maxDim / Math.max(W, H);
-    tw = Math.round(W * r);
-    th = Math.round(H * r);
-  }
-  const small = document.createElement('canvas');
-  small.width = tw; small.height = th;
+  if (Math.max(W, H) > maxDim) { const r = maxDim / Math.max(W, H); tw = Math.round(W * r); th = Math.round(H * r); }
+  const small = document.createElement('canvas'); small.width = tw; small.height = th;
   const smctx = small.getContext('2d');
-  smctx.fillStyle = '#ffffff';
-  smctx.fillRect(0, 0, tw, th);
+  smctx.fillStyle = '#ffffff'; smctx.fillRect(0, 0, tw, th);
   smctx.drawImage(snapshot, 0, 0, tw, th);
-  return small.toDataURL('image/jpeg', 0.65);
+  return small.toDataURL('image/jpeg', 0.7);
 }
-
 async function applyCanvasSnapshot(dataURL) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
-      layers = [];
-      layerCounter = 0;
+      layers = []; layerCounter = 0;
       setInternalResolution();
-
-      // 背景（白）
       layerCounter++;
-      const bgCanvas = document.createElement('canvas');
-      bgCanvas.width = W; bgCanvas.height = H;
+      const bgCanvas = document.createElement('canvas'); bgCanvas.width = W; bgCanvas.height = H;
       const bgCtx = bgCanvas.getContext('2d', { willReadFrequently: true });
-      bgCtx.fillStyle = '#ffffff';
-      bgCtx.fillRect(0, 0, W, H);
-      const bgLayer = { id: 'layer_' + layerCounter, name: '背景', canvas: bgCanvas, ctx: bgCtx, visible: true, opacity: 1 };
-      layers.push(bgLayer);
-
-      // 共同キャンバス
+      bgCtx.fillStyle = '#ffffff'; bgCtx.fillRect(0, 0, W, H);
+      layers.push({ id: 'layer_' + layerCounter, name: '背景', canvas: bgCanvas, ctx: bgCtx, visible: true, opacity: 1 });
       layerCounter++;
-      const newCanvas = document.createElement('canvas');
-      newCanvas.width = W; newCanvas.height = H;
-      const newCtx = newCanvas.getContext('2d', { willReadFrequently: true });
-      newCtx.drawImage(img, 0, 0, W, H);
-      const newLayer = { id: 'layer_' + layerCounter, name: '共同キャンバス', canvas: newCanvas, ctx: newCtx, visible: true, opacity: 1 };
-      layers.push(newLayer);
-      activeLayerId = newLayer.id;
-
+      const nc = document.createElement('canvas'); nc.width = W; nc.height = H;
+      const nctx = nc.getContext('2d', { willReadFrequently: true });
+      nctx.drawImage(img, 0, 0, W, H);
+      layers.push({ id: 'layer_' + layerCounter, name: '共同キャンバス', canvas: nc, ctx: nctx, visible: true, opacity: 1 });
+      activeLayerId = 'layer_' + layerCounter;
       renderLayerList(); composite();
       history = []; historyIndex = -1;
       pushHistory();
@@ -3373,57 +2404,32 @@ async function applyCanvasSnapshot(dataURL) {
     img.src = dataURL;
   });
 }
-
 async function uploadCanvasSnapshotToSession(sessionId, ownerId) {
   if (!sessionId || !ownerId) return false;
   try {
     const dataURL = captureCanvasSnapshot();
-    console.log('[snapshot] upload size:', Math.round(dataURL.length / 1024), 'KB');
-    // セッションに直接保存
-    await set(ref(db, 'sessionSnapshots/' + sessionId), {
-      dataURL: dataURL,
-      ownerId: ownerId,
-      updatedAt: Date.now()
-    });
-    console.log('[snapshot] uploaded OK');
+    await set(ref(db, 'sessionSnapshots/' + sessionId), { dataURL, ownerId, updatedAt: Date.now() });
     return true;
-  } catch (e) {
-    console.error('[snapshot] upload FAILED:', e);
-    return false;
-  }
+  } catch (e) { console.error('[snapshot] upload FAILED:', e); return false; }
 }
-
 async function downloadCanvasSnapshotFromSession(sessionId, maxRetries = 3) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      console.log(`[snapshot] fetch attempt ${attempt}`);
       const snap = await get(ref(db, 'sessionSnapshots/' + sessionId));
       if (snap.exists()) {
         const data = snap.val();
-        if (data && data.dataURL) {
-          await applyCanvasSnapshot(data.dataURL);
-          console.log('[snapshot] applied OK');
-          return true;
-        }
+        if (data && data.dataURL) { await applyCanvasSnapshot(data.dataURL); return true; }
       }
-      console.warn(`[snapshot] attempt ${attempt}: no dataURL`);
-    } catch (e) {
-      console.warn(`[snapshot] attempt ${attempt} error:`, e);
-    }
+    } catch (e) {}
     if (attempt < maxRetries) await new Promise(r => setTimeout(r, 600 * attempt));
   }
   return false;
 }
-
 function startResendListener(sessionId, ownerId) {
   if (resendRequestUnsubscribe) { try { resendRequestUnsubscribe(); } catch(e){} resendRequestUnsubscribe = null; }
   resendRequestUnsubscribe = onValue(ref(db, 'snapshotResendRequests/' + sessionId), async (snap) => {
     if (snap.exists() && snap.val() === true) {
-      console.log('[snapshot] resend requested');
-      try {
-        await uploadCanvasSnapshotToSession(sessionId, ownerId);
-        await remove(ref(db, 'snapshotResendRequests/' + sessionId));
-      } catch (e) {}
+      try { await uploadCanvasSnapshotToSession(sessionId, ownerId); await remove(ref(db, 'snapshotResendRequests/' + sessionId)); } catch (e) {}
     }
   });
 }
@@ -3435,84 +2441,54 @@ async function inviteFriendToCanvas(friendUid) {
     const sessionRef = push(ref(db, 'sessions'));
     const sessionId = sessionRef.key;
     const friend = friends[friendUid];
-    const sessionData = {
-      ownerId: currentUser.uid,
-      ownerName: currentUser.displayName || '名無し',
-      guestId: friendUid,
-      guestName: friend ? friend.displayName : '名無し',
-      status: 'pending',
-      createdAt: Date.now(),
-      startedAt: null
-    };
-    await set(sessionRef, sessionData);
-    console.log('[invite] session created:', sessionId);
-
-    // スナップショットを保存
+    await set(sessionRef, {
+      ownerId: currentUser.uid, ownerName: currentUser.displayName || '名無し',
+      guestId: friendUid, guestName: friend ? friend.displayName : '名無し',
+      status: 'pending', createdAt: Date.now(), startedAt: null
+    });
     const ok = await uploadCanvasSnapshotToSession(sessionId, currentUser.uid);
     if (!ok) {
-      showToast('キャンバスの保存に失敗しました。もう一度お試しください', 'error');
+      showToast('キャンバスの保存に失敗しました', 'error');
       try { await remove(ref(db, 'sessions/' + sessionId)); } catch(e){}
       return;
     }
-
-    // 招待通知
     await set(ref(db, 'sessionInvites/' + friendUid + '/' + sessionId), true);
-    console.log('[invite] notification sent');
-
     activeSessionId = sessionId;
     activeSessionOwnerId = currentUser.uid;
     sessionRole = 'owner';
     await attachSessionListener(sessionId);
     startResendListener(sessionId, currentUser.uid);
-
     showToast(`${friend.displayName} さんに招待を送信しました`, 'success');
     inviteModal.classList.remove('show');
-  } catch (e) {
-    console.error('[invite] error:', e);
-    showToast('招待に失敗: ' + e.message, 'error');
-  } finally { showLoading(false); }
+  } catch (e) { showToast('招待に失敗: ' + e.message, 'error'); }
+  finally { showLoading(false); }
 }
 
 async function attachSessionListener(sessionId) {
   if (sessionUnsubscribe) { try { sessionUnsubscribe(); } catch(e){} sessionUnsubscribe = null; }
   sessionUnsubscribe = onValue(ref(db, 'sessions/' + sessionId), async (snap) => {
     if (!snap.exists()) {
-      if (activeSessionId === sessionId) {
-        await cleanupSession();
-        showToast('セッションが終了しました');
-      }
+      if (activeSessionId === sessionId) { await cleanupSession(); showToast('セッションが終了しました'); }
       return;
     }
     const s = snap.val();
-    if (activeSessionId !== sessionId) {
-      activeSessionId = sessionId;
-      activeSessionOwnerId = s.ownerId;
-    }
+    if (activeSessionId !== sessionId) { activeSessionId = sessionId; activeSessionOwnerId = s.ownerId; }
     if (s.status === 'active') {
       collabBadge.classList.add('show');
       collabBadgeText.textContent = `共同描画中: ${sessionRole === 'owner' ? s.guestName : s.ownerName}`;
       if (!strokesUnsubscribe) startStrokesListener(sessionId);
-    } else if (s.status === 'declined') {
-      showToast('招待が拒否されました', 'error');
-      await cleanupSession();
-    } else if (s.status === 'ended') {
-      showToast('セッションが終了しました');
-      await cleanupSession();
-    }
+      if (!layerEventsUnsubscribe) startLayerEventsListener(sessionId);
+    } else if (s.status === 'declined') { showToast('招待が拒否されました', 'error'); await cleanupSession(); }
+    else if (s.status === 'ended') { showToast('セッションが終了しました'); await cleanupSession(); }
   });
 }
 
 function showIncomingInvite(sessionId, session) {
   isShowingInviteModal = true;
   const alreadyInSession = !!activeSessionId;
-  if (alreadyInSession) {
-    incomingInviteBody.innerHTML = `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>` +
-      `<span style="color:#ffb366;">※現在、別のキャンバスで描画中です。「参加」を押すと既存を終了して切り替わります。</span><br>` +
-      `<span style="color:#5bdf8d;">参加すると相手のキャンバスの続きから描けます。</span>`;
-  } else {
-    incomingInviteBody.innerHTML = `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>` +
-      `<span style="color:#5bdf8d;">参加すると相手のキャンバスの続きから描けます。</span><br>参加しますか？`;
-  }
+  incomingInviteBody.innerHTML = `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>` +
+    `<span style="color:#5bdf8d;">参加すると相手のキャンバスの続きから描けます。</span><br>` +
+    (alreadyInSession ? '<span style="color:#ffb366;">※現在別のセッション中です。切り替わります。</span>' : '');
   const newAccept = inviteAcceptBtn.cloneNode(true);
   const newDecline = inviteDeclineBtn.cloneNode(true);
   inviteAcceptBtn.parentNode.replaceChild(newAccept, inviteAcceptBtn);
@@ -3525,26 +2501,17 @@ function showIncomingInvite(sessionId, session) {
     if (activeSessionId) await cleanupSession();
     try {
       showLoading(true);
-      console.log('[invite] accept:', sessionId);
-      // セッションを active に
       await update(ref(db, 'sessions/' + sessionId), { status: 'active', startedAt: Date.now() });
       await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId));
       shownInviteIds.delete(sessionId);
-
       activeSessionId = sessionId;
       activeSessionOwnerId = session.ownerId;
       sessionRole = 'guest';
-
-      // ★ 必ずエディタ画面へ
       showEditorScreen();
       await new Promise(r => setTimeout(r, 400));
-
-      // スナップショット取得
       showToast('相手のキャンバスを読み込んでいます...', 'success');
       let applied = await downloadCanvasSnapshotFromSession(sessionId, 3);
-
       if (!applied) {
-        console.warn('[invite] first fetch failed, requesting resend');
         showToast('再取得を試みています...', 'success');
         try {
           await set(ref(db, 'snapshotResendRequests/' + sessionId), true);
@@ -3552,23 +2519,16 @@ function showIncomingInvite(sessionId, session) {
           applied = await downloadCanvasSnapshotFromSession(sessionId, 5);
         } catch (e) {}
       }
-
       if (applied) showToast('相手のキャンバスに参加しました', 'success');
-      else showToast('キャンバスの読み込みに失敗しました', 'error');
-
+      else showToast('キャンバス読み込みに失敗しました', 'error');
       await attachSessionListener(sessionId);
       collabBadge.classList.add('show');
       collabBadgeText.textContent = '共同描画中';
       startStrokesListener(sessionId);
-    } catch (e) {
-      console.error('[invite] accept error:', e);
-      showToast('参加に失敗: ' + e.message, 'error');
-    } finally {
-      showLoading(false);
-      processInviteQueue();
-    }
+      startLayerEventsListener(sessionId);
+    } catch (e) { showToast('参加に失敗: ' + e.message, 'error'); }
+    finally { showLoading(false); processInviteQueue(); }
   });
-
   newDecline.addEventListener('click', async () => {
     incomingInviteModal.classList.remove('show');
     isShowingInviteModal = false;
@@ -3579,16 +2539,16 @@ function showIncomingInvite(sessionId, session) {
     } catch (e) {}
     processInviteQueue();
   });
-
   incomingInviteModal.classList.add('show');
 }
 
+// ===== ストロークイベント送受信 =====
 async function sendStrokeEvent(event) {
   if (!activeSessionId) return;
   try {
     const r = push(ref(db, 'strokes/' + activeSessionId));
     await set(r, { ...event, uid: currentUser.uid, timestamp: Date.now() });
-  } catch (e) { console.error('stroke送信失敗', e); }
+  } catch (e) {}
 }
 
 function startStrokesListener(sessionId) {
@@ -3601,7 +2561,6 @@ function startStrokesListener(sessionId) {
       resolve();
     }).catch(() => resolve());
   });
-
   strokesUnsubscribe = onChildAdded(strokesRef, async (childSnap) => {
     await initialLoad;
     const key = childSnap.key;
@@ -3613,39 +2572,127 @@ function startStrokesListener(sessionId) {
   });
 }
 
+// ★ リモートストロークを適用（論理座標で受信、指定レイヤーに描画）
 function applyRemoteStrokeEvent(ev) {
-  const layer = getActiveLayer();
-  if (!layer || !layer.visible) return;
-  if (ev.type === 'start') {
-    remoteStrokesById[ev.strokeId] = {
-      lastX: ev.x, lastY: ev.y,
-      color: ev.color, size: ev.size,
-      brush: ev.brush, opacity: ev.opacity, eraser: ev.eraser,
-      seed: ev.seed
-    };
-    drawStrokeToLayer(layer, ev.x, ev.y, ev.x + 0.01, ev.y, {
-      color: ev.color, size: ev.size,
-      brush: ev.brush, alpha: ev.opacity || 1, eraser: ev.eraser
-    }, ev.seed);
-    composite();
-  } else if (ev.type === 'move') {
-    const s = remoteStrokesById[ev.strokeId];
-    if (!s) return;
-    drawStrokeToLayer(layer, s.lastX, s.lastY, ev.x, ev.y, {
-      color: s.color, size: s.size,
-      brush: s.brush, alpha: s.opacity || 1, eraser: s.eraser
-    }, s.seed);
-    s.lastX = ev.x;
-    s.lastY = ev.y;
-    composite();
-  } else if (ev.type === 'end') {
-    delete remoteStrokesById[ev.strokeId];
+  isApplyingRemote = true;
+  try {
+    // 指定レイヤーを取得（存在しなければアクティブレイヤー）
+    let layer = null;
+    if (ev.layerId) layer = layers.find(l => l.id === ev.layerId);
+    if (!layer) layer = getActiveLayer();
+    if (!layer || !layer.visible) return;
+
+    if (ev.type === 'start') {
+      remoteStrokesById[ev.strokeId] = {
+        lastLogicalX: ev.x, lastLogicalY: ev.y,
+        layerId: ev.layerId,
+        color: ev.color, size: ev.size,
+        brush: ev.brush, opacity: ev.opacity, eraser: ev.eraser,
+        seed: ev.seed
+      };
+      // 論理座標で描画
+      drawStrokeToLayer(layer, ev.x, ev.y, ev.x + 0.01, ev.y, {
+        color: ev.color, size: ev.size,
+        brush: ev.brush, alpha: ev.opacity || 1, eraser: ev.eraser
+      }, ev.seed);
+      composite();
+    } else if (ev.type === 'move') {
+      const s = remoteStrokesById[ev.strokeId];
+      if (!s) return;
+      // 指定レイヤーに描画（start時と同じレイヤー）
+      let targetLayer = layers.find(l => l.id === s.layerId) || layer;
+      if (!targetLayer || !targetLayer.visible) return;
+      drawStrokeToLayer(targetLayer, s.lastLogicalX, s.lastLogicalY, ev.x, ev.y, {
+        color: s.color, size: s.size,
+        brush: s.brush, alpha: s.opacity || 1, eraser: s.eraser
+      }, s.seed);
+      s.lastLogicalX = ev.x;
+      s.lastLogicalY = ev.y;
+      composite();
+    } else if (ev.type === 'end') {
+      delete remoteStrokesById[ev.strokeId];
+    }
+  } finally {
+    isApplyingRemote = false;
+  }
+}
+
+// ===== レイヤーイベント送受信（★新規） =====
+async function sendLayerEvent(event) {
+  if (!activeSessionId) return;
+  try {
+    const r = push(ref(db, 'layerEvents/' + activeSessionId));
+    await set(r, { ...event, uid: currentUser.uid, timestamp: Date.now() });
+  } catch (e) {}
+}
+
+function startLayerEventsListener(sessionId) {
+  if (layerEventsUnsubscribe) { try { layerEventsUnsubscribe(); } catch(e){} layerEventsUnsubscribe = null; }
+  const layerEventsRef = ref(db, 'layerEvents/' + sessionId);
+  const existingKeys = new Set();
+  const initialLoad = new Promise((resolve) => {
+    get(layerEventsRef).then((snap) => {
+      if (snap.exists()) Object.keys(snap.val()).forEach(k => existingKeys.add(k));
+      resolve();
+    }).catch(() => resolve());
+  });
+  layerEventsUnsubscribe = onChildAdded(layerEventsRef, async (childSnap) => {
+    await initialLoad;
+    const key = childSnap.key;
+    if (existingKeys.has(key)) return;
+    const ev = childSnap.val();
+    if (!ev) return;
+    if (ev.uid === currentUser.uid) return;
+    applyRemoteLayerEvent(ev);
+  });
+}
+
+function applyRemoteLayerEvent(ev) {
+  isApplyingRemote = true;
+  try {
+    if (ev.type === 'add') {
+      // 新しいレイヤーを追加
+      if (layers.some(l => l.id === ev.layerId)) return;
+      const c = document.createElement('canvas'); c.width = W; c.height = H;
+      const lctx = c.getContext('2d', { willReadFrequently: true });
+      layers.push({ id: ev.layerId, name: ev.name || 'レイヤー', canvas: c, ctx: lctx, visible: true, opacity: 1 });
+      // layerCounter を更新
+      const num = parseInt((ev.layerId || '').replace('layer_', '')) || 0;
+      if (num > layerCounter) layerCounter = num;
+      renderLayerList(); composite();
+    } else if (ev.type === 'delete') {
+      const idx = layers.findIndex(l => l.id === ev.layerId);
+      if (idx === -1) return;
+      if (layers.length <= 1) return;
+      layers.splice(idx, 1);
+      if (activeLayerId === ev.layerId) {
+        activeLayerId = layers[Math.min(idx, layers.length-1)].id;
+      }
+      renderLayerList(); composite();
+    } else if (ev.type === 'visibility') {
+      const layer = layers.find(l => l.id === ev.layerId);
+      if (layer) { layer.visible = ev.visible; renderLayerList(); composite(); }
+    } else if (ev.type === 'reorder') {
+      const fromIdx = layers.findIndex(l => l.id === ev.layerId);
+      const toIdx = layers.findIndex(l => l.id === ev.targetId);
+      if (fromIdx === -1 || toIdx === -1) return;
+      const [moved] = layers.splice(fromIdx, 1);
+      let newToIdx = layers.findIndex(l => l.id === ev.targetId);
+      if (newToIdx === -1) newToIdx = layers.length - 1;
+      let insertIdx = ev.position === 'above' ? newToIdx + 1 : newToIdx;
+      insertIdx = Math.max(0, Math.min(insertIdx, layers.length));
+      layers.splice(insertIdx, 0, moved);
+      renderLayerList(); composite();
+    }
+  } finally {
+    isApplyingRemote = false;
   }
 }
 
 async function cleanupSession() {
   if (sessionUnsubscribe) { try { sessionUnsubscribe(); } catch(e){} sessionUnsubscribe = null; }
   if (strokesUnsubscribe) { try { strokesUnsubscribe(); } catch(e){} strokesUnsubscribe = null; }
+  if (layerEventsUnsubscribe) { try { layerEventsUnsubscribe(); } catch(e){} layerEventsUnsubscribe = null; }
   if (resendRequestUnsubscribe) { try { resendRequestUnsubscribe(); } catch(e){} resendRequestUnsubscribe = null; }
   remoteStrokesById = {};
   collabBadge.classList.remove('show');
@@ -3654,6 +2701,7 @@ async function cleanupSession() {
       await update(ref(db, 'sessions/' + activeSessionId), { status: 'ended' });
       await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + activeSessionId));
       await remove(ref(db, 'strokes/' + activeSessionId));
+      await remove(ref(db, 'layerEvents/' + activeSessionId));
       await remove(ref(db, 'sessionSnapshots/' + activeSessionId));
       await remove(ref(db, 'snapshotResendRequests/' + activeSessionId));
     } catch (e) {}
