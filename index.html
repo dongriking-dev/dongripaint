@@ -19,7 +19,6 @@
   button { font-family: inherit; }
   input { font-family: inherit; }
 
-  /* ===== ログイン画面 ===== */
   #loginScreen {
     position: fixed; inset: 0;
     background: linear-gradient(150deg, #2a2d34 0%, #1a1c21 100%);
@@ -59,7 +58,6 @@
     line-height: 1.5;
   }
 
-  /* ===== ホーム画面 ===== */
   #homeScreen {
     position: fixed; inset: 0;
     background: linear-gradient(150deg, #f4f6fa 0%, #dfe6f0 100%);
@@ -145,7 +143,6 @@
     border-radius: 16px; border: 1px dashed #c8d2df;
   }
 
-  /* ===== エディタ ===== */
   #editorScreen {
     position: fixed; inset: 0;
     background: #1e1f24;
@@ -1424,10 +1421,10 @@ let friendsUnsubscribe = null;
 let remoteStrokeState = {};
 let applyingRemote = false;
 
-// 招待管理（重要）
-const shownInviteIds = new Set();   // 既にモーダル表示済みの招待ID
-let incomingInviteQueue = [];       // 表示待ちの招待キュー
-let isShowingInviteModal = false;   // モーダル表示中フラグ
+// 招待管理
+const shownInviteIds = new Set();
+let incomingInviteQueue = [];
+let isShowingInviteModal = false;
 
 let lastStrokeSentTime = 0;
 let lastStrokeSentX = 0, lastStrokeSentY = 0;
@@ -3257,9 +3254,7 @@ function startRequestsListener() {
   });
 }
 
-// ===== 招待リスナー（超重要）=====
-// 相手が別のキャンバスを開いていても通知が届くように、
-// ログイン直後から常時 sessionInvites/{uid} を監視する
+// ===== 招待リスナー =====
 function startInviteListener() {
   if (invitesUnsubscribe) {
     try { invitesUnsubscribe(); } catch(e) {}
@@ -3268,10 +3263,8 @@ function startInviteListener() {
   invitesUnsubscribe = onValue(ref(db, 'sessionInvites/' + currentUser.uid), async (snap) => {
     try {
       const invites = snap.val() || {};
-      // invites: { sessionId: true, ... } または削除済み
       const sessionIds = Object.keys(invites).filter(id => invites[id] === true);
       
-      // 新しい招待を抽出してキューへ
       for (const sid of sessionIds) {
         if (shownInviteIds.has(sid)) continue;
         try {
@@ -3298,7 +3291,6 @@ function startInviteListener() {
   });
 }
 
-// キューから1件ずつモーダル表示
 function processInviteQueue() {
   if (isShowingInviteModal) return;
   if (incomingInviteQueue.length === 0) return;
@@ -3476,14 +3468,126 @@ addFriendBtn.addEventListener('click', async () => {
   }
 });
 
-// ===== 招待 =====
+// =====================================================
+// ===== 招待（相手のキャンバス状態も共有）=====
+// =====================================================
 inviteBtn.addEventListener('click', () => {
   if (activeSessionId) { showToast('既に共同描画セッション中です', 'error'); return; }
   inviteModal.classList.add('show');
 });
 inviteCancelBtn.addEventListener('click', () => {
+  inviteModal.classList.remove('modal-overlay.show');
   inviteModal.classList.remove('show');
 });
+
+// キャンバスの状態をスナップショットとして保存
+function captureCanvasSnapshot() {
+  // 全レイヤーを1枚の合成画像にする（背景含む）
+  const snapshot = document.createElement('canvas');
+  snapshot.width = W;
+  snapshot.height = H;
+  const sctx = snapshot.getContext('2d');
+  // 白背景
+  sctx.fillStyle = '#ffffff';
+  sctx.fillRect(0, 0, W, H);
+  // 各レイヤーを順番に描画
+  for (const layer of layers) {
+    if (!layer.visible) continue;
+    sctx.save();
+    sctx.globalAlpha = layer.opacity;
+    sctx.drawImage(layer.canvas, 0, 0);
+    sctx.restore();
+  }
+  return snapshot.toDataURL('image/png');
+}
+
+// スナップショットを自分のキャンバスに適用
+async function applyCanvasSnapshot(dataURL) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      // 既存のレイヤーを全て破棄し、1つの画像レイヤーとして読み込む
+      layers = [];
+      layerCounter = 0;
+      setInternalResolution();
+      
+      // 背景レイヤー（白）
+      layerCounter++;
+      const bgCanvas = document.createElement('canvas');
+      bgCanvas.width = W; bgCanvas.height = H;
+      const bgCtx = bgCanvas.getContext('2d', { willReadFrequently: true });
+      bgCtx.fillStyle = '#ffffff';
+      bgCtx.fillRect(0, 0, W, H);
+      const bgLayer = {
+        id: 'layer_' + layerCounter,
+        name: '背景',
+        canvas: bgCanvas, ctx: bgCtx,
+        visible: true, opacity: 1
+      };
+      layers.push(bgLayer);
+      
+      // 相手のキャンバスを1枚のレイヤーとして読み込む
+      layerCounter++;
+      const newCanvas = document.createElement('canvas');
+      newCanvas.width = W; newCanvas.height = H;
+      const newCtx = newCanvas.getContext('2d', { willReadFrequently: true });
+      newCtx.drawImage(img, 0, 0, W, H);
+      const newLayer = {
+        id: 'layer_' + layerCounter,
+        name: '相手のキャンバス',
+        canvas: newCanvas, ctx: newCtx,
+        visible: true, opacity: 1
+      };
+      layers.push(newLayer);
+      activeLayerId = newLayer.id;
+      
+      renderLayerList(); composite();
+      history = []; historyIndex = -1;
+      pushHistory();
+      requestAnimationFrame(() => requestAnimationFrame(() => autoFitCanvas()));
+      resolve();
+    };
+    img.onerror = (err) => reject(err);
+    img.src = dataURL;
+  });
+}
+
+// オーナー側：自分のキャンバススナップショットをセッションに保存
+async function uploadCanvasSnapshotToSession(sessionId) {
+  if (!sessionId) return;
+  try {
+    const dataURL = captureCanvasSnapshot();
+    // Realtime Database は1回の書き込みサイズに注意（大きい画像は分割が必要）
+    // データURLは base64 で約 1.33倍になるため、大きい画像は厳しい
+    // ここでは W=900 × H=675 のキャンバスを PNG にして送る（数十KB〜数百KB程度）
+    await set(ref(db, 'sessionSnapshots/' + sessionId), {
+      dataURL: dataURL,
+      updatedAt: Date.now(),
+      ownerId: currentUser.uid
+    });
+    console.log('[snapshot] uploaded', sessionId, 'size:', dataURL.length);
+  } catch (e) {
+    console.error('スナップショット保存失敗:', e);
+  }
+}
+
+// ゲスト側：セッションのスナップショットを自分のキャンバスに読み込む
+async function downloadCanvasSnapshotFromSession(sessionId) {
+  try {
+    const snap = await get(ref(db, 'sessionSnapshots/' + sessionId));
+    if (snap.exists()) {
+      const data = snap.val();
+      if (data && data.dataURL) {
+        await applyCanvasSnapshot(data.dataURL);
+        console.log('[snapshot] applied', sessionId);
+        return true;
+      }
+    }
+  } catch (e) {
+    console.error('スナップショット取得失敗:', e);
+  }
+  return false;
+}
 
 async function inviteFriendToCanvas(friendUid) {
   if (activeSessionId) { showToast('既に共同描画セッション中です', 'error'); return; }
@@ -3502,6 +3606,10 @@ async function inviteFriendToCanvas(friendUid) {
       startedAt: null
     };
     await set(sessionRef, sessionData);
+
+    // ★ 自分のキャンバスのスナップショットをセッションに保存
+    await uploadCanvasSnapshotToSession(sessionId);
+
     // 招待通知を送信
     await set(ref(db, 'sessionInvites/' + friendUid + '/' + sessionId), true);
     // 自分のセッションとして登録
@@ -3546,7 +3654,7 @@ async function attachSessionListener(sessionId) {
   });
 }
 
-// ===== 招待モーダル表示 =====
+// ===== 招待モーダル =====
 function showIncomingInvite(sessionId, session) {
   isShowingInviteModal = true;
   
@@ -3555,10 +3663,12 @@ function showIncomingInvite(sessionId, session) {
   if (alreadyInSession) {
     incomingInviteBody.innerHTML = 
       `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>` +
-      `<span style="color:#ffb366;">※現在、別のキャンバスで描画中です。「参加」を押すと既存のセッションを終了して切り替わります。</span>`;
+      `<span style="color:#ffb366;">※現在、別のキャンバスで描画中です。「参加」を押すと既存のセッションを終了して切り替わります。</span><br>` +
+      `<span style="color:#5bdf8d;">参加すると相手のキャンバスの続きから描けます。</span>`;
   } else {
     incomingInviteBody.innerHTML = 
-      `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>参加しますか？`;
+      `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br>` +
+      `<span style="color:#5bdf8d;">参加すると相手のキャンバスの続きから描けます。</span><br>参加しますか？`;
   }
   
   const newAccept = inviteAcceptBtn.cloneNode(true);
@@ -3566,34 +3676,40 @@ function showIncomingInvite(sessionId, session) {
   inviteAcceptBtn.parentNode.replaceChild(newAccept, inviteAcceptBtn);
   inviteDeclineBtn.parentNode.replaceChild(newDecline, inviteDeclineBtn);
   
-  if (alreadyInSession) {
-    newAccept.textContent = '既存を終了して参加';
-  } else {
-    newAccept.textContent = '参加';
-  }
+  newAccept.textContent = alreadyInSession ? '既存を終了して参加' : '参加';
 
   newAccept.addEventListener('click', async () => {
     incomingInviteModal.classList.remove('show');
     isShowingInviteModal = false;
     
-    // 既存セッションをクリーンアップ
     if (activeSessionId) {
       await cleanupSession();
     }
     
     try {
       showLoading(true);
+      
+      // ★ セッションを active に更新
       await update(ref(db, 'sessions/' + sessionId), { status: 'active', startedAt: Date.now() });
       await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId));
       shownInviteIds.delete(sessionId);
       
       activeSessionId = sessionId;
       sessionRole = 'guest';
+      
+      // ★ 相手のキャンバスのスナップショットを読み込む
+      showToast('相手のキャンバスを読み込んでいます...', 'success');
+      const applied = await downloadCanvasSnapshotFromSession(sessionId);
+      if (applied) {
+        showToast('相手のキャンバスに参加しました', 'success');
+      } else {
+        showToast('キャンバスの読み込みに失敗しました。白紙から開始します', 'error');
+      }
+      
       await attachSessionListener(sessionId);
       collabBadge.classList.add('show');
       collabBadgeText.textContent = '共同描画中';
       startStrokesListener(sessionId);
-      showToast('セッションに参加しました', 'success');
     } catch (e) {
       console.error(e);
       showToast('参加に失敗: ' + e.message, 'error');
@@ -3697,6 +3813,7 @@ async function cleanupSession() {
       await update(ref(db, 'sessions/' + activeSessionId), { status: 'ended' });
       await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + activeSessionId));
       await remove(ref(db, 'strokes/' + activeSessionId));
+      await remove(ref(db, 'sessionSnapshots/' + activeSessionId));
     } catch (e) {}
   }
   activeSessionId = null;
