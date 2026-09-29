@@ -123,6 +123,7 @@
   .zoom-btn { width: 34px; height: 34px; border-radius: 6px; background: transparent; border: none; color: #c8cdd6; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .zoom-btn:hover { background: #3b4048; color: #fff; }
 
+  /* ★ チャットパネル */
   .chat-panel { position: absolute; bottom: 70px; right: 16px; width: 320px; max-height: 460px; background: #2b2d33; border: 1px solid #383b42; border-radius: 14px; display: none; flex-direction: column; z-index: 60; box-shadow: 0 12px 40px rgba(0,0,0,0.55); overflow: hidden; }
   .chat-panel.show { display: flex; }
   .chat-header { padding: 10px 14px; background: #232529; border-bottom: 1px solid #383b42; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
@@ -139,11 +140,14 @@
   .chat-msg.self { flex-direction: row-reverse; }
   .chat-msg.self .bubble { background: #3b6fd4; color: #fff; }
   .chat-msg.self .meta { justify-content: flex-end; }
+  .chat-msg.system { justify-content: center; }
+  .chat-msg.system .bubble { background: transparent; color: #8592a3; font-size: 0.7rem; padding: 2px 8px; }
   .chat-input-row { display: flex; gap: 6px; padding: 10px; border-top: 1px solid #383b42; background: #232529; flex-shrink: 0; }
   .chat-input-row input { flex: 1; background: #1e1f24; border: 1px solid #383b42; color: #e6e7ea; padding: 8px 12px; border-radius: 8px; font-size: 0.8rem; outline: none; min-width: 0; }
   .chat-input-row input:focus { border-color: #5b8def; }
   .chat-input-row button { background: #5b8def; border: none; color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 0.78rem; cursor: pointer; flex-shrink: 0; font-weight: 600; }
   .chat-input-row button:hover { background: #4a7bdb; }
+  .chat-input-row button:disabled { opacity: 0.4; cursor: not-allowed; }
 
   .right-panels { width: 280px; background: #26282e; border-left: 1px solid #2c2e34; overflow-y: auto; flex-shrink: 0; padding: 14px; display: flex; flex-direction: column; gap: 14px; z-index: 15; }
   .panel { background: #2b2d33; border-radius: 12px; border: 1px solid #383b42; padding: 14px; color: #d0d4dc; font-size: 0.82rem; }
@@ -347,6 +351,7 @@
         <button class="zoom-btn" id="zoomResetBtn">⛶</button>
       </div>
 
+      <!-- ★ チャットパネル -->
       <div class="chat-panel" id="chatPanel">
         <div class="chat-header">
           <div class="title"><div class="chat-dot"></div><span>セッチャット</span></div>
@@ -439,8 +444,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-const STORAGE_KEY_INDEX = 'drawingApp_works_index_v15';
-const STORAGE_KEY_WORK_PREFIX = 'drawingApp_work_v15_';
+const STORAGE_KEY_INDEX = 'drawingApp_works_index_v14';
+const STORAGE_KEY_WORK_PREFIX = 'drawingApp_work_v14_';
 const BASE_W = 900, BASE_H = 675;
 
 const $ = (id) => document.getElementById(id);
@@ -482,6 +487,7 @@ const inviteBtn = $('inviteBtn'), inviteModal = $('inviteModal'), inviteFriendLi
 const incomingInviteModal = $('incomingInviteModal'), incomingInviteBody = $('incomingInviteBody');
 const inviteAcceptBtn = $('inviteAcceptBtn'), inviteDeclineBtn = $('inviteDeclineBtn');
 const logoutModal = $('logoutModal'), logoutCancelBtn = $('logoutCancelBtn'), logoutConfirmBtn = $('logoutConfirmBtn');
+// ★ チャット関連
 const chatBtn = $('chatBtn'), chatBadge = $('chatBadge'), chatPanel = $('chatPanel'), chatCloseBtn = $('chatCloseBtn');
 const chatMessages = $('chatMessages'), chatInput = $('chatInput'), chatSendBtn = $('chatSendBtn');
 
@@ -508,12 +514,10 @@ let pinchState = null;
 const pointerState = new Map();
 let imageEditState = null;
 
+// 点線ペン用
 let dottedAccumulated = 0;
 
-// ★ リモート描画専用の「非Undo対象」レイヤーを追跡
-// 各ローカルレイヤーについて、リモートストロークの開始前状態を保存
-let remoteStrokeSnapshots = {}; // { [layerId]: ImageData } 現在描画中のリモートストロークのレイヤー初期状態
-
+// 多人数対応
 let friends = {}, pendingRequests = {};
 let activeSessionId = null, activeSessionOwnerId = null, sessionRole = null;
 let sessionUnsubscribe = null, strokesUnsubscribe = null, layerEventsUnsubscribe = null, historyEventsUnsubscribe = null;
@@ -527,6 +531,7 @@ let isApplyingRemoteHistory = false;
 let myCurrentStrokeId = null, myCurrentStrokeSeed = null, myLastSentLogical = null;
 const STROKE_MIN_LOGICAL_DIST = 2;
 
+// チャット状態
 let chatOpen = false;
 let chatUnreadCount = 0;
 let chatInitialLoaded = false;
@@ -535,10 +540,6 @@ const chatRenderedKeys = new Set();
 const shownInviteIds = new Set();
 let incomingInviteQueue = [];
 let isShowingInviteModal = false;
-
-// ★ 履歴の所有者管理：自分のスナップショットだけUndoできる
-// history[] には { ownerUid, layers, activeLayerId, layerCounter, W, H } を格納
-// Undo/Redo は ownerUid === currentUser.uid のもののみ移動
 
 function mulberry32(seed) {
   return function() {
@@ -631,7 +632,7 @@ function getWorksIndex() { try { const raw = localStorage.getItem(STORAGE_KEY_IN
 function setWorksIndex(index) { try { localStorage.setItem(STORAGE_KEY_INDEX, JSON.stringify(index)); } catch (e) {} }
 function serializeCurrentWork() {
   const serializedLayers = layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, opacity: l.opacity, dataURL: l.canvas.toDataURL('image/png') }));
-  return { version: 15, baseWidth: BASE_W, baseHeight: BASE_H, width: W, height: H, layers: serializedLayers, activeLayerId, layerCounter, savedAt: Date.now(), title: artTitleEl.textContent || '無題の作品' };
+  return { version: 14, baseWidth: BASE_W, baseHeight: BASE_H, width: W, height: H, layers: serializedLayers, activeLayerId, layerCounter, savedAt: Date.now(), title: artTitleEl.textContent || '無題の作品' };
 }
 function generateThumbnail(maxSize) {
   const tmp = document.createElement('canvas');
@@ -825,43 +826,19 @@ function reorderLayers(fromId, toId, position) {
   renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
 }
 
-// ★ 履歴：自分の操作のみ記録
 function pushHistory() {
   if (isLoading || isApplyingRemoteHistory) return;
   const snapshot = layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, opacity: l.opacity, dataURL: l.canvas.toDataURL('image/png') }));
-  const state = { ownerUid: currentUser ? currentUser.uid : null, layers: snapshot, activeLayerId, layerCounter, W, H };
-  // 直前の履歴が同じ内容なら追加しない
-  if (historyIndex >= 0) {
-    const prev = history[historyIndex];
-    if (prev && JSON.stringify(prev.layers) === JSON.stringify(state.layers) && prev.activeLayerId === state.activeLayerId) return;
-  }
+  const state = { layers: snapshot, activeLayerId, layerCounter, W, H };
+  if (historyIndex >= 0 && JSON.stringify(history[historyIndex]) === JSON.stringify(state)) return;
   history = history.slice(0, historyIndex + 1);
   history.push(state);
   if (history.length > MAX_HISTORY) history.shift();
   historyIndex = history.length - 1;
   updateUndoRedo();
   if (activeSessionId && !isApplyingRemoteHistory) {
-    sendHistoryEvent({ type: 'push', ownerUid: state.ownerUid, layersSnapshot: snapshot, activeLayerId, layerCounter, W, H });
+    sendHistoryEvent({ type: 'push', index: historyIndex, layersSnapshot: snapshot, activeLayerId, layerCounter, W, H });
   }
-}
-// ★ 自分の履歴（ownerUid === currentUser.uid）のみUndo可能
-function findPrevOwnHistoryIndex(fromIdx) {
-  for (let i = fromIdx - 1; i >= 0; i--) {
-    if (history[i] && history[i].ownerUid === currentUser.uid) return i;
-  }
-  return -1;
-}
-function findNextOwnHistoryIndex(fromIdx) {
-  for (let i = fromIdx + 1; i < history.length; i++) {
-    if (history[i] && history[i].ownerUid === currentUser.uid) return i;
-  }
-  return -1;
-}
-function updateUndoRedo() {
-  const prevIdx = findPrevOwnHistoryIndex(historyIndex);
-  const nextIdx = findNextOwnHistoryIndex(historyIndex);
-  undoBtn.disabled = prevIdx < 0;
-  redoBtn.disabled = nextIdx < 0;
 }
 async function restoreHistory(idx, options = {}) {
   if (idx < 0 || idx >= history.length) return;
@@ -883,10 +860,10 @@ async function restoreHistory(idx, options = {}) {
   renderLayerList(); composite(); updateUndoRedo();
   scheduleAutoSave();
   if (activeSessionId && !options.silent) {
-    // ★ 自分がUndoした時だけ他参加者に通知（"自分の描画を消した" ことを共有）
-    sendHistoryEvent({ type: 'jump', ownerUid: currentUser.uid, index: idx, layersSnapshot: state.layers, activeLayerId: state.activeLayerId, layerCounter: state.layerCounter, W: state.W, H: state.H });
+    sendHistoryEvent({ type: 'jump', index: idx, layersSnapshot: state.layers, activeLayerId: state.activeLayerId, layerCounter: state.layerCounter, W: state.W, H: state.H });
   }
 }
+function updateUndoRedo() { undoBtn.disabled = historyIndex <= 0; redoBtn.disabled = historyIndex >= history.length - 1; }
 function composite() {
   ctx.clearRect(0, 0, W, H);
   for (const layer of layers) {
@@ -1614,15 +1591,8 @@ addLayerBtn.addEventListener('click', () => {
 });
 dupLayerBtn.addEventListener('click', () => { if (activeLayerId) duplicateLayer(activeLayerId); });
 mergeDownBtn.addEventListener('click', () => { if (activeLayerId) { if (getLayerIndex(activeLayerId) === 0) { showToast('一番下のレイヤーは結合できません', 'error'); return; } mergeDown(activeLayerId); } });
-// ★ Undo/Redo は自分の操作のみ
-undoBtn.addEventListener('click', () => {
-  const prevIdx = findPrevOwnHistoryIndex(historyIndex);
-  if (prevIdx >= 0) restoreHistory(prevIdx);
-});
-redoBtn.addEventListener('click', () => {
-  const nextIdx = findNextOwnHistoryIndex(historyIndex);
-  if (nextIdx >= 0) restoreHistory(nextIdx);
-});
+undoBtn.addEventListener('click', () => { if (historyIndex > 0) restoreHistory(historyIndex - 1); });
+redoBtn.addEventListener('click', () => { if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1); });
 artTitleEl.addEventListener('dblclick', () => { const newTitle = prompt('作品タイトルを入力', artTitleEl.textContent); if (newTitle !== null && newTitle.trim() !== '') { artTitleEl.textContent = newTitle.trim(); scheduleAutoSave(); } });
 
 newArtBtn.addEventListener('click', () => createNewWork(null));
@@ -1651,8 +1621,8 @@ window.addEventListener('paste', (e) => {
 window.addEventListener('keydown', (e) => {
   if (!editorScreen.classList.contains('active')) return;
   if (imageEditState) { if (e.key === 'Escape') { e.preventDefault(); cancelImageEdit(); return; } if (e.key === 'Enter') { e.preventDefault(); confirmImageEdit(); return; } }
-  if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); if (e.shiftKey) { const nextIdx = findNextOwnHistoryIndex(historyIndex); if (nextIdx >= 0) restoreHistory(nextIdx); } else { const prevIdx = findPrevOwnHistoryIndex(historyIndex); if (prevIdx >= 0) restoreHistory(prevIdx); } }
-  else if ((e.ctrlKey || e.metaKey) && e.key === 'y') { e.preventDefault(); const nextIdx = findNextOwnHistoryIndex(historyIndex); if (nextIdx >= 0) restoreHistory(nextIdx); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); if (e.shiftKey) { if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1); } else { if (historyIndex > 0) restoreHistory(historyIndex - 1); } }
+  else if ((e.ctrlKey || e.metaKey) && e.key === 'y') { e.preventDefault(); if (historyIndex < history.length - 1) restoreHistory(historyIndex + 1); }
   else if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveBtn.click(); }
 });
 window.addEventListener('beforeunload', () => { if (editorScreen.classList.contains('active')) flushSaveSync(); });
@@ -1661,31 +1631,58 @@ window.addEventListener('pagehide', () => { if (editorScreen.classList.contains(
 window.addEventListener('resize', () => { if (editorScreen.classList.contains('active')) { updateZoomUI(); if (imageEditState) updateImageEditBox(); } });
 
 // =====================================================
-// チャット
+// ★ チャット機能
 // =====================================================
 chatBtn.addEventListener('click', () => {
   if (!activeSessionId) { showToast('共同描画セッションに参加するとチャットできます', 'error'); return; }
   chatOpen = !chatOpen;
   chatPanel.classList.toggle('show', chatOpen);
-  if (chatOpen) { chatUnreadCount = 0; updateChatBadge(); chatInput.focus(); scrollChatToBottom(); }
+  if (chatOpen) {
+    chatUnreadCount = 0;
+    updateChatBadge();
+    chatInput.focus();
+    scrollChatToBottom();
+  }
 });
-chatCloseBtn.addEventListener('click', () => { chatOpen = false; chatPanel.classList.remove('show'); });
+chatCloseBtn.addEventListener('click', () => {
+  chatOpen = false;
+  chatPanel.classList.remove('show');
+});
 chatSendBtn.addEventListener('click', sendChatMessage);
-chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); } });
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); }
+});
+
 async function sendChatMessage() {
   if (!activeSessionId) return;
-  const text = chatInput.value.trim(); if (!text) return;
+  const text = chatInput.value.trim();
+  if (!text) return;
   chatInput.value = '';
   try {
     const msgRef = push(ref(db, 'chats/' + activeSessionId));
-    await set(msgRef, { uid: currentUser.uid, displayName: currentUser.displayName || '名無し', photoURL: currentUser.photoURL || '', text, timestamp: Date.now() });
+    await set(msgRef, {
+      uid: currentUser.uid,
+      displayName: currentUser.displayName || '名無し',
+      photoURL: currentUser.photoURL || '',
+      text: text,
+      timestamp: Date.now()
+    });
   } catch (e) { showToast('送信に失敗しました', 'error'); }
 }
+
 function updateChatBadge() {
-  if (chatUnreadCount > 0) { chatBadge.textContent = chatUnreadCount > 99 ? '99+' : chatUnreadCount; chatBadge.classList.add('show'); }
-  else chatBadge.classList.remove('show');
+  if (chatUnreadCount > 0) {
+    chatBadge.textContent = chatUnreadCount > 99 ? '99+' : chatUnreadCount;
+    chatBadge.classList.add('show');
+  } else {
+    chatBadge.classList.remove('show');
+  }
 }
-function scrollChatToBottom() { chatMessages.scrollTop = chatMessages.scrollHeight; }
+
+function scrollChatToBottom() {
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
 function renderChatMessage(key, msg) {
   if (chatRenderedKeys.has(key)) return;
   chatRenderedKeys.add(key);
@@ -1697,18 +1694,26 @@ function renderChatMessage(key, msg) {
   avatar.className = 'avatar';
   avatar.src = msg.photoURL || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%23555%27%3E%3Ccircle cx=%2712%27 cy=%278%27 r=%274%27/%3E%3C/svg%3E';
   const bubbleWrap = document.createElement('div');
-  const meta = document.createElement('div'); meta.className = 'meta';
+  const meta = document.createElement('div');
+  meta.className = 'meta';
   meta.innerHTML = `<span>${escapeHtml(msg.displayName || '名無し')}</span><span>${formatChatTime(msg.timestamp)}</span>`;
-  const bubble = document.createElement('div'); bubble.className = 'bubble'; bubble.textContent = msg.text;
-  bubbleWrap.appendChild(meta); bubbleWrap.appendChild(bubble);
-  div.appendChild(avatar); div.appendChild(bubbleWrap);
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.textContent = msg.text;
+  bubbleWrap.appendChild(meta);
+  bubbleWrap.appendChild(bubble);
+  div.appendChild(avatar);
+  div.appendChild(bubbleWrap);
   chatMessages.appendChild(div);
 }
+
 function startChatListener(sessionId) {
   if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e){} chatUnsubscribe = null; }
-  chatInitialLoaded = false; chatRenderedKeys.clear();
+  chatInitialLoaded = false;
+  chatRenderedKeys.clear();
   chatMessages.innerHTML = '<div class="chat-empty">まだメッセージはありません。最初のメッセージを送ってみましょう！</div>';
   const chatRef = ref(db, 'chats/' + sessionId);
+  // 初回全件読み込み
   get(chatRef).then((snap) => {
     if (snap.exists()) {
       const data = snap.val();
@@ -1718,14 +1723,22 @@ function startChatListener(sessionId) {
       scrollChatToBottom();
     }
     chatInitialLoaded = true;
+    // 以降の新規メッセージを購読
     chatUnsubscribe = onChildAdded(chatRef, (childSnap) => {
       if (!chatInitialLoaded) return;
-      const key = childSnap.key; if (chatRenderedKeys.has(key)) return;
-      const msg = childSnap.val(); if (!msg) return;
-      const emptyEl = chatMessages.querySelector('.chat-empty'); if (emptyEl) emptyEl.remove();
+      const key = childSnap.key;
+      if (chatRenderedKeys.has(key)) return;
+      const msg = childSnap.val();
+      if (!msg) return;
+      // 空表示を除去
+      const emptyEl = chatMessages.querySelector('.chat-empty');
+      if (emptyEl) emptyEl.remove();
       renderChatMessage(key, msg);
       scrollChatToBottom();
-      if (msg.uid !== currentUser.uid && !chatOpen) { chatUnreadCount++; updateChatBadge(); }
+      if (msg.uid !== currentUser.uid && !chatOpen) {
+        chatUnreadCount++;
+        updateChatBadge();
+      }
     });
   }).catch((e) => { console.error('[chat] load error', e); });
 }
@@ -1784,7 +1797,7 @@ function cleanupListeners() {
   friends = {}; pendingRequests = {};
   activeSessionId = null; activeSessionOwnerId = null; sessionRole = null;
   shownInviteIds.clear(); incomingInviteQueue = []; isShowingInviteModal = false;
-  remoteStrokesById = {}; remoteStrokeSnapshots = {};
+  remoteStrokesById = {};
   selectedInviteUids.clear();
   participantsBar.classList.remove('show'); participantsBar.innerHTML = '';
   chatOpen = false; chatPanel.classList.remove('show'); chatUnreadCount = 0; updateChatBadge();
@@ -2177,35 +2190,32 @@ function startHistoryEventsListener(sessionId) {
     await applyRemoteHistoryEvent(ev);
   });
 }
-// ★ 他参加者のUndo/Redo受信：相手が自分の描画を消した場合のみ反映
 async function applyRemoteHistoryEvent(ev) {
-  if (ev.type !== 'jump' && ev.type !== 'push') return;
-  // "push" は履歴の同期のみ。自分の描画はそのまま。
-  // "jump" は他参加者が「自分の描画を戻した」操作。ローカルで該当スナップショットに切り替える。
-  if (ev.type === 'jump') {
-    // 相手が自分自身の履歴を戻した → 相手の描画のみが変わる
-    // こちらは既に相手のストロークを「非Undo」として保持しているため、
-    // 相手のスナップショットにローカル履歴を差し替えると自分の描画も消えてしまう。
-    //
-    // そこで「相手のスナップショット」と「ローカルの現在のレイヤー」を合成するのではなく、
-    // 相手のスナップショットに自分の描画を復元する方式を採用。
-    //
-    // シンプルにするため、他参加者のUndoは「ストローク単位の取り消しイベント」として扱い、
-    // 相手のスナップショットをそのまま適用しつつ、自分の現在の状態を保持する。
-    //
-    // → 本実装では「相手のスナップショットをそのまま適用」する。自分の描画は相手の画面には
-    //    もともと自分のストロークとして送信済みなので、相手のスナップショットには含まれていない。
-    //    よって相手のUndoでは自分の描画は消えない。
+  if (ev.type === 'jump' || ev.type === 'push') {
     isApplyingRemoteHistory = true;
     try {
       const snapshot = ev.layersSnapshot;
       if (!Array.isArray(snapshot) || snapshot.length === 0) return;
-      // 自分のローカル履歴はそのまま。他参加者のスナップショットを適用すると自分の描画が消える危険があるため、
-      // ここでは何もしない（自分のUndoは自分の履歴で独立して動作する）
-      // 他参加者のUndoは「相手の画面でのみ」反映されるべきなので、ローカルでは無視する。
-      // ただし、相手のストロークが消えるため、それを再現したい場合は個別の strokeId 単位での取り消しが必要。
-      // 本実装では「自分のUndoで他参加者の描画は消えない」を達成するため、他参加者の Undo イベントは無視する。
-    } finally { isApplyingRemoteHistory = false; }
+      if (ev.W && ev.H && (ev.W !== W || ev.H !== H)) { W = ev.W; H = ev.H; canvas.width = W; canvas.height = H; applyCanvasCSSSize(); }
+      isLoading = true;
+      const loadPromises = snapshot.map(layerData => new Promise(resolve => {
+        const c = document.createElement('canvas'); c.width = W; c.height = H;
+        const lctx = c.getContext('2d', { willReadFrequently: true });
+        const img = new Image();
+        const finalize = () => resolve({ id: layerData.id, name: layerData.name, canvas: c, ctx: lctx, visible: layerData.visible, opacity: layerData.opacity });
+        img.onload = () => { lctx.drawImage(img, 0, 0, W, H); finalize(); };
+        img.onerror = finalize;
+        img.src = layerData.dataURL;
+      }));
+      layers = await Promise.all(loadPromises);
+      activeLayerId = ev.activeLayerId || layers[layers.length - 1].id;
+      layerCounter = ev.layerCounter || layerCounter;
+      renderLayerList(); composite();
+      if (typeof ev.index === 'number') historyIndex = ev.index;
+      updateUndoRedo();
+      isLoading = false;
+    } catch (e) { isLoading = false; }
+    finally { isApplyingRemoteHistory = false; }
   }
 }
 async function cleanupSession() {
@@ -2215,7 +2225,7 @@ async function cleanupSession() {
   if (historyEventsUnsubscribe) { try { historyEventsUnsubscribe(); } catch(e){} historyEventsUnsubscribe = null; }
   if (resendRequestUnsubscribe) { try { resendRequestUnsubscribe(); } catch(e){} resendRequestUnsubscribe = null; }
   if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e){} chatUnsubscribe = null; }
-  remoteStrokesById = {}; remoteStrokeSnapshots = {};
+  remoteStrokesById = {};
   collabBadge.classList.remove('show');
   participantsBar.classList.remove('show'); participantsBar.innerHTML = '';
   chatOpen = false; chatPanel.classList.remove('show'); chatUnreadCount = 0; updateChatBadge();
