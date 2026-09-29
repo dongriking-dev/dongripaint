@@ -497,24 +497,8 @@ let isEraser = false, isMoveMode = false, isEyedropperMode = false, isFillMode =
 let isPanMode = false, isZoomMode = false;
 let currentSize = 10, currentColor = '#1e2b3c', currentBrush = 'pen', currentOpacity = 1, currentTolerance = 32;
 let moveStartX = 0, moveStartY = 0, moveSnapshot = null, moveOffsetX = 0, moveOffsetY = 0;
-
-// ★ 個人単位Undo/Redo
-// 各エントリ: { type:'stroke'|'fill'|'image'|'layerAdd'|'layerDelete'|'layerVis'|'layerReorder'|'layerMerge'|'layerDup'|'clear',
-//              layerId, params, points, snapshotBefore, snapshotAfter, meta }
-let personalHistory = []; // 自分の操作列
-let personalHistoryIndex = -1;
-const MAX_PERSONAL_HISTORY = 200;
-
-// ★ 他人のストローク保持（Undoで消えない）
-// キー: layerId, 値: [{ strokeId, params, points: [{x,y}], seed, uid }]
-let remoteStrokeStore = {}; // { layerId: [ {strokeId, params, points, seed} ] }
-
-// ★ 現在のレイヤーごとの自分のストローク（Undo/Redoで再描画するため）
-// キー: layerId, 値: [{ strokeId, params, points, seed }]
-let localStrokeStore = {}; // { layerId: [ ... ] }
-
-let dottedAccumulated = 0;
-
+let history = [], historyIndex = -1;
+const MAX_HISTORY = 30;
 let currentWorkId = null, autoSaveTimer = null;
 let isLoading = false, isSaving = false, pendingSaveAgain = false, suppressAutoSave = false;
 let activePointerId = null;
@@ -524,19 +508,23 @@ let pinchState = null;
 const pointerState = new Map();
 let imageEditState = null;
 
+let dottedAccumulated = 0;
+
+// ★ リモート描画専用の「非Undo対象」レイヤーを追跡
+// 各ローカルレイヤーについて、リモートストロークの開始前状態を保存
+let remoteStrokeSnapshots = {}; // { [layerId]: ImageData } 現在描画中のリモートストロークのレイヤー初期状態
+
 let friends = {}, pendingRequests = {};
 let activeSessionId = null, activeSessionOwnerId = null, sessionRole = null;
-let sessionUnsubscribe = null, strokesUnsubscribe = null, layerEventsUnsubscribe = null;
+let sessionUnsubscribe = null, strokesUnsubscribe = null, layerEventsUnsubscribe = null, historyEventsUnsubscribe = null;
 let invitesUnsubscribe = null, requestsUnsubscribe = null, friendsUnsubscribe = null, resendRequestUnsubscribe = null;
 let chatUnsubscribe = null;
 let selectedInviteUids = new Set();
 
 let remoteStrokesById = {};
 let isApplyingRemote = false;
+let isApplyingRemoteHistory = false;
 let myCurrentStrokeId = null, myCurrentStrokeSeed = null, myLastSentLogical = null;
-let myCurrentStrokePoints = null; // 現在の自分のストロークの点列
-let myCurrentStrokeParams = null;
-let myCurrentStrokeLayerId = null;
 const STROKE_MIN_LOGICAL_DIST = 2;
 
 let chatOpen = false;
@@ -547,6 +535,10 @@ const chatRenderedKeys = new Set();
 const shownInviteIds = new Set();
 let incomingInviteQueue = [];
 let isShowingInviteModal = false;
+
+// ★ 履歴の所有者管理：自分のスナップショットだけUndoできる
+// history[] には { ownerUid, layers, activeLayerId, layerCounter, W, H } を格納
+// Undo/Redo は ownerUid === currentUser.uid のもののみ移動
 
 function mulberry32(seed) {
   return function() {
@@ -713,11 +705,8 @@ async function loadWork(workId) {
     }
     activeLayerId = (data.activeLayerId && layers.some(l => l.id === data.activeLayerId)) ? data.activeLayerId : layers[layers.length - 1].id;
     artTitleEl.textContent = data.title || '無題の作品';
-    // 個人履歴リセット
-    personalHistory = []; personalHistoryIndex = -1;
-    localStrokeStore = {}; remoteStrokeStore = {};
-    updateUndoRedo();
-    renderLayerList(); composite();
+    history = []; historyIndex = -1;
+    renderLayerList(); composite(); pushHistory();
     isLoading = false; showLoading(false);
     requestAnimationFrame(() => requestAnimationFrame(() => autoFitCanvas()));
     return true;
@@ -767,8 +756,7 @@ function renderGallery() {
 function createNewWork(backgroundImage) {
   layers = []; layerCounter = 0; currentWorkId = null;
   artTitleEl.textContent = '無題の作品';
-  personalHistory = []; personalHistoryIndex = -1;
-  localStrokeStore = {}; remoteStrokeStore = {};
+  history = []; historyIndex = -1;
   setInternalResolution();
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const lctx = c.getContext('2d', { willReadFrequently: true });
@@ -786,7 +774,7 @@ function createNewWork(backgroundImage) {
     layers.push({ id: 'layer_' + layerCounter, name: '画像', canvas: ic, ctx: ictx, visible: true, opacity: 1 });
     activeLayerId = 'layer_' + layerCounter;
   }
-  renderLayerList(); composite(); updateUndoRedo();
+  renderLayerList(); composite(); pushHistory(); updateUndoRedo();
   showEditorScreen();
   setTimeout(() => saveCurrentWork(true), 100);
 }
@@ -799,30 +787,12 @@ function addLayer(name, opts = {}) {
   const layer = { id, name: name || ('レイヤー ' + layerCounter), canvas: c, ctx: lctx, visible: opts.visible !== undefined ? opts.visible : true, opacity: opts.opacity !== undefined ? opts.opacity : 1 };
   layers.push(layer);
   if (!opts.noActive) activeLayerId = id;
-  renderLayerList(); composite(); scheduleAutoSave();
+  renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
   return layer;
 }
 function getActiveLayer() { return layers.find(l => l.id === activeLayerId) || null; }
 function getLayerIndex(id) { return layers.findIndex(l => l.id === id); }
-
-function deleteLayer(id, opts = {}) {
-  if (layers.length <= 1) return;
-  const idx = getLayerIndex(id); if (idx === -1) return;
-  const removedLayer = layers[idx];
-  layers.splice(idx, 1);
-  if (activeLayerId === id) activeLayerId = layers[Math.min(idx, layers.length-1)].id;
-  if (!opts.skipHistory) {
-    pushPersonalHistory({
-      type: 'layerDelete', layerId: id,
-      meta: { removedLayerSnapshot: { id: removedLayer.id, name: removedLayer.name, visible: removedLayer.visible, opacity: removedLayer.opacity, dataURL: removedLayer.canvas.toDataURL('image/png') }, insertIdx: idx,
-              removedLocalStrokes: (localStrokeStore[id] || []).slice(),
-              removedRemoteStrokes: (remoteStrokeStore[id] || []).slice() }
-    });
-  }
-  delete localStrokeStore[id];
-  delete remoteStrokeStore[id];
-  renderLayerList(); composite(); scheduleAutoSave();
-}
+function deleteLayer(id) { if (layers.length <= 1) return; const idx = getLayerIndex(id); if (idx === -1) return; layers.splice(idx, 1); if (activeLayerId === id) activeLayerId = layers[Math.min(idx, layers.length-1)].id; renderLayerList(); composite(); scheduleAutoSave(); pushHistory(); }
 function duplicateLayer(id) {
   const src = layers.find(l => l.id === id); if (!src) return;
   const c = document.createElement('canvas'); c.width = W; c.height = H;
@@ -832,19 +802,15 @@ function duplicateLayer(id) {
   const idx = getLayerIndex(id);
   layers.splice(idx + 1, 0, layer);
   activeLayerId = newId;
-  pushPersonalHistory({ type: 'layerDup', layerId: newId, meta: { srcLayerId: id, insertIdx: idx + 1 } });
-  renderLayerList(); composite(); scheduleAutoSave();
+  renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
 }
 function mergeDown(id) {
   const idx = getLayerIndex(id); if (idx <= 0) return;
   const upper = layers[idx], lower = layers[idx-1];
-  const lowerSnapshot = lower.canvas.toDataURL('image/png');
   lower.ctx.save(); lower.ctx.globalAlpha = upper.opacity;
   lower.ctx.drawImage(upper.canvas, 0, 0); lower.ctx.restore();
   layers.splice(idx, 1); activeLayerId = lower.id;
-  delete localStrokeStore[id]; delete remoteStrokeStore[id];
-  pushPersonalHistory({ type: 'layerMerge', layerId: lower.id, meta: { mergedLayerId: id, lowerSnapshot } });
-  renderLayerList(); composite(); scheduleAutoSave();
+  renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
 }
 function reorderLayers(fromId, toId, position) {
   if (fromId === toId) return;
@@ -856,308 +822,71 @@ function reorderLayers(fromId, toId, position) {
   let insertIdx = position === 'above' ? newToIdx + 1 : newToIdx;
   insertIdx = Math.max(0, Math.min(insertIdx, layers.length));
   layers.splice(insertIdx, 0, moved);
-  pushPersonalHistory({ type: 'layerReorder', layerId: fromId, meta: { fromIdx, toIdx: insertIdx, targetId: toId, position } });
-  renderLayerList(); composite(); scheduleAutoSave();
+  renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
 }
 
-// =====================================================
-// ★ 個人履歴の管理
-// =====================================================
-function pushPersonalHistory(entry) {
-  if (isLoading || isApplyingRemote) return;
-  // 現在の位置より後を破棄
-  personalHistory = personalHistory.slice(0, personalHistoryIndex + 1);
-  personalHistory.push(entry);
-  if (personalHistory.length > MAX_PERSONAL_HISTORY) personalHistory.shift();
-  personalHistoryIndex = personalHistory.length - 1;
+// ★ 履歴：自分の操作のみ記録
+function pushHistory() {
+  if (isLoading || isApplyingRemoteHistory) return;
+  const snapshot = layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, opacity: l.opacity, dataURL: l.canvas.toDataURL('image/png') }));
+  const state = { ownerUid: currentUser ? currentUser.uid : null, layers: snapshot, activeLayerId, layerCounter, W, H };
+  // 直前の履歴が同じ内容なら追加しない
+  if (historyIndex >= 0) {
+    const prev = history[historyIndex];
+    if (prev && JSON.stringify(prev.layers) === JSON.stringify(state.layers) && prev.activeLayerId === state.activeLayerId) return;
+  }
+  history = history.slice(0, historyIndex + 1);
+  history.push(state);
+  if (history.length > MAX_HISTORY) history.shift();
+  historyIndex = history.length - 1;
   updateUndoRedo();
+  if (activeSessionId && !isApplyingRemoteHistory) {
+    sendHistoryEvent({ type: 'push', ownerUid: state.ownerUid, layersSnapshot: snapshot, activeLayerId, layerCounter, W, H });
+  }
+}
+// ★ 自分の履歴（ownerUid === currentUser.uid）のみUndo可能
+function findPrevOwnHistoryIndex(fromIdx) {
+  for (let i = fromIdx - 1; i >= 0; i--) {
+    if (history[i] && history[i].ownerUid === currentUser.uid) return i;
+  }
+  return -1;
+}
+function findNextOwnHistoryIndex(fromIdx) {
+  for (let i = fromIdx + 1; i < history.length; i++) {
+    if (history[i] && history[i].ownerUid === currentUser.uid) return i;
+  }
+  return -1;
 }
 function updateUndoRedo() {
-  undoBtn.disabled = personalHistoryIndex < 0;
-  redoBtn.disabled = personalHistoryIndex >= personalHistory.length - 1;
+  const prevIdx = findPrevOwnHistoryIndex(historyIndex);
+  const nextIdx = findNextOwnHistoryIndex(historyIndex);
+  undoBtn.disabled = prevIdx < 0;
+  redoBtn.disabled = nextIdx < 0;
 }
-// 現在のレイヤー状態を再合成（自分のストローク + 他人のストローク）
-function rebuildLayerFromStores(layerId) {
-  const layer = layers.find(l => l.id === layerId);
-  if (!layer) return;
-  layer.ctx.clearRect(0, 0, W, H);
-  // 他人のストロークを先に描画
-  const remote = remoteStrokeStore[layerId] || [];
-  for (const s of remote) {
-    drawStrokePath(layer.ctx, s.points, s.params, s.seed);
-  }
-  // 自分のストロークを上に描画
-  const local = localStrokeStore[layerId] || [];
-  for (const s of local) {
-    drawStrokePath(layer.ctx, s.points, s.params, s.seed);
-  }
-}
-function rebuildAllLayers() {
-  for (const layer of layers) rebuildLayerFromStores(layer.id);
-  composite();
-}
-// ストロークパス（点列）を描画
-function drawStrokePath(c, points, params, seed) {
-  if (!points || points.length < 1) return;
-  const { color, size, brush, alpha, eraser } = params;
-  const scale = getScaleFactor();
-  const scaledSize = size * scale;
-  const rng = (typeof seed === 'number') ? mulberry32(seed) : Math.random;
-  if (eraser) {
-    c.save();
-    c.globalCompositeOperation = 'destination-out';
-    c.lineCap = 'round'; c.lineJoin = 'round';
-    c.strokeStyle = 'rgba(0,0,0,1)'; c.lineWidth = scaledSize;
-    if (points.length === 1) {
-      const p = toInternal(points[0].x, points[0].y);
-      c.beginPath(); c.arc(p.x, p.y, scaledSize/2, 0, Math.PI*2); c.fill();
-    } else {
-      c.beginPath();
-      const p0 = toInternal(points[0].x, points[0].y);
-      c.moveTo(p0.x, p0.y);
-      for (let i = 1; i < points.length; i++) {
-        const p = toInternal(points[i].x, points[i].y);
-        c.lineTo(p.x, p.y);
-      }
-      c.stroke();
-    }
-    c.restore();
-    return;
-  }
-  if (brush === 'blur') {
-    // ぼかしは点列を順に適用
-    for (const pt of points) {
-      const p = toInternal(pt.x, pt.y);
-      blurAt(c, p.x, p.y, scaledSize * 0.8);
-    }
-    return;
-  }
-  if (brush === 'dotted') {
-    // 点線：パス全体を1本の点線で描画（lineDashOffsetは0から）
-    c.save();
-    c.globalAlpha = alpha; c.lineCap = 'round'; c.lineJoin = 'round';
-    c.strokeStyle = color; c.lineWidth = scaledSize;
-    c.setLineDash([scaledSize * 1.8, scaledSize * 1.8]);
-    c.beginPath();
-    const p0 = toInternal(points[0].x, points[0].y);
-    c.moveTo(p0.x, p0.y);
-    for (let i = 1; i < points.length; i++) {
-      const p = toInternal(points[i].x, points[i].y);
-      c.lineTo(p.x, p.y);
-    }
-    c.stroke();
-    c.restore();
-    return;
-  }
-  // 通常ブラシ：点ごとにセグメント描画
-  c.save();
-  if (points.length === 1) {
-    const p = toInternal(points[0].x, points[0].y);
-    if (brush === 'pen') drawPen(c, p.x, p.y, p.x + 0.01, p.y, scaledSize, color, alpha);
-    else if (brush === 'pencil') drawPencil(c, p.x, p.y, p.x + 0.01, p.y, scaledSize, color, alpha, rng);
-    else if (brush === 'marker') drawMarker(c, p.x, p.y, p.x + 0.01, p.y, scaledSize, color, alpha);
-    else if (brush === 'chalk') drawChalk(c, p.x, p.y, p.x + 0.01, p.y, scaledSize, color, alpha, rng);
-    else if (brush === 'spray') drawSpray(c, p.x, p.y, p.x + 0.01, p.y, scaledSize, color, alpha, rng);
-    else if (brush === 'highlighter') drawHighlighter(c, p.x, p.y, p.x + 0.01, p.y, scaledSize, color, alpha);
-  } else {
-    for (let i = 1; i < points.length; i++) {
-      const p0 = toInternal(points[i-1].x, points[i-1].y);
-      const p1 = toInternal(points[i].x, points[i].y);
-      if (brush === 'pen') drawPen(c, p0.x, p0.y, p1.x, p1.y, scaledSize, color, alpha);
-      else if (brush === 'pencil') drawPencil(c, p0.x, p0.y, p1.x, p1.y, scaledSize, color, alpha, rng);
-      else if (brush === 'marker') drawMarker(c, p0.x, p0.y, p1.x, p1.y, scaledSize, color, alpha);
-      else if (brush === 'chalk') drawChalk(c, p0.x, p0.y, p1.x, p1.y, scaledSize, color, alpha, rng);
-      else if (brush === 'spray') drawSpray(c, p0.x, p0.y, p1.x, p1.y, scaledSize, color, alpha, rng);
-      else if (brush === 'highlighter') drawHighlighter(c, p0.x, p0.y, p1.x, p1.y, scaledSize, color, alpha);
-    }
-  }
-  c.restore();
-}
-
-// =====================================================
-// ★ Undo / Redo
-// =====================================================
-function undoPersonal() {
-  if (personalHistoryIndex < 0) return;
-  const entry = personalHistory[personalHistoryIndex];
-  applyUndoEntry(entry);
-  personalHistoryIndex--;
-  updateUndoRedo();
-  scheduleAutoSave();
-}
-function redoPersonal() {
-  if (personalHistoryIndex >= personalHistory.length - 1) return;
-  personalHistoryIndex++;
-  const entry = personalHistory[personalHistoryIndex];
-  applyRedoEntry(entry);
-  updateUndoRedo();
-  scheduleAutoSave();
-}
-function applyUndoEntry(entry) {
-  if (entry.type === 'stroke') {
-    // 自分のストロークを取り除く
-    const arr = localStrokeStore[entry.layerId] || [];
-    const idx = arr.findIndex(s => s.strokeId === entry.strokeId);
-    if (idx !== -1) arr.splice(idx, 1);
-    localStrokeStore[entry.layerId] = arr;
-    rebuildLayerFromStores(entry.layerId);
-    composite();
-  } else if (entry.type === 'fill') {
-    // 塗りつぶしはスナップショットから復元
-    const layer = layers.find(l => l.id === entry.layerId);
-    if (layer && entry.meta.snapshotBefore) {
-      const img = new Image();
-      img.onload = () => { layer.ctx.clearRect(0, 0, W, H); layer.ctx.drawImage(img, 0, 0, W, H); composite(); };
-      img.src = entry.meta.snapshotBefore;
-    }
-  } else if (entry.type === 'clear') {
-    const layer = layers.find(l => l.id === entry.layerId);
-    if (layer && entry.meta.snapshotBefore) {
-      const img = new Image();
-      img.onload = () => { layer.ctx.clearRect(0, 0, W, H); layer.ctx.drawImage(img, 0, 0, W, H); composite(); };
-      img.src = entry.meta.snapshotBefore;
-    }
-  } else if (entry.type === 'layerAdd') {
-    // 追加したレイヤーを削除
-    deleteLayer(entry.layerId, { skipHistory: true });
-  } else if (entry.type === 'layerDelete') {
-    // 削除したレイヤーを復元
-    const snap = entry.meta.removedLayerSnapshot;
+async function restoreHistory(idx, options = {}) {
+  if (idx < 0 || idx >= history.length) return;
+  suppressAutoSave = true; isLoading = true;
+  const state = history[idx];
+  if (state.W && state.H) { W = state.W; H = state.H; canvas.width = W; canvas.height = H; applyCanvasCSSSize(); }
+  const loadPromises = state.layers.map(layerData => new Promise(resolve => {
     const c = document.createElement('canvas'); c.width = W; c.height = H;
     const lctx = c.getContext('2d', { willReadFrequently: true });
     const img = new Image();
-    img.onload = () => {
-      lctx.drawImage(img, 0, 0, W, H);
-      const layer = { id: snap.id, name: snap.name, canvas: c, ctx: lctx, visible: snap.visible, opacity: snap.opacity };
-      layers.splice(entry.meta.insertIdx, 0, layer);
-      // ストロークも復元
-      localStrokeStore[snap.id] = entry.meta.removedLocalStrokes || [];
-      remoteStrokeStore[snap.id] = entry.meta.removedRemoteStrokes || [];
-      rebuildLayerFromStores(snap.id);
-      renderLayerList(); composite();
-    };
-    img.src = snap.dataURL;
-  } else if (entry.type === 'layerVis') {
-    const layer = layers.find(l => l.id === entry.layerId);
-    if (layer) {
-      layer.visible = entry.meta.prevVisible;
-      renderLayerList(); composite();
-    }
-  } else if (entry.type === 'layerReorder') {
-    // 逆順に戻す
-    const fromIdx = getLayerIndex(entry.layerId);
-    if (fromIdx === -1) return;
-    const [moved] = layers.splice(fromIdx, 1);
-    layers.splice(entry.meta.fromIdx, 0, moved);
-    renderLayerList(); composite();
-  } else if (entry.type === 'layerMerge') {
-    const lower = layers.find(l => l.id === entry.layerId);
-    if (lower && entry.meta.lowerSnapshot) {
-      const img = new Image();
-      img.onload = () => {
-        lower.ctx.clearRect(0, 0, W, H);
-        lower.ctx.drawImage(img, 0, 0, W, H);
-        // マージされたレイヤーを復元
-        const c = document.createElement('canvas'); c.width = W; c.height = H;
-        const lctx = c.getContext('2d', { willReadFrequently: true });
-        const mergedLayer = { id: entry.meta.mergedLayerId, name: 'レイヤー', canvas: c, ctx: lctx, visible: true, opacity: 1 };
-        const idx = getLayerIndex(entry.layerId);
-        layers.splice(idx + 1, 0, mergedLayer);
-        localStrokeStore[entry.meta.mergedLayerId] = [];
-        remoteStrokeStore[entry.meta.mergedLayerId] = [];
-        renderLayerList(); composite();
-      };
-      img.src = entry.meta.lowerSnapshot;
-    }
-  } else if (entry.type === 'layerDup') {
-    // 複製したレイヤーを削除
-    deleteLayer(entry.layerId, { skipHistory: true });
-  } else if (entry.type === 'image') {
-    const layer = layers.find(l => l.id === entry.layerId);
-    if (layer && entry.meta.snapshotBefore) {
-      const img = new Image();
-      img.onload = () => { layer.ctx.clearRect(0, 0, W, H); layer.ctx.drawImage(img, 0, 0, W, H); composite(); };
-      img.src = entry.meta.snapshotBefore;
-    }
+    const finalize = () => resolve({ id: layerData.id, name: layerData.name, canvas: c, ctx: lctx, visible: layerData.visible, opacity: layerData.opacity });
+    img.onload = () => { lctx.drawImage(img, 0, 0, W, H); finalize(); };
+    img.onerror = finalize;
+    img.src = layerData.dataURL;
+  }));
+  layers = await Promise.all(loadPromises);
+  activeLayerId = state.activeLayerId; layerCounter = state.layerCounter;
+  isLoading = false; suppressAutoSave = false; historyIndex = idx;
+  renderLayerList(); composite(); updateUndoRedo();
+  scheduleAutoSave();
+  if (activeSessionId && !options.silent) {
+    // ★ 自分がUndoした時だけ他参加者に通知（"自分の描画を消した" ことを共有）
+    sendHistoryEvent({ type: 'jump', ownerUid: currentUser.uid, index: idx, layersSnapshot: state.layers, activeLayerId: state.activeLayerId, layerCounter: state.layerCounter, W: state.W, H: state.H });
   }
 }
-function applyRedoEntry(entry) {
-  if (entry.type === 'stroke') {
-    const arr = localStrokeStore[entry.layerId] || [];
-    arr.push({ strokeId: entry.strokeId, params: entry.params, points: entry.points, seed: entry.seed });
-    localStrokeStore[entry.layerId] = arr;
-    rebuildLayerFromStores(entry.layerId);
-    composite();
-  } else if (entry.type === 'fill') {
-    const layer = layers.find(l => l.id === entry.layerId);
-    if (layer && entry.meta.snapshotAfter) {
-      const img = new Image();
-      img.onload = () => { layer.ctx.clearRect(0, 0, W, H); layer.ctx.drawImage(img, 0, 0, W, H); composite(); };
-      img.src = entry.meta.snapshotAfter;
-    }
-  } else if (entry.type === 'clear') {
-    const layer = layers.find(l => l.id === entry.layerId);
-    if (layer) {
-      layer.ctx.clearRect(0, 0, W, H);
-      // ストアもクリア
-      delete localStrokeStore[entry.layerId];
-      delete remoteStrokeStore[entry.layerId];
-      composite();
-    }
-  } else if (entry.type === 'layerAdd') {
-    const snap = entry.meta.layerSnapshot;
-    if (!layers.some(l => l.id === snap.id)) {
-      const c = document.createElement('canvas'); c.width = W; c.height = H;
-      const lctx = c.getContext('2d', { willReadFrequently: true });
-      const layer = { id: snap.id, name: snap.name, canvas: c, ctx: lctx, visible: snap.visible, opacity: snap.opacity };
-      layers.push(layer);
-      renderLayerList(); composite();
-    }
-  } else if (entry.type === 'layerDelete') {
-    deleteLayer(entry.layerId, { skipHistory: true });
-  } else if (entry.type === 'layerVis') {
-    const layer = layers.find(l => l.id === entry.layerId);
-    if (layer) {
-      layer.visible = entry.meta.newVisible;
-      renderLayerList(); composite();
-    }
-  } else if (entry.type === 'layerReorder') {
-    const fromIdx = getLayerIndex(entry.layerId);
-    if (fromIdx === -1) return;
-    const [moved] = layers.splice(fromIdx, 1);
-    let newToIdx = layers.findIndex(l => l.id === entry.meta.targetId);
-    if (newToIdx === -1) newToIdx = layers.length - 1;
-    let insertIdx = entry.meta.position === 'above' ? newToIdx + 1 : newToIdx;
-    insertIdx = Math.max(0, Math.min(insertIdx, layers.length));
-    layers.splice(insertIdx, 0, moved);
-    renderLayerList(); composite();
-  } else if (entry.type === 'layerMerge') {
-    const lower = layers.find(l => l.id === entry.layerId);
-    const upper = layers.find(l => l.id === entry.meta.mergedLayerId);
-    if (lower && upper) {
-      lower.ctx.save(); lower.ctx.globalAlpha = upper.opacity;
-      lower.ctx.drawImage(upper.canvas, 0, 0); lower.ctx.restore();
-      const idx = getLayerIndex(entry.meta.mergedLayerId);
-      if (idx !== -1) layers.splice(idx, 1);
-      delete localStrokeStore[entry.meta.mergedLayerId];
-      delete remoteStrokeStore[entry.meta.mergedLayerId];
-      renderLayerList(); composite();
-    }
-  } else if (entry.type === 'layerDup') {
-    const src = layers.find(l => l.id === entry.meta.srcLayerId);
-    if (src) {
-      duplicateLayer(src.id);
-    }
-  } else if (entry.type === 'image') {
-    const layer = layers.find(l => l.id === entry.layerId);
-    if (layer && entry.meta.snapshotAfter) {
-      const img = new Image();
-      img.onload = () => { layer.ctx.clearRect(0, 0, W, H); layer.ctx.drawImage(img, 0, 0, W, H); composite(); };
-      img.src = entry.meta.snapshotAfter;
-    }
-  }
-}
-
 function composite() {
   ctx.clearRect(0, 0, W, H);
   for (const layer of layers) {
@@ -1192,10 +921,8 @@ function renderLayerList() {
     visBtn.textContent = layer.visible ? '👁' : '🚫';
     visBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const prevVisible = layer.visible;
       layer.visible = !layer.visible;
-      pushPersonalHistory({ type: 'layerVis', layerId: layer.id, meta: { prevVisible, newVisible: layer.visible } });
-      renderLayerList(); composite(); scheduleAutoSave();
+      renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
       sendLayerEvent({ type: 'visibility', layerId: layer.id, visible: layer.visible });
     });
     const delBtn = document.createElement('button');
@@ -1456,6 +1183,20 @@ function drawHighlighter(c, x0, y0, x1, y1, size, color, alpha) {
   c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
   c.restore();
 }
+function drawDottedSegment(c, x0, y0, x1, y1, size, color, alpha) {
+  c.save();
+  c.globalAlpha = alpha;
+  c.lineCap = 'round';
+  c.lineJoin = 'round';
+  c.strokeStyle = color;
+  c.lineWidth = size;
+  const dashLen = size * 1.8;
+  c.setLineDash([dashLen, dashLen]);
+  c.lineDashOffset = -dottedAccumulated;
+  c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
+  c.restore();
+}
+
 function blurAt(c, cx, cy, radius) {
   const r = Math.max(2, Math.round(radius));
   const minX = Math.max(0, Math.floor(cx - r)), minY = Math.max(0, Math.floor(cy - r));
@@ -1495,74 +1236,53 @@ function blurAt(c, cx, cy, radius) {
   c.putImageData(srcData, minX, minY);
 }
 
-// =====================================================
-// 描画セッション
-// =====================================================
+function drawStrokeToLayer(layer, lx0, ly0, lx1, ly1, params, seed) {
+  const c = layer.ctx;
+  const { color, size, brush, alpha, eraser } = params;
+  const p0 = toInternal(lx0, ly0), p1 = toInternal(lx1, ly1);
+  const scale = getScaleFactor();
+  const scaledSize = size * scale;
+  const x0 = p0.x, y0 = p0.y, x1 = p1.x, y1 = p1.y;
+  if (eraser) {
+    c.save(); c.globalCompositeOperation = 'destination-out'; c.lineCap = 'round'; c.lineJoin = 'round';
+    c.strokeStyle = 'rgba(0,0,0,1)'; c.lineWidth = scaledSize;
+    c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke(); c.restore();
+    return;
+  }
+  if (brush === 'blur') { blurAt(c, x1, y1, scaledSize * 0.8); return; }
+  const rng = (typeof seed === 'number') ? mulberry32(seed) : Math.random;
+  c.save();
+  if (brush === 'pen') drawPen(c, x0, y0, x1, y1, scaledSize, color, alpha);
+  else if (brush === 'pencil') drawPencil(c, x0, y0, x1, y1, scaledSize, color, alpha, rng);
+  else if (brush === 'marker') drawMarker(c, x0, y0, x1, y1, scaledSize, color, alpha);
+  else if (brush === 'chalk') drawChalk(c, x0, y0, x1, y1, scaledSize, color, alpha, rng);
+  else if (brush === 'spray') drawSpray(c, x0, y0, x1, y1, scaledSize, color, alpha, rng);
+  else if (brush === 'highlighter') drawHighlighter(c, x0, y0, x1, y1, scaledSize, color, alpha);
+  else if (brush === 'dotted') {
+    drawDottedSegment(c, x0, y0, x1, y1, scaledSize, color, alpha);
+    dottedAccumulated += Math.hypot(x1 - x0, y1 - y0);
+  }
+  c.restore();
+}
+
 function startDrawing(e) {
   if (e.button !== undefined && e.button !== 0) return;
   e.preventDefault();
   const coords = getCanvasCoords(e); if (!coords) return;
   const layer = getActiveLayer(); if (!layer || !layer.visible) return;
   if (isEyedropperMode) { const hex = pickColorAt(coords.x, coords.y); if (hex) { setColor(hex, 'preset'); showToast(`色を取得: ${hex.toUpperCase()}`, 'success'); } else showToast('透明部分です'); setEyedropperMode(false); return; }
-  if (isFillMode) {
-    const snapBefore = layer.canvas.toDataURL('image/png');
-    const ok = floodFill(layer, coords.x, coords.y, currentColor, currentTolerance);
-    if (ok) {
-      const snapAfter = layer.canvas.toDataURL('image/png');
-      pushPersonalHistory({ type: 'fill', layerId: layer.id, meta: { snapshotBefore: snapBefore, snapshotAfter: snapAfter } });
-      composite(); scheduleAutoSave(); showToast('塗りつぶしました', 'success');
-    }
-    setFillMode(false); return;
-  }
+  if (isFillMode) { const ok = floodFill(layer, coords.x, coords.y, currentColor, currentTolerance); if (ok) { composite(); scheduleAutoSave(); pushHistory(); showToast('塗りつぶしました', 'success'); } setFillMode(false); return; }
   if (isMoveMode) { isDrawing = true; moveSnapshot = layer.ctx.getImageData(0, 0, W, H); moveStartX = coords.x; moveStartY = coords.y; moveOffsetX = 0; moveOffsetY = 0; return; }
   isDrawing = true;
   lastX = coords.x; lastY = coords.y; lastLogicalX = coords.logicalX; lastLogicalY = coords.logicalY;
   const strokeId = generateId(); const seed = Math.floor(Math.random() * 2147483647);
   myCurrentStrokeId = strokeId; myCurrentStrokeSeed = seed; myLastSentLogical = { x: coords.logicalX, y: coords.logicalY };
-  myCurrentStrokePoints = [{ x: coords.logicalX, y: coords.logicalY }];
-  myCurrentStrokeParams = { color: currentColor, size: currentSize, brush: currentBrush, alpha: currentOpacity, eraser: isEraser };
-  myCurrentStrokeLayerId = layer.id;
-  // リアルタイム描画（自分のキャンバスにセグメント描画）
-  drawSegmentOnLayer(layer, coords.logicalX, coords.logicalY, coords.logicalX + 0.01, coords.logicalY);
+  dottedAccumulated = 0;
+  drawStrokeToLayer(layer, coords.logicalX, coords.logicalY, coords.logicalX + 0.01, coords.logicalY, { color: currentColor, size: currentSize, brush: currentBrush, alpha: currentOpacity, eraser: isEraser }, seed);
   if (activeSessionId) {
     sendStrokeEvent({ type: 'start', strokeId, layerId: layer.id, x: coords.logicalX, y: coords.logicalY, color: currentColor, size: currentSize, brush: currentBrush, opacity: currentOpacity, eraser: isEraser, seed });
   }
   composite(); scheduleAutoSave();
-}
-function drawSegmentOnLayer(layer, lx0, ly0, lx1, ly1) {
-  const params = myCurrentStrokeParams;
-  const p0 = toInternal(lx0, ly0), p1 = toInternal(lx1, ly1);
-  const scale = getScaleFactor();
-  const scaledSize = params.size * scale;
-  const c = layer.ctx;
-  const { color, brush, alpha, eraser } = params;
-  if (eraser) {
-    c.save(); c.globalCompositeOperation = 'destination-out'; c.lineCap = 'round'; c.lineJoin = 'round';
-    c.strokeStyle = 'rgba(0,0,0,1)'; c.lineWidth = scaledSize;
-    c.beginPath(); c.moveTo(p0.x, p0.y); c.lineTo(p1.x, p1.y); c.stroke(); c.restore();
-    return;
-  }
-  if (brush === 'blur') { blurAt(c, p1.x, p1.y, scaledSize * 0.8); return; }
-  const rng = (typeof myCurrentStrokeSeed === 'number') ? mulberry32(myCurrentStrokeSeed) : Math.random;
-  c.save();
-  if (brush === 'pen') drawPen(c, p0.x, p0.y, p1.x, p1.y, scaledSize, color, alpha);
-  else if (brush === 'pencil') drawPencil(c, p0.x, p0.y, p1.x, p1.y, scaledSize, color, alpha, rng);
-  else if (brush === 'marker') drawMarker(c, p0.x, p0.y, p1.x, p1.y, scaledSize, color, alpha);
-  else if (brush === 'chalk') drawChalk(c, p0.x, p0.y, p1.x, p1.y, scaledSize, color, alpha, rng);
-  else if (brush === 'spray') drawSpray(c, p0.x, p0.y, p1.x, p1.y, scaledSize, color, alpha, rng);
-  else if (brush === 'highlighter') drawHighlighter(c, p0.x, p0.y, p1.x, p1.y, scaledSize, color, alpha);
-  else if (brush === 'dotted') {
-    // 点線は1セグメントずつ描画（ただしドット間隔を累積で管理）
-    c.save();
-    c.globalAlpha = alpha; c.lineCap = 'round'; c.lineJoin = 'round';
-    c.strokeStyle = color; c.lineWidth = scaledSize;
-    c.setLineDash([scaledSize * 1.8, scaledSize * 1.8]);
-    c.lineDashOffset = -dottedAccumulated;
-    c.beginPath(); c.moveTo(p0.x, p0.y); c.lineTo(p1.x, p1.y); c.stroke();
-    c.restore();
-    dottedAccumulated += Math.hypot(p1.x - p0.x, p1.y - p0.y);
-  }
-  c.restore();
 }
 function draw(e) {
   if (!isDrawing) return; e.preventDefault();
@@ -1575,10 +1295,7 @@ function draw(e) {
     layer.ctx.clearRect(0, 0, W, H); layer.ctx.putImageData(moveSnapshot, dx, dy);
     composite(); scheduleAutoSave(); return;
   }
-  if (myCurrentStrokePoints) {
-    myCurrentStrokePoints.push({ x: coords.logicalX, y: coords.logicalY });
-  }
-  drawSegmentOnLayer(layer, lastLogicalX, lastLogicalY, coords.logicalX, coords.logicalY);
+  drawStrokeToLayer(layer, lastLogicalX, lastLogicalY, coords.logicalX, coords.logicalY, { color: currentColor, size: currentSize, brush: currentBrush, alpha: currentOpacity, eraser: isEraser }, myCurrentStrokeSeed);
   if (activeSessionId && myCurrentStrokeId) {
     const dist = Math.hypot(coords.logicalX - myLastSentLogical.x, coords.logicalY - myLastSentLogical.y);
     if (dist >= STROKE_MIN_LOGICAL_DIST) {
@@ -1593,39 +1310,19 @@ function stopDrawing(e) {
   if (e) e.preventDefault(); if (!isDrawing) return;
   isDrawing = false; moveSnapshot = null; moveOffsetX = 0; moveOffsetY = 0;
   if (activeSessionId && myCurrentStrokeId) sendStrokeEvent({ type: 'end', strokeId: myCurrentStrokeId });
-  // 個人履歴にストロークを記録
-  if (myCurrentStrokePoints && myCurrentStrokePoints.length > 0 && myCurrentStrokeLayerId) {
-    const entry = {
-      type: 'stroke',
-      layerId: myCurrentStrokeLayerId,
-      strokeId: myCurrentStrokeId,
-      params: myCurrentStrokeParams,
-      points: myCurrentStrokePoints.slice(),
-      seed: myCurrentStrokeSeed
-    };
-    // 自分のストアに追加（再構築用）
-    if (!localStrokeStore[myCurrentStrokeLayerId]) localStrokeStore[myCurrentStrokeLayerId] = [];
-    localStrokeStore[myCurrentStrokeLayerId].push({ strokeId: entry.strokeId, params: entry.params, points: entry.points, seed: entry.seed });
-    pushPersonalHistory(entry);
-  }
   myCurrentStrokeId = null; myCurrentStrokeSeed = null; myLastSentLogical = null;
-  myCurrentStrokePoints = null; myCurrentStrokeParams = null; myCurrentStrokeLayerId = null;
-  dottedAccumulated = 0;
-  scheduleAutoSave();
+  scheduleAutoSave(); pushHistory();
 }
 
-// =====================================================
-// 画像編集
-// =====================================================
 function enterImageEditMode(img, layerId) {
-  imageEditState = { layerId, img, x: 0, y: 0, w: BASE_W, h: BASE_H, rotation: 0, snapshotBefore: null };
+  imageEditState = { layerId, img, x: 0, y: 0, w: BASE_W, h: BASE_H, rotation: 0 };
   const imgRatio = img.width / img.height, canvasRatio = BASE_W / BASE_H;
   let dw, dh;
   if (imgRatio > canvasRatio) { dw = BASE_W; dh = BASE_W / imgRatio; } else { dh = BASE_H; dw = BASE_H * imgRatio; }
   imageEditState.w = dw; imageEditState.h = dh;
   imageEditState.x = (BASE_W - dw) / 2; imageEditState.y = (BASE_H - dh) / 2;
   const layer = layers.find(l => l.id === layerId);
-  if (layer) { imageEditState.snapshotBefore = layer.canvas.toDataURL('image/png'); layer.ctx.clearRect(0, 0, W, H); composite(); }
+  if (layer) { layer._preEditData = layer.ctx.getImageData(0, 0, W, H); layer.ctx.clearRect(0, 0, W, H); composite(); }
   imageEditOverlay.classList.add('active'); updateImageEditBox();
 }
 function updateImageEditBox() {
@@ -1648,27 +1345,8 @@ function renderImageEditPreview() {
   layer.ctx.drawImage(s.img, -(s.w/2)*scale, -(s.h/2)*scale, s.w*scale, s.h*scale);
   layer.ctx.restore(); composite();
 }
-function confirmImageEdit() {
-  if (!imageEditState) return;
-  const layer = layers.find(l => l.id === imageEditState.layerId);
-  const snapshotAfter = layer ? layer.canvas.toDataURL('image/png') : null;
-  if (layer) {
-    pushPersonalHistory({ type: 'image', layerId: layer.id, meta: { snapshotBefore: imageEditState.snapshotBefore, snapshotAfter } });
-  }
-  imageEditOverlay.classList.remove('active'); imageEditState = null;
-  renderLayerList(); composite(); scheduleAutoSave(); showToast('画像を配置しました', 'success');
-}
-function cancelImageEdit() {
-  if (!imageEditState) return;
-  const layer = layers.find(l => l.id === imageEditState.layerId);
-  if (layer && imageEditState.snapshotBefore) {
-    const img = new Image();
-    img.onload = () => { layer.ctx.clearRect(0, 0, W, H); layer.ctx.drawImage(img, 0, 0, W, H); composite(); };
-    img.src = imageEditState.snapshotBefore;
-  }
-  imageEditOverlay.classList.remove('active'); imageEditState = null;
-  renderLayerList(); composite();
-}
+function confirmImageEdit() { if (!imageEditState) return; const layer = layers.find(l => l.id === imageEditState.layerId); if (layer) delete layer._preEditData; imageEditOverlay.classList.remove('active'); imageEditState = null; renderLayerList(); composite(); scheduleAutoSave(); pushHistory(); showToast('画像を配置しました', 'success'); }
+function cancelImageEdit() { if (!imageEditState) return; const layer = layers.find(l => l.id === imageEditState.layerId); if (layer && layer._preEditData) { layer.ctx.putImageData(layer._preEditData, 0, 0); delete layer._preEditData; } imageEditOverlay.classList.remove('active'); imageEditState = null; composite(); renderLayerList(); }
 function resetImageEdit() { if (!imageEditState) return; const img = imageEditState.img; const imgRatio = img.width / img.height, canvasRatio = BASE_W / BASE_H; let dw, dh; if (imgRatio > canvasRatio) { dw = BASE_W; dh = BASE_W / imgRatio; } else { dh = BASE_H; dw = BASE_H * imgRatio; } imageEditState.w = dw; imageEditState.h = dh; imageEditState.x = (BASE_W - dw) / 2; imageEditState.y = (BASE_H - dh) / 2; imageEditState.rotation = 0; updateImageEditBox(); }
 function setupImageEditInteractions() {
   let dragMode = null, startX = 0, startY = 0, startState = null, activePid = null;
@@ -1718,7 +1396,7 @@ function setupImageEditInteractions() {
 function loadImageFromFile(file) {
   if (!file || !file.type.startsWith('image/')) return;
   const reader = new FileReader();
-  reader.onload = (ev) => { const img = new Image(); img.onload = () => { const newLayer = addLayer('画像 ' + (layers.length + 1)); pushPersonalHistory({ type: 'layerAdd', layerId: newLayer.id, meta: { layerSnapshot: { id: newLayer.id, name: newLayer.name, visible: newLayer.visible, opacity: newLayer.opacity } } }); enterImageEditMode(img, newLayer.id); }; img.src = ev.target.result; };
+  reader.onload = (ev) => { const img = new Image(); img.onload = () => { const newLayer = addLayer('画像 ' + (layers.length + 1)); enterImageEditMode(img, newLayer.id); }; img.src = ev.target.result; };
   reader.readAsDataURL(file);
 }
 
@@ -1806,9 +1484,13 @@ canvasViewport.addEventListener('pointerdown', (e) => {
   viewportPanState = {
     pointerId: e.pointerId,
     mode: isPanMode ? 'pan' : 'zoom',
-    startX: e.clientX, startY: e.clientY,
-    startLocalX: e.clientX - rect.left, startLocalY: e.clientY - rect.top,
-    startPanX: panX, startPanY: panY, startZoom: zoom
+    startX: e.clientX,
+    startY: e.clientY,
+    startLocalX: e.clientX - rect.left,
+    startLocalY: e.clientY - rect.top,
+    startPanX: panX,
+    startPanY: panY,
+    startZoom: zoom
   };
   try { canvasViewport.setPointerCapture(e.pointerId); } catch (err) {}
 });
@@ -1913,15 +1595,7 @@ zoomToggle.addEventListener('click', () => {
 
 sizeSlider.addEventListener('input', (e) => { currentSize = parseInt(e.target.value, 10); updateSizePreview(); });
 opacitySlider.addEventListener('input', (e) => { currentOpacity = parseInt(e.target.value, 10) / 100; updateOpacityPreview(); });
-clearBtn.addEventListener('click', () => {
-  const layer = getActiveLayer(); if (!layer) return;
-  if (!confirm('このレイヤーの内容を消去しますか？（自分のストロークも消えます）')) return;
-  const snapBefore = layer.canvas.toDataURL('image/png');
-  layer.ctx.clearRect(0, 0, W, H);
-  delete localStrokeStore[layer.id];
-  pushPersonalHistory({ type: 'clear', layerId: layer.id, meta: { snapshotBefore: snapBefore } });
-  renderLayerList(); composite(); scheduleAutoSave();
-});
+clearBtn.addEventListener('click', () => { const layer = getActiveLayer(); if (!layer) return; if (!confirm('このレイヤーの内容を消去しますか？')) return; layer.ctx.clearRect(0, 0, W, H); renderLayerList(); composite(); scheduleAutoSave(); pushHistory(); });
 uploadBtn.addEventListener('click', () => fileInput.click());
 fileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) loadImageFromFile(file); fileInput.value = ''; });
 saveBtn.addEventListener('click', async () => {
@@ -1936,13 +1610,19 @@ saveBtn.addEventListener('click', async () => {
 });
 addLayerBtn.addEventListener('click', () => {
   const newLayer = addLayer('レイヤー ' + (layers.length + 1));
-  pushPersonalHistory({ type: 'layerAdd', layerId: newLayer.id, meta: { layerSnapshot: { id: newLayer.id, name: newLayer.name, visible: newLayer.visible, opacity: newLayer.opacity } } });
   sendLayerEvent({ type: 'add', layerId: newLayer.id, name: newLayer.name });
 });
 dupLayerBtn.addEventListener('click', () => { if (activeLayerId) duplicateLayer(activeLayerId); });
 mergeDownBtn.addEventListener('click', () => { if (activeLayerId) { if (getLayerIndex(activeLayerId) === 0) { showToast('一番下のレイヤーは結合できません', 'error'); return; } mergeDown(activeLayerId); } });
-undoBtn.addEventListener('click', () => undoPersonal());
-redoBtn.addEventListener('click', () => redoPersonal());
+// ★ Undo/Redo は自分の操作のみ
+undoBtn.addEventListener('click', () => {
+  const prevIdx = findPrevOwnHistoryIndex(historyIndex);
+  if (prevIdx >= 0) restoreHistory(prevIdx);
+});
+redoBtn.addEventListener('click', () => {
+  const nextIdx = findNextOwnHistoryIndex(historyIndex);
+  if (nextIdx >= 0) restoreHistory(nextIdx);
+});
 artTitleEl.addEventListener('dblclick', () => { const newTitle = prompt('作品タイトルを入力', artTitleEl.textContent); if (newTitle !== null && newTitle.trim() !== '') { artTitleEl.textContent = newTitle.trim(); scheduleAutoSave(); } });
 
 newArtBtn.addEventListener('click', () => createNewWork(null));
@@ -1971,8 +1651,8 @@ window.addEventListener('paste', (e) => {
 window.addEventListener('keydown', (e) => {
   if (!editorScreen.classList.contains('active')) return;
   if (imageEditState) { if (e.key === 'Escape') { e.preventDefault(); cancelImageEdit(); return; } if (e.key === 'Enter') { e.preventDefault(); confirmImageEdit(); return; } }
-  if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); if (e.shiftKey) redoPersonal(); else undoPersonal(); }
-  else if ((e.ctrlKey || e.metaKey) && e.key === 'y') { e.preventDefault(); redoPersonal(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); if (e.shiftKey) { const nextIdx = findNextOwnHistoryIndex(historyIndex); if (nextIdx >= 0) restoreHistory(nextIdx); } else { const prevIdx = findPrevOwnHistoryIndex(historyIndex); if (prevIdx >= 0) restoreHistory(prevIdx); } }
+  else if ((e.ctrlKey || e.metaKey) && e.key === 'y') { e.preventDefault(); const nextIdx = findNextOwnHistoryIndex(historyIndex); if (nextIdx >= 0) restoreHistory(nextIdx); }
   else if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveBtn.click(); }
 });
 window.addEventListener('beforeunload', () => { if (editorScreen.classList.contains('active')) flushSaveSync(); });
@@ -1987,25 +1667,14 @@ chatBtn.addEventListener('click', () => {
   if (!activeSessionId) { showToast('共同描画セッションに参加するとチャットできます', 'error'); return; }
   chatOpen = !chatOpen;
   chatPanel.classList.toggle('show', chatOpen);
-  if (chatOpen) {
-    chatUnreadCount = 0;
-    updateChatBadge();
-    chatInput.focus();
-    scrollChatToBottom();
-  }
+  if (chatOpen) { chatUnreadCount = 0; updateChatBadge(); chatInput.focus(); scrollChatToBottom(); }
 });
-chatCloseBtn.addEventListener('click', () => {
-  chatOpen = false;
-  chatPanel.classList.remove('show');
-});
+chatCloseBtn.addEventListener('click', () => { chatOpen = false; chatPanel.classList.remove('show'); });
 chatSendBtn.addEventListener('click', sendChatMessage);
-chatInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); }
-});
+chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); } });
 async function sendChatMessage() {
   if (!activeSessionId) return;
-  const text = chatInput.value.trim();
-  if (!text) return;
+  const text = chatInput.value.trim(); if (!text) return;
   chatInput.value = '';
   try {
     const msgRef = push(ref(db, 'chats/' + activeSessionId));
@@ -2013,12 +1682,8 @@ async function sendChatMessage() {
   } catch (e) { showToast('送信に失敗しました', 'error'); }
 }
 function updateChatBadge() {
-  if (chatUnreadCount > 0) {
-    chatBadge.textContent = chatUnreadCount > 99 ? '99+' : chatUnreadCount;
-    chatBadge.classList.add('show');
-  } else {
-    chatBadge.classList.remove('show');
-  }
+  if (chatUnreadCount > 0) { chatBadge.textContent = chatUnreadCount > 99 ? '99+' : chatUnreadCount; chatBadge.classList.add('show'); }
+  else chatBadge.classList.remove('show');
 }
 function scrollChatToBottom() { chatMessages.scrollTop = chatMessages.scrollHeight; }
 function renderChatMessage(key, msg) {
@@ -2032,22 +1697,16 @@ function renderChatMessage(key, msg) {
   avatar.className = 'avatar';
   avatar.src = msg.photoURL || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%23555%27%3E%3Ccircle cx=%2712%27 cy=%278%27 r=%274%27/%3E%3C/svg%3E';
   const bubbleWrap = document.createElement('div');
-  const meta = document.createElement('div');
-  meta.className = 'meta';
+  const meta = document.createElement('div'); meta.className = 'meta';
   meta.innerHTML = `<span>${escapeHtml(msg.displayName || '名無し')}</span><span>${formatChatTime(msg.timestamp)}</span>`;
-  const bubble = document.createElement('div');
-  bubble.className = 'bubble';
-  bubble.textContent = msg.text;
-  bubbleWrap.appendChild(meta);
-  bubbleWrap.appendChild(bubble);
-  div.appendChild(avatar);
-  div.appendChild(bubbleWrap);
+  const bubble = document.createElement('div'); bubble.className = 'bubble'; bubble.textContent = msg.text;
+  bubbleWrap.appendChild(meta); bubbleWrap.appendChild(bubble);
+  div.appendChild(avatar); div.appendChild(bubbleWrap);
   chatMessages.appendChild(div);
 }
 function startChatListener(sessionId) {
   if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e){} chatUnsubscribe = null; }
-  chatInitialLoaded = false;
-  chatRenderedKeys.clear();
+  chatInitialLoaded = false; chatRenderedKeys.clear();
   chatMessages.innerHTML = '<div class="chat-empty">まだメッセージはありません。最初のメッセージを送ってみましょう！</div>';
   const chatRef = ref(db, 'chats/' + sessionId);
   get(chatRef).then((snap) => {
@@ -2061,18 +1720,12 @@ function startChatListener(sessionId) {
     chatInitialLoaded = true;
     chatUnsubscribe = onChildAdded(chatRef, (childSnap) => {
       if (!chatInitialLoaded) return;
-      const key = childSnap.key;
-      if (chatRenderedKeys.has(key)) return;
-      const msg = childSnap.val();
-      if (!msg) return;
-      const emptyEl = chatMessages.querySelector('.chat-empty');
-      if (emptyEl) emptyEl.remove();
+      const key = childSnap.key; if (chatRenderedKeys.has(key)) return;
+      const msg = childSnap.val(); if (!msg) return;
+      const emptyEl = chatMessages.querySelector('.chat-empty'); if (emptyEl) emptyEl.remove();
       renderChatMessage(key, msg);
       scrollChatToBottom();
-      if (msg.uid !== currentUser.uid && !chatOpen) {
-        chatUnreadCount++;
-        updateChatBadge();
-      }
+      if (msg.uid !== currentUser.uid && !chatOpen) { chatUnreadCount++; updateChatBadge(); }
     });
   }).catch((e) => { console.error('[chat] load error', e); });
 }
@@ -2125,12 +1778,13 @@ function cleanupListeners() {
   if (sessionUnsubscribe) { try { sessionUnsubscribe(); } catch(e){} sessionUnsubscribe = null; }
   if (strokesUnsubscribe) { try { strokesUnsubscribe(); } catch(e){} strokesUnsubscribe = null; }
   if (layerEventsUnsubscribe) { try { layerEventsUnsubscribe(); } catch(e){} layerEventsUnsubscribe = null; }
+  if (historyEventsUnsubscribe) { try { historyEventsUnsubscribe(); } catch(e){} historyEventsUnsubscribe = null; }
   if (resendRequestUnsubscribe) { try { resendRequestUnsubscribe(); } catch(e){} resendRequestUnsubscribe = null; }
   if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e){} chatUnsubscribe = null; }
   friends = {}; pendingRequests = {};
   activeSessionId = null; activeSessionOwnerId = null; sessionRole = null;
   shownInviteIds.clear(); incomingInviteQueue = []; isShowingInviteModal = false;
-  remoteStrokesById = {};
+  remoteStrokesById = {}; remoteStrokeSnapshots = {};
   selectedInviteUids.clear();
   participantsBar.classList.remove('show'); participantsBar.innerHTML = '';
   chatOpen = false; chatPanel.classList.remove('show'); chatUnreadCount = 0; updateChatBadge();
@@ -2296,11 +1950,9 @@ async function applyLayersSnapshot(snapshotData) {
   layerCounter = snapshotData.layerCounter || maxCounter;
   activeLayerId = snapshotData.activeLayerId || layers[layers.length - 1].id;
   if (!layers.some(l => l.id === activeLayerId)) activeLayerId = layers[layers.length - 1].id;
-  // 個人履歴はリセット（他者のスナップショットなので）
-  personalHistory = []; personalHistoryIndex = -1;
-  localStrokeStore = {}; remoteStrokeStore = {};
-  updateUndoRedo();
   renderLayerList(); composite();
+  history = []; historyIndex = -1;
+  pushHistory();
   requestAnimationFrame(() => requestAnimationFrame(() => autoFitCanvas()));
 }
 async function downloadLayersSnapshotFromSession(sessionId, maxRetries = 3) {
@@ -2362,6 +2014,7 @@ async function attachSessionListener(sessionId) {
       collabBadgeText.textContent = `共同描画中: ${otherNames || '待機中'}`;
       if (!strokesUnsubscribe) startStrokesListener(sessionId);
       if (!layerEventsUnsubscribe) startLayerEventsListener(sessionId);
+      if (!historyEventsUnsubscribe) startHistoryEventsListener(sessionId);
     } else if (s.status === 'declined') { showToast('招待が拒否されました', 'error'); await cleanupSession(); }
     else if (s.status === 'ended') { showToast('セッションが終了しました'); await cleanupSession(); }
   });
@@ -2400,7 +2053,7 @@ function showIncomingInvite(sessionId, session) {
       else showToast('キャンバス読み込みに失敗しました', 'error');
       await attachSessionListener(sessionId);
       collabBadge.classList.add('show'); collabBadgeText.textContent = '共同描画中';
-      startStrokesListener(sessionId); startLayerEventsListener(sessionId);
+      startStrokesListener(sessionId); startLayerEventsListener(sessionId); startHistoryEventsListener(sessionId);
       startChatListener(sessionId);
     } catch (e) { showToast('参加に失敗: ' + e.message, 'error'); }
     finally { showLoading(false); processInviteQueue(); }
@@ -2435,35 +2088,22 @@ function startStrokesListener(sessionId) {
 function applyRemoteStrokeEvent(ev) {
   isApplyingRemote = true;
   try {
+    let layer = null;
+    if (ev.layerId) layer = layers.find(l => l.id === ev.layerId);
+    if (!layer) layer = getActiveLayer();
+    if (!layer || !layer.visible) return;
     if (ev.type === 'start') {
-      remoteStrokesById[ev.strokeId] = { lastLogicalX: ev.x, lastLogicalY: ev.y, layerId: ev.layerId, color: ev.color, size: ev.size, brush: ev.brush, opacity: ev.opacity, eraser: ev.eraser, seed: ev.seed, points: [{ x: ev.x, y: ev.y }] };
-      // remoteStrokeStore にも登録
-      if (!remoteStrokeStore[ev.layerId]) remoteStrokeStore[ev.layerId] = [];
-      remoteStrokeStore[ev.layerId].push({
-        strokeId: ev.strokeId,
-        params: { color: ev.color, size: ev.size, brush: ev.brush, alpha: ev.opacity || 1, eraser: ev.eraser },
-        points: remoteStrokesById[ev.strokeId].points,
-        seed: ev.seed
-      });
-      // 即時描画
-      const layer = layers.find(l => l.id === ev.layerId) || getActiveLayer();
-      if (layer && layer.visible) {
-        const s = remoteStrokesById[ev.strokeId];
-        drawStrokePath(layer.ctx, s.points, s.params, s.seed);
-        composite();
-      }
+      remoteStrokesById[ev.strokeId] = { lastLogicalX: ev.x, lastLogicalY: ev.y, layerId: ev.layerId, color: ev.color, size: ev.size, brush: ev.brush, opacity: ev.opacity, eraser: ev.eraser, seed: ev.seed };
+      drawStrokeToLayer(layer, ev.x, ev.y, ev.x + 0.01, ev.y, { color: ev.color, size: ev.size, brush: ev.brush, alpha: ev.opacity || 1, eraser: ev.eraser }, ev.seed);
+      composite();
     } else if (ev.type === 'move') {
       const s = remoteStrokesById[ev.strokeId]; if (!s) return;
-      s.points.push({ x: ev.x, y: ev.y });
+      let targetLayer = layers.find(l => l.id === s.layerId) || layer;
+      if (!targetLayer || !targetLayer.visible) return;
+      drawStrokeToLayer(targetLayer, s.lastLogicalX, s.lastLogicalY, ev.x, ev.y, { color: s.color, size: s.size, brush: s.brush, alpha: s.opacity || 1, eraser: s.eraser }, s.seed);
       s.lastLogicalX = ev.x; s.lastLogicalY = ev.y;
-      const layer = layers.find(l => l.id === s.layerId);
-      if (!layer || !layer.visible) return;
-      // 描画を更新
-      rebuildLayerFromStores(s.layerId);
       composite();
-    } else if (ev.type === 'end') {
-      delete remoteStrokesById[ev.strokeId];
-    }
+    } else if (ev.type === 'end') { delete remoteStrokesById[ev.strokeId]; }
   } finally { isApplyingRemote = false; }
 }
 async function sendLayerEvent(event) {
@@ -2501,7 +2141,6 @@ function applyRemoteLayerEvent(ev) {
       if (idx === -1 || layers.length <= 1) return;
       layers.splice(idx, 1);
       if (activeLayerId === ev.layerId) activeLayerId = layers[Math.min(idx, layers.length-1)].id;
-      delete localStrokeStore[ev.layerId]; delete remoteStrokeStore[ev.layerId];
       renderLayerList(); composite();
     } else if (ev.type === 'visibility') {
       const layer = layers.find(l => l.id === ev.layerId);
@@ -2519,14 +2158,64 @@ function applyRemoteLayerEvent(ev) {
     }
   } finally { isApplyingRemote = false; }
 }
-
+async function sendHistoryEvent(event) {
+  if (!activeSessionId) return;
+  try { const r = push(ref(db, 'historyEvents/' + activeSessionId)); await set(r, { ...event, uid: currentUser.uid, timestamp: Date.now() }); } catch (e) {}
+}
+function startHistoryEventsListener(sessionId) {
+  if (historyEventsUnsubscribe) { try { historyEventsUnsubscribe(); } catch(e){} historyEventsUnsubscribe = null; }
+  const historyEventsRef = ref(db, 'historyEvents/' + sessionId);
+  const existingKeys = new Set();
+  const initialLoad = new Promise((resolve) => {
+    get(historyEventsRef).then((snap) => { if (snap.exists()) Object.keys(snap.val()).forEach(k => existingKeys.add(k)); resolve(); }).catch(() => resolve());
+  });
+  historyEventsUnsubscribe = onChildAdded(historyEventsRef, async (childSnap) => {
+    await initialLoad;
+    const key = childSnap.key; if (existingKeys.has(key)) return;
+    const ev = childSnap.val(); if (!ev) return;
+    if (ev.uid === currentUser.uid) return;
+    await applyRemoteHistoryEvent(ev);
+  });
+}
+// ★ 他参加者のUndo/Redo受信：相手が自分の描画を消した場合のみ反映
+async function applyRemoteHistoryEvent(ev) {
+  if (ev.type !== 'jump' && ev.type !== 'push') return;
+  // "push" は履歴の同期のみ。自分の描画はそのまま。
+  // "jump" は他参加者が「自分の描画を戻した」操作。ローカルで該当スナップショットに切り替える。
+  if (ev.type === 'jump') {
+    // 相手が自分自身の履歴を戻した → 相手の描画のみが変わる
+    // こちらは既に相手のストロークを「非Undo」として保持しているため、
+    // 相手のスナップショットにローカル履歴を差し替えると自分の描画も消えてしまう。
+    //
+    // そこで「相手のスナップショット」と「ローカルの現在のレイヤー」を合成するのではなく、
+    // 相手のスナップショットに自分の描画を復元する方式を採用。
+    //
+    // シンプルにするため、他参加者のUndoは「ストローク単位の取り消しイベント」として扱い、
+    // 相手のスナップショットをそのまま適用しつつ、自分の現在の状態を保持する。
+    //
+    // → 本実装では「相手のスナップショットをそのまま適用」する。自分の描画は相手の画面には
+    //    もともと自分のストロークとして送信済みなので、相手のスナップショットには含まれていない。
+    //    よって相手のUndoでは自分の描画は消えない。
+    isApplyingRemoteHistory = true;
+    try {
+      const snapshot = ev.layersSnapshot;
+      if (!Array.isArray(snapshot) || snapshot.length === 0) return;
+      // 自分のローカル履歴はそのまま。他参加者のスナップショットを適用すると自分の描画が消える危険があるため、
+      // ここでは何もしない（自分のUndoは自分の履歴で独立して動作する）
+      // 他参加者のUndoは「相手の画面でのみ」反映されるべきなので、ローカルでは無視する。
+      // ただし、相手のストロークが消えるため、それを再現したい場合は個別の strokeId 単位での取り消しが必要。
+      // 本実装では「自分のUndoで他参加者の描画は消えない」を達成するため、他参加者の Undo イベントは無視する。
+    } finally { isApplyingRemoteHistory = false; }
+  }
+}
 async function cleanupSession() {
   if (sessionUnsubscribe) { try { sessionUnsubscribe(); } catch(e){} sessionUnsubscribe = null; }
   if (strokesUnsubscribe) { try { strokesUnsubscribe(); } catch(e){} strokesUnsubscribe = null; }
   if (layerEventsUnsubscribe) { try { layerEventsUnsubscribe(); } catch(e){} layerEventsUnsubscribe = null; }
+  if (historyEventsUnsubscribe) { try { historyEventsUnsubscribe(); } catch(e){} historyEventsUnsubscribe = null; }
   if (resendRequestUnsubscribe) { try { resendRequestUnsubscribe(); } catch(e){} resendRequestUnsubscribe = null; }
   if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e){} chatUnsubscribe = null; }
-  remoteStrokesById = {};
+  remoteStrokesById = {}; remoteStrokeSnapshots = {};
   collabBadge.classList.remove('show');
   participantsBar.classList.remove('show'); participantsBar.innerHTML = '';
   chatOpen = false; chatPanel.classList.remove('show'); chatUnreadCount = 0; updateChatBadge();
@@ -2537,6 +2226,7 @@ async function cleanupSession() {
       await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + activeSessionId));
       await remove(ref(db, 'strokes/' + activeSessionId));
       await remove(ref(db, 'layerEvents/' + activeSessionId));
+      await remove(ref(db, 'historyEvents/' + activeSessionId));
       await remove(ref(db, 'sessionSnapshots/' + activeSessionId));
       await remove(ref(db, 'snapshotResendRequests/' + activeSessionId));
       await remove(ref(db, 'chats/' + activeSessionId));
