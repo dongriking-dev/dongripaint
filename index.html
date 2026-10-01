@@ -823,6 +823,10 @@ function reorderLayers(fromId, toId, position) {
 
 // ★ 履歴管理（修正版）
 // 各履歴エントリに一意な stateId を付与。通信時も stateId で同期することで正確に1つずつ戻る。
+// ★ さらに: 自分が描いたストロークのみを削除する「自分の操作だけUndo」機能を追加。
+let localStrokeHistory = []; // 自分のストロークの履歴（stateIdではなく、自分のレイヤー状態スナップショット）
+let localStrokeIndex = -1;
+
 function pushHistory(options = {}) {
   if (isLoading || isApplyingRemoteHistory) return;
   const snapshot = layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, opacity: l.opacity, dataURL: l.canvas.toDataURL('image/png') }));
@@ -858,7 +862,14 @@ function pushHistory(options = {}) {
 }
 
 // ★ Undo: 現在の履歴を1つ前に戻す。stateId で同期するので相手側も正確に1つ前に戻る。
+// ★ ただし、共同描画中は「自分のストロークのみ削除」するモードを優先
 function performUndo() {
+  // 共同描画セッション中は、自分のストロークだけを消す（相手の描画は消さない）
+  if (activeSessionId) {
+    undoMyLastStroke();
+    return;
+  }
+  // 通常のUndo（一人で描いている場合）
   if (historyIndex <= 0) return;
   const targetIdx = historyIndex - 1;
   const targetState = history[targetIdx];
@@ -876,8 +887,12 @@ function performUndo() {
     });
   }
 }
-// ★ Redo
+// ★ Redo（共同描画中はRedo不可とする。自分のストロークを戻す概念がないため）
 function performRedo() {
+  if (activeSessionId) {
+    showToast('共同描画中はRedoできません', 'error');
+    return;
+  }
   if (historyIndex >= history.length - 1) return;
   const targetIdx = historyIndex + 1;
   const targetState = history[targetIdx];
@@ -893,6 +908,67 @@ function performRedo() {
       W: targetState.W, H: targetState.H
     });
   }
+}
+
+// ★ 自分のストロークのみを削除するUndo
+function undoMyLastStroke() {
+  if (!activeSessionId) return;
+  // 自分のストローク履歴が空なら何もしない
+  if (localStrokeIndex < 0) {
+    showToast('戻せる自分のストロークがありません', 'error');
+    return;
+  }
+  // 履歴から自分のストローク状態を取得
+  const targetState = localStrokeHistory[localStrokeIndex];
+  if (!targetState) return;
+  // 適用
+  applyLocalStrokeState(targetState);
+  localStrokeIndex--;
+  // 他参加者には「自分のストローク削除」を通知（相手のキャンバスからも自分のストロークを消す）
+  sendHistoryEvent({
+    type: 'undoMyStroke',
+    layersSnapshot: targetState.layers,
+    activeLayerId: targetState.activeLayerId,
+    layerCounter: targetState.layerCounter,
+    W: targetState.W, H: targetState.H
+  });
+  showToast('自分のストロークを1つ戻しました', 'success');
+}
+
+// ローカルストローク状態を適用
+async function applyLocalStrokeState(state) {
+  if (!state) return;
+  suppressAutoSave = true; isLoading = true;
+  if (state.W && state.H) { W = state.W; H = state.H; canvas.width = W; canvas.height = H; applyCanvasCSSSize(); }
+  const loadPromises = state.layers.map(layerData => new Promise(resolve => {
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const lctx = c.getContext('2d', { willReadFrequently: true });
+    const img = new Image();
+    const finalize = () => resolve({ id: layerData.id, name: layerData.name, canvas: c, ctx: lctx, visible: layerData.visible, opacity: layerData.opacity });
+    img.onload = () => { lctx.drawImage(img, 0, 0, W, H); finalize(); };
+    img.onerror = finalize;
+    img.src = layerData.dataURL;
+  }));
+  layers = await Promise.all(loadPromises);
+  activeLayerId = state.activeLayerId; layerCounter = state.layerCounter;
+  isLoading = false; suppressAutoSave = false;
+  renderLayerList(); composite();
+  scheduleAutoSave();
+}
+
+// 自分のストロークを記録する（ストローク終了時に呼ぶ）
+function recordMyStroke() {
+  if (!activeSessionId) return;
+  const snapshot = layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, opacity: l.opacity, dataURL: l.canvas.toDataURL('image/png') }));
+  const state = {
+    layers: snapshot,
+    activeLayerId, layerCounter, W, H
+  };
+  // 現在のインデックスより後を切り捨て
+  localStrokeHistory = localStrokeHistory.slice(0, localStrokeIndex + 1);
+  localStrokeHistory.push(state);
+  if (localStrokeHistory.length > MAX_HISTORY) localStrokeHistory.shift();
+  localStrokeIndex = localStrokeHistory.length - 1;
 }
 
 // 指定した履歴状態を適用（ローカル・リモート共通）
@@ -1340,7 +1416,11 @@ function draw(e) {
 function stopDrawing(e) {
   if (e) e.preventDefault(); if (!isDrawing) return;
   isDrawing = false; moveSnapshot = null; moveOffsetX = 0; moveOffsetY = 0;
-  if (activeSessionId && myCurrentStrokeId) sendStrokeEvent({ type: 'end', strokeId: myCurrentStrokeId });
+  if (activeSessionId && myCurrentStrokeId) {
+    sendStrokeEvent({ type: 'end', strokeId: myCurrentStrokeId });
+    // ★ 自分のストロークを記録（Undo用）
+    recordMyStroke();
+  }
   myCurrentStrokeId = null; myCurrentStrokeSeed = null; myLastSentLogical = null;
   scheduleAutoSave(); pushHistory();
 }
@@ -1645,7 +1725,7 @@ addLayerBtn.addEventListener('click', () => {
 });
 dupLayerBtn.addEventListener('click', () => { if (activeLayerId) duplicateLayer(activeLayerId); });
 mergeDownBtn.addEventListener('click', () => { if (activeLayerId) { if (getLayerIndex(activeLayerId) === 0) { showToast('一番下のレイヤーは結合できません', 'error'); return; } mergeDown(activeLayerId); } });
-// ★ Undo/Redo: performUndo/performRedo を使用
+// ★ Undo/Redo: 共同描画中は自分のストロークのみ削除
 undoBtn.addEventListener('click', () => { performUndo(); });
 redoBtn.addEventListener('click', () => { performRedo(); });
 artTitleEl.addEventListener('dblclick', () => { const newTitle = prompt('作品タイトルを入力', artTitleEl.textContent); if (newTitle !== null && newTitle.trim() !== '') { artTitleEl.textContent = newTitle.trim(); scheduleAutoSave(); } });
@@ -1696,7 +1776,6 @@ chatToggle.addEventListener('click', () => {
   chatPanelOpen = !chatPanelOpen;
   chatPanel.classList.toggle('show', chatPanelOpen);
   if (chatPanelOpen) {
-    // 未読リセット
     unreadChatCount = 0;
     updateChatBadge();
     chatAutoScroll = true;
@@ -1736,7 +1815,6 @@ function startChatListener(sessionId) {
   chatMessagesCache = {};
   const chatRef = ref(db, 'chats/' + sessionId);
   const existingKeys = new Set();
-  // 初回ロード完了フラグ
   let initialLoadDone = false;
   const initialLoad = get(chatRef).then((snap) => {
     if (snap.exists()) {
@@ -1758,14 +1836,11 @@ function startChatListener(sessionId) {
     if (!msg) return;
     existingKeys.add(key);
     chatMessagesCache[key] = msg;
-    // 自分のメッセージは既に表示済みの可能性。重複しないよう再描画
     renderChatMessages();
-    // 未読カウント（自分以外 かつ パネル閉じてる時）
     if (msg.uid !== currentUser.uid && !chatPanelOpen) {
       unreadChatCount++;
       updateChatBadge();
     }
-    // 自動スクロール
     if (chatAutoScroll || msg.uid === currentUser.uid) {
       scrollChatToBottom();
     }
@@ -1795,7 +1870,6 @@ function scrollChatToBottom() {
   });
 }
 chatMessages.addEventListener('scroll', () => {
-  // 一番下から20px以内なら自動スクロールON
   const atBottom = chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight < 20;
   chatAutoScroll = atBottom;
 });
@@ -1867,6 +1941,7 @@ function cleanupListeners() {
   participantsBar.classList.remove('show'); participantsBar.innerHTML = '';
   chatMessagesCache = {}; unreadChatCount = 0; chatPanelOpen = false;
   chatPanel.classList.remove('show'); updateChatBadge();
+  localStrokeHistory = []; localStrokeIndex = -1;
 }
 
 function startFriendsListener() {
@@ -2077,6 +2152,8 @@ async function inviteFriendsToCanvas(friendUids) {
     activeSessionId = sessionId; activeSessionOwnerId = currentUser.uid; sessionRole = 'owner';
     await attachSessionListener(sessionId);
     startResendListener(sessionId, currentUser.uid);
+    // 自分のストローク履歴をリセット
+    localStrokeHistory = []; localStrokeIndex = -1;
     showToast(`${friendUids.length}人に招待を送信しました`, 'success');
     inviteModal.classList.remove('show');
     selectedInviteUids.clear();
@@ -2098,7 +2175,7 @@ async function attachSessionListener(sessionId) {
       if (!strokesUnsubscribe) startStrokesListener(sessionId);
       if (!layerEventsUnsubscribe) startLayerEventsListener(sessionId);
       if (!historyEventsUnsubscribe) startHistoryEventsListener(sessionId);
-      if (!chatUnsubscribe) startChatListener(sessionId); // ★ チャット開始
+      if (!chatUnsubscribe) startChatListener(sessionId);
     } else if (s.status === 'declined') { showToast('招待が拒否されました', 'error'); await cleanupSession(); }
     else if (s.status === 'ended') { showToast('セッションが終了しました'); await cleanupSession(); }
   });
@@ -2127,6 +2204,8 @@ function showIncomingInvite(sessionId, session) {
       await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId));
       shownInviteIds.delete(sessionId);
       activeSessionId = sessionId; activeSessionOwnerId = session.ownerId; sessionRole = 'guest';
+      // 自分のストローク履歴をリセット
+      localStrokeHistory = []; localStrokeIndex = -1;
       showEditorScreen();
       await new Promise(r => setTimeout(r, 400));
       showToast('相手のキャンバスを読み込んでいます...', 'success');
@@ -2140,7 +2219,7 @@ function showIncomingInvite(sessionId, session) {
       await attachSessionListener(sessionId);
       collabBadge.classList.add('show'); collabBadgeText.textContent = '共同描画中';
       startStrokesListener(sessionId); startLayerEventsListener(sessionId);
-      startHistoryEventsListener(sessionId); startChatListener(sessionId); // ★ チャット開始
+      startHistoryEventsListener(sessionId); startChatListener(sessionId);
     } catch (e) { showToast('参加に失敗: ' + e.message, 'error'); }
     finally { showLoading(false); processInviteQueue(); }
   });
@@ -2268,19 +2347,16 @@ function startHistoryEventsListener(sessionId) {
 }
 
 // ★ リモート履歴イベント適用（修正版：stateId ベースで正確に1つずつ戻る）
+// ★ 「undoMyStroke」イベントが来たら、相手のキャンバスからもその人のストロークを消す
 async function applyRemoteHistoryEvent(ev) {
   if (ev.type === 'push') {
-    // 相手が新しい操作をした → 自分の履歴にもその状態を追加
     isApplyingRemoteHistory = true;
     try {
       const snapshot = ev.layersSnapshot;
       if (!Array.isArray(snapshot) || snapshot.length === 0) return;
-      // ローカルの履歴と重複しないよう、stateId でチェック
       const existingIds = new Set(history.map(h => h.stateId));
       if (existingIds.has(ev.stateId)) return;
-      // 履歴を現在位置まで切り、新しい状態を追加
       history = history.slice(0, historyIndex + 1);
-      // 現在のレイヤー状態も反映（相手の操作を自分のキャンバスに反映）
       if (ev.W && ev.H && (ev.W !== W || ev.H !== H)) { W = ev.W; H = ev.H; canvas.width = W; canvas.height = H; applyCanvasCSSSize(); }
       isLoading = true;
       const loadPromises = snapshot.map(layerData => new Promise(resolve => {
@@ -2296,7 +2372,6 @@ async function applyRemoteHistoryEvent(ev) {
       activeLayerId = ev.activeLayerId || layers[layers.length - 1].id;
       layerCounter = ev.layerCounter || layerCounter;
       isLoading = false;
-      // 新しい履歴エントリを追加（stateIdは相手のものを使う）
       const newState = {
         stateId: ev.stateId,
         layers: snapshot,
@@ -2311,18 +2386,14 @@ async function applyRemoteHistoryEvent(ev) {
     } catch (e) { console.error('[remote push]', e); isLoading = false; }
     finally { isApplyingRemoteHistory = false; }
   } else if (ev.type === 'jump') {
-    // 相手がUndo/Redoした → 自分の history 配列から該当 stateId を探して適用
     isApplyingRemoteHistory = true;
     try {
       const snapshot = ev.layersSnapshot;
       if (!Array.isArray(snapshot) || snapshot.length === 0) return;
-      // 自分の履歴に同じ stateId があるか探す
       let targetIdx = history.findIndex(h => h.stateId === ev.stateId);
       if (targetIdx !== -1) {
-        // 見つかった → その位置に移動（レイヤーは既に同期されているはずだが念のため適用）
         await applyHistoryState(history[targetIdx], targetIdx);
       } else {
-        // 見つからない → 相手の状態をそのまま適用し、履歴に追加
         if (ev.W && ev.H && (ev.W !== W || ev.H !== H)) { W = ev.W; H = ev.H; canvas.width = W; canvas.height = H; applyCanvasCSSSize(); }
         isLoading = true;
         const loadPromises = snapshot.map(layerData => new Promise(resolve => {
@@ -2342,6 +2413,30 @@ async function applyRemoteHistoryEvent(ev) {
       }
     } catch (e) { console.error('[remote jump]', e); isLoading = false; }
     finally { isApplyingRemoteHistory = false; }
+  } else if (ev.type === 'undoMyStroke') {
+    // 相手が「自分のストロークのみUndo」した → 相手のストロークを自分のキャンバスからも削除するため、スナップショットを適用
+    isApplyingRemoteHistory = true;
+    try {
+      const snapshot = ev.layersSnapshot;
+      if (!Array.isArray(snapshot) || snapshot.length === 0) return;
+      if (ev.W && ev.H && (ev.W !== W || ev.H !== H)) { W = ev.W; H = ev.H; canvas.width = W; canvas.height = H; applyCanvasCSSSize(); }
+      isLoading = true;
+      const loadPromises = snapshot.map(layerData => new Promise(resolve => {
+        const c = document.createElement('canvas'); c.width = W; c.height = H;
+        const lctx = c.getContext('2d', { willReadFrequently: true });
+        const img = new Image();
+        const finalize = () => resolve({ id: layerData.id, name: layerData.name, canvas: c, ctx: lctx, visible: layerData.visible, opacity: layerData.opacity });
+        img.onload = () => { lctx.drawImage(img, 0, 0, W, H); finalize(); };
+        img.onerror = finalize;
+        img.src = layerData.dataURL;
+      }));
+      layers = await Promise.all(loadPromises);
+      activeLayerId = ev.activeLayerId || layers[layers.length - 1].id;
+      layerCounter = ev.layerCounter || layerCounter;
+      isLoading = false;
+      renderLayerList(); composite();
+    } catch (e) { console.error('[remote undoMyStroke]', e); isLoading = false; }
+    finally { isApplyingRemoteHistory = false; }
   }
 }
 
@@ -2358,6 +2453,7 @@ async function cleanupSession() {
   participantsBar.classList.remove('show'); participantsBar.innerHTML = '';
   chatPanel.classList.remove('show'); chatPanelOpen = false;
   unreadChatCount = 0; updateChatBadge();
+  localStrokeHistory = []; localStrokeIndex = -1;
   if (activeSessionId) {
     try {
       await update(ref(db, 'sessions/' + activeSessionId), { status: 'ended' });
@@ -2367,7 +2463,6 @@ async function cleanupSession() {
       await remove(ref(db, 'historyEvents/' + activeSessionId));
       await remove(ref(db, 'sessionSnapshots/' + activeSessionId));
       await remove(ref(db, 'snapshotResendRequests/' + activeSessionId));
-      // チャットは履歴として残す場合もあるが、ここではセッション終了時に削除
       await remove(ref(db, 'chats/' + activeSessionId));
     } catch (e) {}
   }
