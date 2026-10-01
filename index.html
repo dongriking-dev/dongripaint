@@ -418,7 +418,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getDatabase, ref, set, get, update, push, onValue, onChildAdded, remove }
+import { getDatabase, ref, set, get, update, push, onValue, onChildAdded, onChildRemoved, remove }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -526,7 +526,8 @@ let isApplyingRemoteHistory = false;
 let myCurrentStrokeId = null, myCurrentStrokeSeed = null, myLastSentLogical = null;
 const STROKE_MIN_LOGICAL_DIST = 2;
 
-const shownInviteIds = new Set();
+// ★ 招待処理用: 処理済みの「inviteKey」(sessionId_timestamp) を保持
+const processedInviteKeys = new Set();
 let incomingInviteQueue = [];
 let isShowingInviteModal = false;
 
@@ -1838,7 +1839,7 @@ function cleanupListeners() {
   if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e){} chatUnsubscribe = null; }
   friends = {}; pendingRequests = {};
   activeSessionId = null; activeSessionOwnerId = null; sessionRole = null;
-  shownInviteIds.clear(); incomingInviteQueue = []; isShowingInviteModal = false;
+  processedInviteKeys.clear(); incomingInviteQueue = []; isShowingInviteModal = false;
   remoteStrokesById = {};
   selectedInviteUids.clear();
   participantsBar.classList.remove('show'); participantsBar.innerHTML = '';
@@ -1860,32 +1861,55 @@ function startRequestsListener() {
     } catch (e) {}
   });
 }
+
+// ★ 修正: 招待を「onValue」ではなく「onChildAdded」で監視する。
+//   こうすることで、同じセッションIDへの再招待（新規プッシュ）でも毎回イベントが発火する。
 function startInviteListener() {
   if (invitesUnsubscribe) { try { invitesUnsubscribe(); } catch(e){} invitesUnsubscribe = null; }
-  // 変更：招待を監視する際に shownInviteIds をクリアしない（過去の招待IDを保持）
-  invitesUnsubscribe = onValue(ref(db, 'sessionInvites/' + currentUser.uid), async (snap) => {
+  const invitesRef = ref(db, 'sessionInvites/' + currentUser.uid);
+  
+  // 初回ロードで既存の招待を取得（重複防止用）
+  const initialLoad = get(invitesRef).then((snap) => {
+    if (snap.exists()) {
+      const data = snap.val();
+      Object.keys(data).forEach(inviteKey => {
+        // 既存の招待は「処理済み」としてマーク（ただし、後から来るものは新規扱い）
+        processedInviteKeys.add(inviteKey);
+      });
+    }
+  }).catch(() => {});
+
+  invitesUnsubscribe = onChildAdded(invitesRef, async (childSnap) => {
+    await initialLoad;
+    const inviteKey = childSnap.key; // pushキー（ユニーク）
+    if (processedInviteKeys.has(inviteKey)) return; // 既に処理済み
+    const inviteData = childSnap.val();
+    if (!inviteData) return;
+    
+    // inviteData は { sessionId, from, timestamp } の形式を想定
+    const sessionId = inviteData.sessionId;
+    if (!sessionId) return;
+    
+    processedInviteKeys.add(inviteKey);
+    
+    // 既に同じセッションに参加中ならスキップ
+    if (activeSessionId === sessionId) return;
+    
     try {
-      const invites = snap.val() || {}; 
-      const sessionIds = Object.keys(invites).filter(id => invites[id] === true);
-      for (const sid of sessionIds) {
-        // 既に表示済みのセッションはスキップ（ただし、辞書にない場合のみ追加）
-        if (shownInviteIds.has(sid)) continue;
-        try {
-          const sSnap = await get(ref(db, 'sessions/' + sid));
-          if (sSnap.exists()) { 
-            const s = sSnap.val(); 
-            if ((s.status === 'pending' || s.status === 'active') && s.guestIds && s.guestIds.includes(currentUser.uid)) { 
-              shownInviteIds.add(sid); 
-              incomingInviteQueue.push({ sessionId: sid, session: s }); 
-            } 
-          }
-        } catch (e) {}
+      const sSnap = await get(ref(db, 'sessions/' + sessionId));
+      if (sSnap.exists()) {
+        const s = sSnap.val();
+        if ((s.status === 'pending' || s.status === 'active') && s.guestIds && s.guestIds.includes(currentUser.uid)) {
+          incomingInviteQueue.push({ sessionId, session: s, inviteKey });
+          processInviteQueue();
+        }
       }
-      processInviteQueue();
     } catch (e) {}
   });
 }
-function processInviteQueue() { if (isShowingInviteModal) return; if (incomingInviteQueue.length === 0) return; const next = incomingInviteQueue.shift(); showIncomingInvite(next.sessionId, next.session); }
+
+function processInviteQueue() { if (isShowingInviteModal) return; if (incomingInviteQueue.length === 0) return; const next = incomingInviteQueue.shift(); showIncomingInvite(next.sessionId, next.session, next.inviteKey); }
+
 function renderFriendsList() {
   const ids = Object.keys(friends); friendCount.textContent = ids.length + '人';
   if (ids.length === 0) { friendList.innerHTML = '<div class="friend-empty">まだ友達がいません。</div>'; return; }
@@ -2057,9 +2081,15 @@ async function inviteFriendsToCanvas(friendUids) {
     await set(sessionRef, { ownerId: currentUser.uid, ownerName: currentUser.displayName || '名無し', guestIds: friendUids, participants, status: 'pending', createdAt: Date.now(), startedAt: null });
     const ok = await uploadLayersSnapshotToSession(sessionId, currentUser.uid);
     if (!ok) { showToast('キャンバスの保存に失敗しました', 'error'); try { await remove(ref(db, 'sessions/' + sessionId)); } catch(e){} return; }
+    
+    // ★ 各友達に招待を「push」で送信（毎回ユニークなキーが生成される）
     const updates = {};
-    friendUids.forEach(uid => { updates['sessionInvites/' + uid + '/' + sessionId] = true; });
+    for (const uid of friendUids) {
+      const inviteRef = push(ref(db, 'sessionInvites/' + uid));
+      updates[inviteRef.key] = { sessionId: sessionId, from: currentUser.uid, fromName: currentUser.displayName || '名無し', timestamp: Date.now() };
+    }
     await update(ref(db), updates);
+    
     activeSessionId = sessionId; activeSessionOwnerId = currentUser.uid; sessionRole = 'owner';
     await attachSessionListener(sessionId);
     startResendListener(sessionId, currentUser.uid);
@@ -2096,8 +2126,8 @@ function updateParticipantsBar(participants) {
   participantsBar.innerHTML = participants.map(p => `<img class="participant-avatar" src="${p.photoURL || ''}" title="${escapeHtml(p.displayName)}">`).join('') + `<span class="participant-count">${participants.length}人</span>`;
 }
 
-// ★ 修正：招待モーダル表示時に shownInviteIds に追加するタイミングを調整
-function showIncomingInvite(sessionId, session) {
+// ★ 修正: inviteKey を受け取り、参加/無視時にその招待キーを削除する
+function showIncomingInvite(sessionId, session, inviteKey) {
   isShowingInviteModal = true;
   const alreadyInSession = !!activeSessionId;
   incomingInviteBody.innerHTML = `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br><span style="color:#5bdf8d;">相手のキャンバスと同じレイヤー構成で参加します。</span><br>` + (alreadyInSession ? '<span style="color:#ffb366;">※現在別のセッション中です。切り替わります。</span>' : '');
@@ -2111,9 +2141,9 @@ function showIncomingInvite(sessionId, session) {
     try {
       showLoading(true);
       await update(ref(db, 'sessions/' + sessionId), { status: 'active', startedAt: Date.now() });
-      await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId));
-      // 参加したので、このセッションIDを「表示済み」から削除（再度招待があれば表示できるように）
-      shownInviteIds.delete(sessionId);
+      // 招待キーを削除
+      if (inviteKey) { try { await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + inviteKey)); } catch(e){} }
+      processedInviteKeys.delete(inviteKey);
       activeSessionId = sessionId; activeSessionOwnerId = session.ownerId; sessionRole = 'guest';
       showEditorScreen();
       await new Promise(r => setTimeout(r, 400));
@@ -2134,7 +2164,10 @@ function showIncomingInvite(sessionId, session) {
   });
   newDecline.addEventListener('click', async () => {
     incomingInviteModal.classList.remove('show'); isShowingInviteModal = false;
-    try { await update(ref(db, 'sessions/' + sessionId), { status: 'declined' }); await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId)); shownInviteIds.delete(sessionId); } catch (e) {}
+    // 招待キーを削除
+    if (inviteKey) { try { await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + inviteKey)); } catch(e){} }
+    processedInviteKeys.delete(inviteKey);
+    try { await update(ref(db, 'sessions/' + sessionId), { status: 'declined' }); } catch (e) {}
     processInviteQueue();
   });
   incomingInviteModal.classList.add('show');
@@ -2338,7 +2371,14 @@ async function cleanupSession() {
   if (activeSessionId) {
     try {
       await update(ref(db, 'sessions/' + activeSessionId), { status: 'ended' });
-      await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + activeSessionId));
+      // 自分が持っている招待をすべて削除
+      const myInvitesRef = ref(db, 'sessionInvites/' + currentUser.uid);
+      const snap = await get(myInvitesRef);
+      if (snap.exists()) {
+        const updates = {};
+        Object.keys(snap.val()).forEach(k => { updates[k] = null; });
+        await update(myInvitesRef, updates);
+      }
       await remove(ref(db, 'strokes/' + activeSessionId));
       await remove(ref(db, 'layerEvents/' + activeSessionId));
       await remove(ref(db, 'historyEvents/' + activeSessionId));
