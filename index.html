@@ -9,7 +9,6 @@
   * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; height: 100%; overflow: hidden; font-family: 'Segoe UI', Roboto, 'Helvetica Neue', 'Hiragino Sans', 'Yu Gothic', sans-serif; background: #1e1f24; color: #e6e7ea; }
   .icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
-  .icon-sm { width: 16px; height: 16px; }
   .icon-lg { width: 24px; height: 24px; }
   button { font-family: inherit; }
   input, textarea { font-family: inherit; }
@@ -320,19 +319,10 @@
         <button class="zoom-btn" id="zoomOutBtn">－</button>
         <button class="zoom-btn" id="zoomResetBtn">⛶</button>
       </div>
-
       <div class="chat-panel" id="chatPanel">
-        <div class="chat-header">
-          <span>💬 チャット</span>
-          <button id="chatCloseBtn" title="閉じる">✕</button>
-        </div>
-        <div class="chat-messages" id="chatMessages">
-          <div class="chat-empty">まだメッセージがありません</div>
-        </div>
-        <div class="chat-input-row">
-          <input type="text" id="chatInput" placeholder="メッセージを入力..." maxlength="500">
-          <button id="chatSendBtn">送信</button>
-        </div>
+        <div class="chat-header"><span>💬 チャット</span><button id="chatCloseBtn" title="閉じる">✕</button></div>
+        <div class="chat-messages" id="chatMessages"><div class="chat-empty">まだメッセージがありません</div></div>
+        <div class="chat-input-row"><input type="text" id="chatInput" placeholder="メッセージを入力..." maxlength="500"><button id="chatSendBtn">送信</button></div>
       </div>
     </div>
 
@@ -415,9 +405,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-const STORAGE_KEY_INDEX = 'drawingApp_works_index_v16';
-const STORAGE_KEY_WORK_PREFIX = 'drawingApp_work_v16_';
-const STORAGE_KEY_LAST_ACTIVE = 'drawingApp_last_active_v16';
+const STORAGE_KEY_INDEX = 'drawingApp_works_index_v17';
+const STORAGE_KEY_LAST_ACTIVE = 'drawingApp_last_active_v17';
+const STORAGE_KEY_PENDING = 'drawingApp_pending_save_v17';
 const IDB_NAME = 'donguriPaintDB';
 const IDB_VERSION = 1;
 const IDB_STORE = 'works';
@@ -508,7 +498,7 @@ const processedInviteKeys = new Set();
 let incomingInviteQueue = [];
 let isShowingInviteModal = false;
 let isUnloading = false;
-let dirty = false; // 未保存の変更があるか
+let dirty = false;
 
 // =====================================================
 // IndexedDB ユーティリティ
@@ -519,10 +509,8 @@ function openIDB() {
   idbPromise = new Promise((resolve, reject) => {
     const req = indexedDB.open(IDB_NAME, IDB_VERSION);
     req.onupgradeneeded = (e) => {
-      const db = e.target.result;
-      if (!db.objectStoreNames.contains(IDB_STORE)) {
-        db.createObjectStore(IDB_STORE, { keyPath: 'id' });
-      }
+      const idb = e.target.result;
+      if (!idb.objectStoreNames.contains(IDB_STORE)) idb.createObjectStore(IDB_STORE, { keyPath: 'id' });
     };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
@@ -530,56 +518,50 @@ function openIDB() {
   return idbPromise;
 }
 async function idbPut(record) {
-  try {
-    const db = await openIDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction(IDB_STORE, 'readwrite');
-      tx.objectStore(IDB_STORE).put(record);
-      tx.oncomplete = () => resolve(true);
-      tx.onerror = () => reject(tx.error);
-    });
-  } catch (e) { console.warn('[IDB] put failed', e); return false; }
+  try { const idb = await openIDB(); return new Promise((res, rej) => { const tx = idb.transaction(IDB_STORE, 'readwrite'); tx.objectStore(IDB_STORE).put(record); tx.oncomplete = () => res(true); tx.onerror = () => rej(tx.error); }); }
+  catch (e) { console.warn('[IDB] put failed', e); return false; }
 }
 async function idbGet(id) {
-  try {
-    const db = await openIDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction(IDB_STORE, 'readonly');
-      const req = tx.objectStore(IDB_STORE).get(id);
-      req.onsuccess = () => resolve(req.result || null);
-      req.onerror = () => reject(req.error);
-    });
-  } catch (e) { return null; }
+  try { const idb = await openIDB(); return new Promise((res, rej) => { const tx = idb.transaction(IDB_STORE, 'readonly'); const r = tx.objectStore(IDB_STORE).get(id); r.onsuccess = () => res(r.result || null); r.onerror = () => rej(r.error); }); }
+  catch (e) { return null; }
 }
 async function idbGetAll() {
-  try {
-    const db = await openIDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction(IDB_STORE, 'readonly');
-      const req = tx.objectStore(IDB_STORE).getAll();
-      req.onsuccess = () => resolve(req.result || []);
-      req.onerror = () => reject(req.error);
-    });
-  } catch (e) { return []; }
+  try { const idb = await openIDB(); return new Promise((res, rej) => { const tx = idb.transaction(IDB_STORE, 'readonly'); const r = tx.objectStore(IDB_STORE).getAll(); r.onsuccess = () => res(r.result || []); r.onerror = () => rej(r.error); }); }
+  catch (e) { return []; }
 }
 async function idbDelete(id) {
-  try {
-    const db = await openIDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction(IDB_STORE, 'readwrite');
-      tx.objectStore(IDB_STORE).delete(id);
-      tx.oncomplete = () => resolve(true);
-      tx.onerror = () => reject(tx.error);
-    });
-  } catch (e) { return false; }
+  try { const idb = await openIDB(); return new Promise((res, rej) => { const tx = idb.transaction(IDB_STORE, 'readwrite'); tx.objectStore(IDB_STORE).delete(id); tx.oncomplete = () => res(true); tx.onerror = () => rej(tx.error); }); }
+  catch (e) { return false; }
 }
 
 // =====================================================
-// 保存処理（多重防御）
+// ユーティリティ
 // =====================================================
+function generateId() { return 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function formatDate(ts) { const d = new Date(ts); const pad = (n) => n.toString().padStart(2, '0'); return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+function formatTime(ts) { const d = new Date(ts); const pad = (n) => n.toString().padStart(2, '0'); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+function escapeHtml(s) { return String(s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+function hexToRgb(hex) { hex = hex.replace('#','').trim(); if (hex.length === 3) hex = hex.split('').map(c => c+c).join(''); if (hex.length !== 6) return null; const n = parseInt(hex, 16); if (isNaN(n)) return null; return { r: (n>>16)&255, g: (n>>8)&255, b: n&255 }; }
+function rgbToHex(r,g,b) { const c = v => Math.max(0, Math.min(255, Math.round(v))); return '#' + [c(r),c(g),c(b)].map(v => v.toString(16).padStart(2,'0')).join(''); }
+function rgbToHsl(r,g,b) { r/=255; g/=255; b/=255; const max = Math.max(r,g,b), min = Math.min(r,g,b); let h = 0, s = 0, l = (max + min) / 2; if (max !== min) { const d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min); switch (max) { case r: h = (g-b)/d + (g<b?6:0); break; case g: h = (b-r)/d + 2; break; case b: h = (r-g)/d + 4; break; } h /= 6; } return { h: h*360, s: s*100, l: l*100 }; }
+function hslToRgb(h,s,l) { h/=360; s/=100; l/=100; let r, g, b; if (s === 0) { r = g = b = l; } else { const hue2rgb = (p,q,t) => { if (t < 0) t += 1; if (t > 1) t -= 1; if (t < 1/6) return p + (q-p) * 6 * t; if (t < 1/2) return q; if (t < 2/3) return p + (q-p) * (2/3-t) * 6; return p; }; const q = l < 0.5 ? l * (1+s) : l + s - l*s; const p = 2 * l - q; r = hue2rgb(p,q,h+1/3); g = hue2rgb(p,q,h); b = hue2rgb(p,q,h-1/3); } return { r: r*255, g: g*255, b: b*255 }; }
+function emailToKey(email) { return email.toLowerCase().replace(/\./g, ',').replace(/@/g, '_at_'); }
+function getScaleFactor() { return W / BASE_W; }
+function toInternal(lx, ly) { const s = getScaleFactor(); return { x: lx * s, y: ly * s }; }
+function showToast(msg, type = '') { toastEl.textContent = msg; toastEl.className = 'toast show ' + type; clearTimeout(showToast._t); showToast._t = setTimeout(() => { toastEl.className = 'toast ' + type; }, 2500); }
+function showLoading(show) { loadingIndicator.classList.toggle('show', show); }
+
+// =====================================================
+// 保存処理（IndexedDB メイン、localStorage は軽量メタのみ）
+// =====================================================
+function getWorksIndex() { try { const raw = localStorage.getItem(STORAGE_KEY_INDEX); return raw ? JSON.parse(raw) : []; } catch (e) { return []; } }
+function setWorksIndex(index) { try { if (index.length > 50) index = index.slice(0, 50); localStorage.setItem(STORAGE_KEY_INDEX, JSON.stringify(index)); } catch (e) { 
+  // 容量オーバー時は古いものを削除
+  try { const trimmed = index.slice(0, 20); localStorage.setItem(STORAGE_KEY_INDEX, JSON.stringify(trimmed)); } catch (e2) {}
+} }
 function serializeCurrentWork() {
   const serializedLayers = layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, opacity: l.opacity, dataURL: l.canvas.toDataURL('image/png') }));
-  return { version: 16, baseWidth: BASE_W, baseHeight: BASE_H, width: W, height: H, layers: serializedLayers, activeLayerId, layerCounter, savedAt: Date.now(), title: artTitleEl.textContent || '無題の作品' };
+  return { version: 17, baseWidth: BASE_W, baseHeight: BASE_H, width: W, height: H, layers: serializedLayers, activeLayerId, layerCounter, savedAt: Date.now(), title: artTitleEl.textContent || '無題の作品' };
 }
 function generateThumbnail(maxSize) {
   const tmp = document.createElement('canvas');
@@ -593,25 +575,22 @@ function generateThumbnail(maxSize) {
   return tmp.toDataURL('image/png');
 }
 
-// ★ 同期保存（localStorage へ、どんな時でも動く最終防衛線）
+// ★ 同期保存（localStorage へ、軽量メタ情報のみ）
 function saveSyncToLocalStorage() {
   if (isLoading) return;
   try {
-    const data = serializeCurrentWork();
     if (!currentWorkId) currentWorkId = generateId();
-    localStorage.setItem(STORAGE_KEY_WORK_PREFIX + currentWorkId, JSON.stringify(data));
     localStorage.setItem(STORAGE_KEY_LAST_ACTIVE, currentWorkId);
     const index = getWorksIndex();
     const existingIdx = index.findIndex(w => w.id === currentWorkId);
-    const thumb = generateThumbnail(360);
-    const entry = { id: currentWorkId, title: data.title, updatedAt: Date.now(), thumbnail: thumb };
+    const entry = { id: currentWorkId, title: artTitleEl.textContent || '無題の作品', updatedAt: Date.now() };
     if (existingIdx >= 0) index[existingIdx] = entry; else index.unshift(entry);
     setWorksIndex(index);
     dirty = false;
   } catch (e) { console.warn('[save-sync] error', e); }
 }
 
-// ★ 非同期保存（IndexedDB へ、大容量対応）
+// ★ 非同期保存（IndexedDB へ、本体データ）
 async function saveAsyncToIDB() {
   if (isLoading) return;
   try {
@@ -619,18 +598,23 @@ async function saveAsyncToIDB() {
     if (!currentWorkId) currentWorkId = generateId();
     const thumb = generateThumbnail(360);
     await idbPut({ id: currentWorkId, data, thumb, updatedAt: Date.now(), title: data.title });
+    const index = getWorksIndex();
+    const existingIdx = index.findIndex(w => w.id === currentWorkId);
+    const entry = { id: currentWorkId, title: data.title, updatedAt: Date.now(), thumbnail: thumb };
+    if (existingIdx >= 0) index[existingIdx] = entry; else index.unshift(entry);
+    setWorksIndex(index);
     dirty = false;
   } catch (e) { console.warn('[save-idb] error', e); }
 }
 
-// ★ 統合保存：IndexedDB と localStorage の両方に保存
+// ★ 統合保存
 async function saveAll(silent) {
   if (isLoading) return;
   if (isSaving) { pendingSaveAgain = true; return; }
   isSaving = true;
   try {
-    saveSyncToLocalStorage(); // まず同期で確実に
-    await saveAsyncToIDB();   // 次に非同期で大容量保存
+    await saveAsyncToIDB();
+    saveSyncToLocalStorage();
     if (!silent) showToast('保存しました', 'success');
   } finally {
     isSaving = false;
@@ -638,7 +622,6 @@ async function saveAll(silent) {
   }
 }
 
-// デバウンス保存
 function scheduleAutoSave() {
   if (isLoading || suppressAutoSave || isUnloading) return;
   dirty = true;
@@ -646,60 +629,34 @@ function scheduleAutoSave() {
   autoSaveTimer = setTimeout(() => saveAll(true), 500);
 }
 
-// ★ 強制保存：どんな状況でも保存を完了させる
+// ★ 強制保存
 async function forceSave() {
   clearTimeout(autoSaveTimer);
-  saveSyncToLocalStorage(); // まず同期で確実に
-  await saveAsyncToIDB();   // 次に非同期
+  await saveAsyncToIDB();
+  saveSyncToLocalStorage();
 }
 
-function getWorksIndex() { try { const raw = localStorage.getItem(STORAGE_KEY_INDEX); return raw ? JSON.parse(raw) : []; } catch (e) { return []; } }
-function setWorksIndex(index) { try { localStorage.setItem(STORAGE_KEY_INDEX, JSON.stringify(index)); } catch (e) {} }
-function generateId() { return 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
-function formatDate(ts) { const d = new Date(ts); const pad = (n) => n.toString().padStart(2, '0'); return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`; }
-function formatTime(ts) { const d = new Date(ts); const pad = (n) => n.toString().padStart(2, '0'); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
-function escapeHtml(s) { return String(s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
-function hexToRgb(hex) { hex = hex.replace('#','').trim(); if (hex.length === 3) hex = hex.split('').map(c => c+c).join(''); if (hex.length !== 6) return null; const n = parseInt(hex, 16); if (isNaN(n)) return null; return { r: (n>>16)&255, g: (n>>8)&255, b: n&255 }; }
-function rgbToHex(r,g,b) { const c = v => Math.max(0, Math.min(255, Math.round(v))); return '#' + [c(r),c(g),c(b)].map(v => v.toString(16).padStart(2,'0')).join(''); }
-function rgbToHsl(r,g,b) { r/=255; g/=255; b/=255; const max = Math.max(r,g,b), min = Math.min(r,g,b); let h = 0, s = 0, l = (max + min) / 2; if (max !== min) { const d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min); switch (max) { case r: h = (g-b)/d + (g<b?6:0); break; case g: h = (b-r)/d + 2; break; case b: h = (r-g)/d + 4; break; } h /= 6; } return { h: h*360, s: s*100, l: l*100 }; }
-function hslToRgb(h,s,l) { h/=360; s/=100; l/=100; let r, g, b; if (s === 0) { r = g = b = l; } else { const hue2rgb = (p,q,t) => { if (t < 0) t += 1; if (t > 1) t -= 1; if (t < 1/6) return p + (q-p) * 6 * t; if (t < 1/2) return q; if (t < 2/3) return p + (q-p) * (2/3-t) * 6; return p; }; const q = l < 0.5 ? l * (1+s) : l + s - l*s; const p = 2 * l - q; r = hue2rgb(p,q,h+1/3); g = hue2rgb(p,q,h); b = hue2rgb(p,q,h-1/3); } return { r: r*255, g: g*255, b: b*255 }; }
-function emailToKey(email) { return email.toLowerCase().replace(/\./g, ',').replace(/@/g, '_at_'); }
-function getScaleFactor() { return W / BASE_W; }
-function toInternal(lx, ly) { const s = getScaleFactor(); return { x: lx * s, y: ly * s }; }
+// =====================================================
+// 画面遷移
+// =====================================================
+async function showHomeScreen() {
+  if (isDrawing) { isDrawing = false; moveSnapshot = null; }
+  if (imageEditState) cancelImageEdit();
+  await forceSave();
+  editorScreen.classList.remove('active');
+  homeScreen.classList.remove('hidden');
+  renderGallery();
+}
+function showEditorScreen() {
+  homeScreen.classList.add('hidden');
+  editorScreen.classList.add('active');
+  requestAnimationFrame(() => requestAnimationFrame(() => { autoFitCanvas(); if (imageEditState) updateImageEditBox(); }));
+}
 
-function showToast(msg, type = '') {
-  toastEl.textContent = msg;
-  toastEl.className = 'toast show ' + type;
-  clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => { toastEl.className = 'toast ' + type; }, 2500);
-}
-function showLoading(show) { loadingIndicator.classList.toggle('show', show); }
-
-let isSyncingColor = false;
-function syncColorUI(source) {
-  if (isSyncingColor) return;
-  isSyncingColor = true;
-  const rgb = hexToRgb(currentColor);
-  if (!rgb) { isSyncingColor = false; return; }
-  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
-  colorSwatchFill.style.background = currentColor;
-  hexInput.value = currentColor.replace('#','').toUpperCase();
-  if (source !== 'rgb') { sliderR.value = rgb.r; sliderG.value = rgb.g; sliderB.value = rgb.b; }
-  valR.textContent = Math.round(rgb.r); valG.textContent = Math.round(rgb.g); valB.textContent = Math.round(rgb.b);
-  if (source !== 'hsl') { sliderH.value = Math.round(hsl.h); sliderS.value = Math.round(hsl.s); sliderL.value = Math.round(hsl.l); }
-  valH.textContent = Math.round(hsl.h); valS.textContent = Math.round(hsl.s); valL.textContent = Math.round(hsl.l);
-  document.querySelectorAll('.color-preset').forEach(el => { el.classList.toggle('active', el.dataset.color.toLowerCase() === currentColor.toLowerCase()); });
-  updateSizePreview(); updateOpacityPreview();
-  isSyncingColor = false;
-}
-function setColor(hex, source) {
-  const rgb = hexToRgb(hex);
-  if (!rgb) return;
-  currentColor = rgbToHex(rgb.r, rgb.g, rgb.b);
-  if (isEraser) { isEraser = false; eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode'); }
-  syncColorUI(source);
-}
-function computeInternalSize() { const dpr = Math.min(window.devicePixelRatio || 1, 2); return { w: Math.round(BASE_W * dpr), h: Math.round(BASE_H * dpr), dpr }; }
+// =====================================================
+// キャンバス基本
+// =====================================================
+function computeInternalSize() { const dpr = Math.min(window.devicePixelRatio || 1, 2); return { w: Math.round(BASE_W * dpr), h: Math.round(BASE_H * dpr) }; }
 function applyCanvasCSSSize() { canvasFrame.style.width = BASE_W + 'px'; canvasFrame.style.height = BASE_H + 'px'; }
 function setInternalResolution() { const { w, h } = computeInternalSize(); W = w; H = h; canvas.width = w; canvas.height = h; applyCanvasCSSSize(); }
 function updateZoomUI() {
@@ -730,17 +687,15 @@ function setZoom(newZoom, clientX, clientY) {
   if (imageEditState) updateImageEditBox();
 }
 
+// =====================================================
+// 作品読み込み・削除
+// =====================================================
 async function loadWork(workId) {
   isLoading = true; showLoading(true);
   try {
-    // IDB 優先、無ければ localStorage
     let data = null;
     const idbRec = await idbGet(workId);
     if (idbRec && idbRec.data) data = idbRec.data;
-    else {
-      const raw = localStorage.getItem(STORAGE_KEY_WORK_PREFIX + workId);
-      if (raw) data = JSON.parse(raw);
-    }
     if (!data || !data.layers) { showToast('作品が見つかりません', 'error'); return false; }
     currentWorkId = workId; layerCounter = data.layerCounter || 0;
     setInternalResolution();
@@ -768,43 +723,21 @@ async function loadWork(workId) {
   } catch (e) { console.warn(e); return false; }
   finally { isLoading = false; showLoading(false); requestAnimationFrame(() => requestAnimationFrame(() => autoFitCanvas())); }
 }
-
 async function deleteWork(workId) {
   try { await idbDelete(workId); } catch(e){}
-  try { localStorage.removeItem(STORAGE_KEY_WORK_PREFIX + workId); } catch(e){}
   const index = getWorksIndex().filter(w => w.id !== workId);
   setWorksIndex(index);
   if (currentWorkId === workId) currentWorkId = null;
   renderGallery();
 }
-
-async function showHomeScreen() {
-  if (isDrawing) { isDrawing = false; moveSnapshot = null; }
-  if (imageEditState) cancelImageEdit();
-  // ★ 保存を確実に完了させてから遷移
-  await forceSave();
-  editorScreen.classList.remove('active');
-  homeScreen.classList.remove('hidden');
-  renderGallery();
-}
-function showEditorScreen() {
-  homeScreen.classList.add('hidden');
-  editorScreen.classList.add('active');
-  requestAnimationFrame(() => requestAnimationFrame(() => { autoFitCanvas(); if (imageEditState) updateImageEditBox(); }));
-}
-
 async function renderGallery() {
-  // IDB を優先的に読み、無ければ localStorage の index を使う
   let index = getWorksIndex();
   try {
     const idbAll = await idbGetAll();
     if (idbAll && idbAll.length > 0) {
-      // IDB と localStorage index をマージ
       const map = new Map();
       index.forEach(w => map.set(w.id, w));
-      idbAll.forEach(rec => {
-        map.set(rec.id, { id: rec.id, title: rec.title, updatedAt: rec.updatedAt, thumbnail: rec.thumb });
-      });
+      idbAll.forEach(rec => map.set(rec.id, { id: rec.id, title: rec.title, updatedAt: rec.updatedAt, thumbnail: rec.thumb }));
       index = Array.from(map.values());
       setWorksIndex(index);
     }
@@ -832,8 +765,10 @@ async function renderGallery() {
   });
 }
 
+// =====================================================
+// 新規作成・レイヤー
+// =====================================================
 async function createNewWork(backgroundImage) {
-  // 既存の作業を保存
   if (currentWorkId && layers.length > 0) await forceSave();
   layers = []; layerCounter = 0; currentWorkId = null;
   artTitleEl.textContent = '無題の作品';
@@ -859,7 +794,6 @@ async function createNewWork(backgroundImage) {
   showEditorScreen();
   setTimeout(() => forceSave(), 200);
 }
-
 function addLayer(name, opts = {}) {
   const id = opts.id || ('layer_' + (++layerCounter));
   if (opts.id) { const num = parseInt(opts.id.replace('layer_', '')) || 0; if (num > layerCounter) layerCounter = num; }
@@ -905,7 +839,6 @@ function reorderLayers(fromId, toId, position) {
   layers.splice(insertIdx, 0, moved);
   renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
 }
-
 function pushHistory(options = {}) {
   if (isLoading || isApplyingRemoteHistory) return;
   const snapshot = layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, opacity: l.opacity, dataURL: l.canvas.toDataURL('image/png') }));
@@ -1259,6 +1192,14 @@ function blurAt(c, cx, cy, radius) {
   }
   c.putImageData(srcData, minX, minY);
 }
+function mulberry32(seed) {
+  return function() {
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
 function drawStrokeToLayer(layer, lx0, ly0, lx1, ly1, params, seed) {
   const c = layer.ctx;
   const { color, size, brush, alpha, eraser } = params;
@@ -1278,14 +1219,6 @@ function drawStrokeToLayer(layer, lx0, ly0, lx1, ly1, params, seed) {
   else if (brush === 'highlighter') drawHighlighter(c, x0, y0, x1, y1, scaledSize, color, alpha);
   else if (brush === 'dotted') { drawDottedSegment(c, x0, y0, x1, y1, scaledSize, color, alpha); dottedAccumulated += Math.hypot(x1 - x0, y1 - y0); }
   c.restore();
-}
-function mulberry32(seed) {
-  return function() {
-    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
 }
 function startDrawing(e) {
   if (e.button !== undefined && e.button !== 0) return;
@@ -1328,18 +1261,9 @@ function stopDrawing(e) {
   isDrawing = false; moveSnapshot = null; moveOffsetX = 0; moveOffsetY = 0;
   if (activeSessionId && myCurrentStrokeId) sendStrokeEvent({ type: 'end', strokeId: myCurrentStrokeId });
   myCurrentStrokeId = null; myCurrentStrokeSeed = null; myLastSentLogical = null;
-  // ★ 描き終わりに必ず保存
   pushHistory();
   saveAll(true);
 }
-
-// =====================================================
-// 以下省略部分は前回と同じ（image edit, color pickers, session, chat, auth など）
-// ここに前回の完全版の該当部分をそのまま貼り付ける
-// =====================================================
-
-// ===== ここから下は前回の完全版と同じコード（互換性のため） =====
-
 function enterImageEditMode(img, layerId) {
   imageEditState = { layerId, img, x: 0, y: 0, w: BASE_W, h: BASE_H, rotation: 0 };
   const imgRatio = img.width / img.height, canvasRatio = BASE_W / BASE_H;
@@ -1436,6 +1360,30 @@ function renderColorPresets() {
     colorPresets.appendChild(b);
   });
   syncColorUI();
+}
+let isSyncingColor = false;
+function syncColorUI(source) {
+  if (isSyncingColor) return;
+  isSyncingColor = true;
+  const rgb = hexToRgb(currentColor);
+  if (!rgb) { isSyncingColor = false; return; }
+  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+  colorSwatchFill.style.background = currentColor;
+  hexInput.value = currentColor.replace('#','').toUpperCase();
+  if (source !== 'rgb') { sliderR.value = rgb.r; sliderG.value = rgb.g; sliderB.value = rgb.b; }
+  valR.textContent = Math.round(rgb.r); valG.textContent = Math.round(rgb.g); valB.textContent = Math.round(rgb.b);
+  if (source !== 'hsl') { sliderH.value = Math.round(hsl.h); sliderS.value = Math.round(hsl.s); sliderL.value = Math.round(hsl.l); }
+  valH.textContent = Math.round(hsl.h); valS.textContent = Math.round(hsl.s); valL.textContent = Math.round(hsl.l);
+  document.querySelectorAll('.color-preset').forEach(el => { el.classList.toggle('active', el.dataset.color.toLowerCase() === currentColor.toLowerCase()); });
+  updateSizePreview(); updateOpacityPreview();
+  isSyncingColor = false;
+}
+function setColor(hex, source) {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return;
+  currentColor = rgbToHex(rgb.r, rgb.g, rgb.b);
+  if (isEraser) { isEraser = false; eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode'); }
+  syncColorUI(source);
 }
 document.querySelectorAll('.picker-tab').forEach(tab => {
   tab.addEventListener('click', () => {
@@ -1625,17 +1573,16 @@ window.addEventListener('keydown', (e) => {
   else if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveBtn.click(); }
 });
 // ★ 離脱時の多重防御
-window.addEventListener('beforeunload', (e) => { isUnloading = true; if (editorScreen.classList.contains('active')) saveSyncToLocalStorage(); });
-window.addEventListener('pagehide', () => { isUnloading = true; if (editorScreen.classList.contains('active')) saveSyncToLocalStorage(); });
-window.addEventListener('freeze', () => { isUnloading = true; if (editorScreen.classList.contains('active')) saveSyncToLocalStorage(); });
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && editorScreen.classList.contains('active')) { saveSyncToLocalStorage(); saveAsyncToIDB(); } });
-window.addEventListener('blur', () => { if (editorScreen.classList.contains('active')) saveSyncToLocalStorage(); });
-// ★ 定期的にも保存（念のため）
-setInterval(() => { if (editorScreen.classList.contains('active') && dirty) { saveSyncToLocalStorage(); saveAsyncToIDB(); } }, 5000);
+window.addEventListener('beforeunload', () => { isUnloading = true; if (editorScreen.classList.contains('active')) { saveSyncToLocalStorage(); try { localStorage.setItem(STORAGE_KEY_PENDING, currentWorkId || ''); } catch(e){} } });
+window.addEventListener('pagehide', () => { isUnloading = true; if (editorScreen.classList.contains('active')) { saveAsyncToIDB(); try { localStorage.setItem(STORAGE_KEY_PENDING, currentWorkId || ''); } catch(e){} } });
+window.addEventListener('freeze', () => { isUnloading = true; if (editorScreen.classList.contains('active')) { saveAsyncToIDB(); try { localStorage.setItem(STORAGE_KEY_PENDING, currentWorkId || ''); } catch(e){} } });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && editorScreen.classList.contains('active')) { saveAsyncToIDB(); saveSyncToLocalStorage(); try { localStorage.setItem(STORAGE_KEY_PENDING, currentWorkId || ''); } catch(e){} } });
+window.addEventListener('blur', () => { if (editorScreen.classList.contains('active')) { saveSyncToLocalStorage(); } });
+setInterval(() => { if (editorScreen.classList.contains('active') && dirty) { saveAsyncToIDB(); } }, 5000);
 window.addEventListener('resize', () => { if (editorScreen.classList.contains('active')) { updateZoomUI(); if (imageEditState) updateImageEditBox(); } });
 
 // =====================================================
-// チャット（前回と同じ）
+// チャット
 // =====================================================
 chatToggle.addEventListener('click', () => {
   chatPanelOpen = !chatPanelOpen; chatPanel.classList.toggle('show', chatPanelOpen);
@@ -1648,11 +1595,8 @@ async function sendChatMessage() {
   if (!activeSessionId) { showToast('共同描画セッション中のみチャットできます', 'error'); return; }
   const text = chatInput.value.trim(); if (!text) return;
   if (text.length > 500) { showToast('メッセージが長すぎます（最大500文字）', 'error'); return; }
-  try {
-    chatInput.value = '';
-    const msgRef = push(ref(db, 'chats/' + activeSessionId));
-    await set(msgRef, { uid: currentUser.uid, displayName: currentUser.displayName || '名無し', photoURL: currentUser.photoURL || '', text, timestamp: Date.now() });
-  } catch (e) { showToast('送信に失敗: ' + e.message, 'error'); }
+  try { chatInput.value = ''; const msgRef = push(ref(db, 'chats/' + activeSessionId)); await set(msgRef, { uid: currentUser.uid, displayName: currentUser.displayName || '名無し', photoURL: currentUser.photoURL || '', text, timestamp: Date.now() }); }
+  catch (e) { showToast('送信に失敗: ' + e.message, 'error'); }
 }
 function startChatListener(sessionId) {
   if (chatUnsubscribe) { try { chatUnsubscribe(); } catch (e) {} chatUnsubscribe = null; }
@@ -1741,15 +1685,12 @@ function cleanupListeners() {
   chatMessagesCache = {}; unreadChatCount = 0; chatPanelOpen = false;
   chatPanel.classList.remove('show'); updateChatBadge();
 }
-
 function startFriendsListener() { friendsUnsubscribe = onValue(ref(db, 'friends/' + currentUser.uid), (snap) => { friends = snap.val() || {}; renderFriendsList(); renderInviteFriendList(); }, () => { friends = {}; renderFriendsList(); }); }
 function startRequestsListener() {
   requestsUnsubscribe = onValue(ref(db, 'userFriendRequests/' + currentUser.uid), async (snap) => {
     try {
       const ids = snap.val() || {}; pendingRequests = {};
-      await Promise.all(Object.keys(ids).map(async (reqId) => {
-        try { const r = await get(ref(db, 'friendRequests/' + reqId)); if (r.exists()) { const data = r.val(); if (data.status === 'pending' && data.to === currentUser.uid) pendingRequests[reqId] = data; } } catch (e) {}
-      }));
+      await Promise.all(Object.keys(ids).map(async (reqId) => { try { const r = await get(ref(db, 'friendRequests/' + reqId)); if (r.exists()) { const data = r.val(); if (data.status === 'pending' && data.to === currentUser.uid) pendingRequests[reqId] = data; } } catch (e) {} }));
       renderRequestsPanel(); updateFriendBadge();
     } catch (e) {}
   });
@@ -1843,7 +1784,7 @@ addFriendBtn.addEventListener('click', async () => {
 });
 
 // =====================================================
-// 招待とセッション（追加招待対応）
+// 招待とセッション
 // =====================================================
 inviteBtn.addEventListener('click', () => {
   selectedInviteUids.clear();
@@ -1886,10 +1827,8 @@ async function applyLayersSnapshot(snapshotData) {
 }
 async function downloadLayersSnapshotFromSession(sessionId, maxRetries = 3) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      const snap = await get(ref(db, 'sessionSnapshots/' + sessionId));
-      if (snap.exists()) { const data = snap.val(); if (data && Array.isArray(data.layers) && data.layers.length > 0) { await applyLayersSnapshot(data); return true; } }
-    } catch (e) { console.warn('[snapshot] attempt error:', e); }
+    try { const snap = await get(ref(db, 'sessionSnapshots/' + sessionId)); if (snap.exists()) { const data = snap.val(); if (data && Array.isArray(data.layers) && data.layers.length > 0) { await applyLayersSnapshot(data); return true; } } }
+    catch (e) { console.warn('[snapshot] attempt error:', e); }
     if (attempt < maxRetries) await new Promise(r => setTimeout(r, 600 * attempt));
   }
   return false;
@@ -1933,8 +1872,8 @@ async function addGuestsToSession(friendUids) {
     const newUids = friendUids.filter(uid => !existing.has(uid));
     if (newUids.length === 0) { showToast('全員既に参加しています', 'error'); return; }
     const updates = {};
-    newUids.forEach(uid => { const f = friends[uid] || {}; updates['participants/' + uid] = { uid, displayName: f.displayName || '名無し', photoURL: f.photoURL || '', role: 'guest' }; updates['guestIds/' + uid] = true; });
-    await update(ref(db, 'sessions/' + activeSessionId), updates);
+    newUids.forEach(uid => { const f = friends[uid] || {}; updates['sessions/' + activeSessionId + '/participants/' + uid] = { uid, displayName: f.displayName || '名無し', photoURL: f.photoURL || '', role: 'guest' }; updates['sessions/' + activeSessionId + '/guestIds/' + uid] = true; });
+    await update(ref(db), updates);
     const inviteUpdates = {};
     for (const uid of newUids) { const inviteRef = push(ref(db, 'sessionInvites/' + uid)); inviteUpdates[inviteRef.key] = { sessionId: activeSessionId, from: currentUser.uid, fromName: currentUser.displayName || '名無し', timestamp: Date.now() }; }
     await update(ref(db), inviteUpdates);
@@ -2110,23 +2049,18 @@ async function cleanupSession() {
 }
 
 // =====================================================
-// 起動時：前回の作品を復元
+// 起動時：前回の未保存データを復元
 // =====================================================
 async function bootRestore() {
   try {
-    // 未保存の作業があれば優先復元（IDB → localStorage）
-    const lastActive = localStorage.getItem(STORAGE_KEY_LAST_ACTIVE);
-    if (lastActive) {
-      const idbRec = await idbGet(lastActive);
-      if (idbRec && idbRec.data) {
-        // 既に index にあればそのまま
-      } else {
-        const raw = localStorage.getItem(STORAGE_KEY_WORK_PREFIX + lastActive);
-        if (raw) {
-          // localStorage にはあるが IDB にない場合は IDB に移行
-          try { const data = JSON.parse(raw); await idbPut({ id: lastActive, data, thumb: generateThumbnail(360), updatedAt: data.savedAt || Date.now(), title: data.title }); } catch (e) {}
-        }
+    const pendingId = localStorage.getItem(STORAGE_KEY_PENDING);
+    if (pendingId) {
+      const rec = await idbGet(pendingId);
+      if (rec && rec.data) {
+        // 復元できた → 次回起動で開くようマーク
+        localStorage.setItem(STORAGE_KEY_LAST_ACTIVE, pendingId);
       }
+      localStorage.removeItem(STORAGE_KEY_PENDING);
     }
   } catch (e) {}
 }
