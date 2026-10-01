@@ -4,14 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>どんぐりペイント</title>
-<link id="faviconLink" rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAGuElEQVR4AcSWC3BU1RnHf9/dPDYh5AGRDQZLEGZCEaG1QW0l09RBSAeGh8CY0ZrRGR+DQwdtKx2nTK0zSjvQRmpH+5jOaNGGALX1lRKtA2JokbYCEoHYBAl5bBLy2s3uZnezu3d77m7uejfZxdYZxzP3nO873/P/fefuuavxBY8vHkA0xdB1PUmq68n7JKVlo+v/m53FJZrUAaWIHYiIxKi5iCTvTblBTR+DF0lvt3frbdTdU2WYJU3NuhNJH8BqZ+VFPt3nuXurKJ13NXOK8nl05WKrOwqAniQwN9bKTNlkWl48c7Io5T4cChIa8XH85DlcI6NYYysA6knhJnLlyqLKZ9XNC7mhKEdx6Z9dm5dx/bJyhoZcdPWN0BMAkU9iq+xTO7CpYh6z7UrFxJgwMZEbtO7+at4+egKXP640ZIa1QY1p8j3OXoKDPtov9VN542L+2tJpqBJTZVHPxLb6qwvYsKSELLXP06OsX1LE7RXzWb/UoSQkkC+7ys7b75xBj2bzcSAYa6lIvCoRSdjtr3+Rb9y1lb2vNNPa0c+2F48yeajsRjOJBTl++gLzyx2c7uimuLSYzIw8vr7cwfbvraF21TIqSopZnJPNAoeDLU/W0er1xeKJSIxOXn73q18Q8bn5yK3TPBROUptd0kypiODSdTrbB8kvmMGaVWXc8q25+Lxhdte9zrCzj57+IWo2V/HW+W7W3lFjuqak0WiEVxue5+/H3sUbCtHdP5xkJxIHrQDEGQORiHDgVA8lucLcaxwcaTpPy3tdXDUrnzdaLuFUAH9/4Ahaho2Zynb/D9fR+MSdscCGf4yZWB6uWUvTywc5/I8WWp3x5JNtDFMFwCAkzg01XmnpY2XtHl49O8TLHzqp/cEudUTCwvxcNC3Cj+9ZQdV1JaD7+feZdnasvo6d31nOI2sWKe/4U/fcMxw9fIS8wumJ2CLxYuMW8TUBIL79ZJ11zYKJjXBL9Qa2rljK0rlFPP7QZmZkjnN/TSX73viAmyvKuenGJaxbX83dNavZduu1bNl4G40HGggGI/yrrWciDqqI+PuWEChGAYimVChd4vnp3Sv44Gw7HzkHmF1ko/6dNvTQODu2bSB3up39jSe4cPI4T/2snn1HLtJ8+jx79vya3755LBHDYERSdkBiLbKej8kb9EvKyT00ws5Ha8jKtPPE0/XUfnspT/3mELU/eonHnqznvjsqefzZJg6ddbL9gWrywz4GgiE0W7aRN1GgEc+YhtCkmrExpogYJDZF4nyppnHf6hvo7B1kr3r5Ni9fiK3AwS+fbyLLPg3fqF91Isqep/9ElyfKzhXz6esfRNQNf6atC2MYiUTi8UQEETHECZoAEJNaFsNxhj2ThuYW1lZ+GY9njMYTbVzs7Mduy+LaTJ0tFQ7WLyxk4+oqXnvmERZVfpOO91s52e1GMo3rjEQi0oy0AESEsE249Stl7H3tPbpGI+iqrZWOHL5WnI0jN0OFFN7tcPPYH95i189f4PafvEBBUQHbb1K/EKU1ilAkcQQGP3lqkwXWfas3SMmcOVx0hdECXvJsUVB3gDcUxR+JYFMgq8qv5tnvb+KBe9fSuPu7PLjtQbJtEVaWFiSqF4m33Rrb5DWTSUd3/PEwZbMLKSvKxRPUiYQjaBkaOfZsRTMUtTPc2Unfhf8w0H0JG0HyptkpskeuWLnZnbQATAPUOHTuEvMWV6iKbHgiEAhE1AyiaRrZmqj73k84EFBH5MU90MO06ZnUbFqn7EV5p35E4rqUAIzkInEDw120DIZDGvnqEz1NVS420JR+cMSFZrMxrr6IhHX8Hh8jvU6IwsG/vG64TplGbKswJQARidlYjQ82/Y15s2fg9gXp9wbwjKssEmXgchc+9wjj/hBjbi8u5xChkPqPIPZYjMmLSDy2KU8JwFRa6WV19pFCB/nTc8jJtBEMh1E3LaP+iDrrCKGAH029AeOBMGN+eKm12+qelp8CwFq1SDLa5RvvJLewgJEwRLVMXGOqUpU2qsxE9d3r9dLTO4AUFKNJVtqkVsUUACIqmtXCwt/10MPsO3WR0pkz6fIE8YUidLhCdA6rqseDOC+76XF51LfggsXryqwCYFSR2sjaDdMipP6qNZzrYdbcMjLyC3GpO2HYH6b1sp+zQx7O+Wz8uW3ANE+iqeIpAOkrFkmtC+oRGv75IR+rs27u93PKG6JHvZjXL1nEid6RpKTWjcjUeFcEYHWeygvH2rsYVS9j6+AYh/v87H7z/almFonZAZMaKvVzls88NO3/czftTWokVh0wcHx+89Mi/xcAAP//mnLYxgAAAAZJREFUAwDKRCBu548o7QAAAABJRU5ggg==">
+<link id="faviconLink" rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAGuElEQVR4AcSWC3BU1RnHf9/dPDYh5AGRDQZLEGZCEaG1QW0l09RBSAeGh8CY0ZrRGR+DQwdtKx2nTK0zSjvQRmpH+5jOaNGGALX1lRKtA2JokbYCEoHYBAl5bBLy2s3uZnezu3d77m7uejfZxdYZxzP3nO873/P/fefuuavxBY8vHkA0xdB1PUmq68n7JKVlo+v/m53FJZrUAaWIHYiIxKi5iCTvTblBTR+DF0lvt3frbdTdU2WYJU3NuhNJH8BqZ+VFPt3nuXurKJ13NXOK8nl05WKrOwqAniQwN9bKTNlkWl48c7Io5T4cChIa8XH85DlcI6NYYysA6knhJnLlyqLKZ9XNC7mhKEdx6Z9dm5dx/bJyhoZcdPWN0BMAkU9iq+xTO7CpYh6z7UrFxJgwMZEbtO7+at4+egKXP640ZIa1QY1p8j3OXoKDPtov9VN542L+2tJpqBJTZVHPxLb6qwvYsKSELLXP06OsX1LE7RXzWb/UoSQkkC+7ys7b75xBj2bzcSAYa6lIvCoRSdjtr3+Rb9y1lb2vNNPa0c+2F48yeajsRjOJBTl++gLzyx2c7uimuLSYzIw8vr7cwfbvraF21TIqSopZnJPNAoeDLU/W0er1xeKJSIxOXn73q18Q8bn5yK3TPBROUptd0kypiODSdTrbB8kvmMGaVWXc8q25+Lxhdte9zrCzj57+IWo2V/HW+W7W3lFjuqak0WiEVxue5+/H3sUbCtHdP5xkJxIHrQDEGQORiHDgVA8lucLcaxwcaTpPy3tdXDUrnzdaLuFUAH9/4Ahaho2Zynb/D9fR+MSdscCGf4yZWB6uWUvTywc5/I8WWp3x5JNtDFMFwCAkzg01XmnpY2XtHl49O8TLHzqp/cEudUTCwvxcNC3Cj+9ZQdV1JaD7+feZdnasvo6d31nOI2sWKe/4U/fcMxw9fIS8wumJ2CLxYuMW8TUBIL79ZJ11zYKJjXBL9Qa2rljK0rlFPP7QZmZkjnN/TSX73viAmyvKuenGJaxbX83dNavZduu1bNl4G40HGggGI/yrrWciDqqI+PuWEChGAYimVChd4vnp3Sv44Gw7HzkHmF1ko/6dNvTQODu2bSB3up39jSe4cPI4T/2snn1HLtJ8+jx79vya3755LBHDYERSdkBiLbKej8kb9EvKyT00ws5Ha8jKtPPE0/XUfnspT/3mELU/eonHnqznvjsqefzZJg6ddbL9gWrywz4GgiE0W7aRN1GgEc+YhtCkmrExpogYJDZF4nyppnHf6hvo7B1kr3r5Ni9fiK3AwS+fbyLLPg3fqF91Isqep/9ElyfKzhXz6esfRNQNf6atC2MYiUTi8UQEETHECZoAEJNaFsNxhj2ThuYW1lZ+GY9njMYTbVzs7Mduy+LaTJ0tFQ7WLyxk4+oqXnvmERZVfpOO91s52e1GMo3rjEQi0oy0AESEsE249Stl7H3tPbpGI+iqrZWOHL5WnI0jN0OFFN7tcPPYH95i189f4PafvEBBUQHbb1K/EKU1ilAkcQQGP3lqkwXWfas3SMmcOVx0hdECXvJsUVB3gDcUxR+JYFMgq8qv5tnvb+KBe9fSuPu7PLjtQbJtEVaWFiSqF4m33Rrb5DWTSUd3/PEwZbMLKSvKxRPUiYQjaBkaOfZsRTMUtTPc2Unfhf8w0H0JG0HyptkpskeuWLnZnbQATAPUOHTuEvMWV6iKbHgiEAhE1AyiaRrZmqj73k84EFBH5MU90MO06ZnUbFqn7EV5p35E4rqUAIzkInEDw120DIZDGvnqEz1NVS420JR+cMSFZrMxrr6IhHX8Hh8jvU6IwsG/vG64TplGbKswJQARidlYjQ82/Y15s2fg9gXp9wbwjKssEmXgchc+9wjj/hBjbi8u5xChkPqPIPZYjMmLSDy2KU8JwFRa6WV19pFCB/nTc8jJtBEMh1E3LaP+iDrrCKGAH029AeOBMGN+eKm12+qelp8CwFq1SDLa5RvvJLewgJEwRLVMXGOqUpU2qsxE9d3r9dLTO4AUFKNJVtqkVsUUACIqmtXCwt/10MPsO3WR0pkz6fIE8YUidLhCdA6rqseDOC+76XF51LfggsXryqwCYFSR2sjaDdMipP6qNZzrYdbcMjLyC3GpO2HYH6b1sp+zQx7O+Wz8uW3ANE+iqeIpAOkrFkmtC+oRGv75IR+rs27u93PKG6JHvZjXL1nEid6RpKTWjcjUeFcEYHWeygvH2rsYVS9j6+AYh/v87H7z/almFonZAZMaKvVzls88NO3/czftTWokVh0wcHx+89Mi/xcAAP//mnLYxgAAAAZJREFUAwDKRCBu548o7QAAAABJRU5ErkJggg==">
 <style>
   * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; height: 100%; overflow: hidden; font-family: 'Segoe UI', Roboto, 'Helvetica Neue', 'Hiragino Sans', 'Yu Gothic', sans-serif; background: #1e1f24; color: #e6e7ea; }
   .icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+  .icon-sm { width: 16px; height: 16px; }
   .icon-lg { width: 24px; height: 24px; }
   button { font-family: inherit; }
   input, textarea { font-family: inherit; }
+
   #loginScreen { position: fixed; inset: 0; background: linear-gradient(150deg, #2a2d34 0%, #1a1c21 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 24px; z-index: 100; }
   #loginScreen.hidden { display: none; }
   .login-box { background: #26282e; border-radius: 20px; padding: 40px 50px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); border: 1px solid #383b42; text-align: center; max-width: 420px; }
@@ -21,6 +23,7 @@
   .google-btn:disabled { opacity: 0.6; cursor: not-allowed; }
   .google-btn svg { width: 20px; height: 20px; }
   .login-error { margin-top: 16px; padding: 10px 14px; background: #3a2222; border: 1px solid #5a2a2a; border-radius: 8px; color: #ff9a8f; font-size: 0.78rem; text-align: left; }
+
   #homeScreen { position: fixed; inset: 0; background: linear-gradient(150deg, #f4f6fa 0%, #dfe6f0 100%); overflow-y: auto; padding: 40px 24px 80px; color: #2b3440; display: block; z-index: 10; }
   #homeScreen.hidden { display: none; }
   .home-header { max-width: 1100px; margin: 0 auto 40px; text-align: center; }
@@ -44,6 +47,7 @@
   .gallery-delete { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.95); border: 1px solid #e2e8f0; color: #c0392b; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: opacity 0.15s; }
   .gallery-item:hover .gallery-delete { opacity: 1; }
   .empty-gallery { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: #8592a3; font-size: 0.9rem; background: rgba(255,255,255,0.6); border-radius: 16px; border: 1px dashed #c8d2df; }
+
   #editorScreen { position: fixed; inset: 0; background: #1e1f24; display: none; flex-direction: column; overflow: hidden; }
   #editorScreen.active { display: flex; }
   .top-bar { height: 56px; background: #1e1f24; display: flex; align-items: center; padding: 0 14px; gap: 12px; border-bottom: 1px solid #2c2e34; flex-shrink: 0; z-index: 20; }
@@ -57,6 +61,7 @@
   .user-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #454952; cursor: pointer; background: #2b2d33; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
   .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
   .notif-badge { position: absolute; top: 2px; right: 2px; min-width: 18px; height: 18px; padding: 0 5px; background: #e74c3c; color: #fff; border-radius: 10px; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #1e1f24; pointer-events: none; }
+
   .editor-body { flex: 1; display: flex; overflow: hidden; position: relative; min-height: 0; }
   .left-toolbar { width: 64px; background: #26282e; border-right: 1px solid #2c2e34; display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 6px; flex-shrink: 0; overflow-y: auto; z-index: 15; }
   .tool-btn { width: 46px; height: 46px; border-radius: 12px; background: transparent; border: none; color: #aab0bb; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; }
@@ -64,6 +69,7 @@
   .tool-btn.active { background: #3b4048; color: #fff; }
   .tool-btn.active::before { content: ''; position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 3px; height: 22px; background: #5b8def; border-radius: 2px; }
   .tool-separator { width: 30px; height: 1px; background: #383b42; margin: 6px 0; flex-shrink: 0; }
+
   .brush-panel { width: 220px; background: #2b2d33; border-right: 1px solid #2c2e34; padding: 14px 12px; flex-shrink: 0; overflow-y: auto; z-index: 14; display: none; flex-direction: column; }
   .brush-panel.show { display: flex; }
   .panel-section-title { font-size: 0.7rem; font-weight: 600; color: #7e8694; letter-spacing: 1px; text-transform: uppercase; margin: 4px 0 10px; }
@@ -71,6 +77,7 @@
   .brush-item { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 6px; border-radius: 10px; background: #232529; border: 1px solid transparent; color: #c8cdd6; cursor: pointer; font-size: 0.72rem; }
   .brush-item:hover { background: #34373e; color: #fff; }
   .brush-item.active { background: #343b48; border-color: #5b8def; color: #fff; }
+
   .canvas-area { flex: 1; overflow: hidden; background: #14151a; position: relative; min-width: 0; }
   .canvas-viewport { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; }
   .canvas-viewport.pan-mode { cursor: grab; }
@@ -84,15 +91,19 @@
   #drawCanvas.move-mode { cursor: move; }
   #drawCanvas.eyedropper-mode { cursor: copy; }
   #drawCanvas.fill-mode { cursor: cell; }
+
   .collab-badge { position: absolute; top: 16px; left: 16px; background: #2b2d33; border: 1px solid #5b8def; padding: 8px 14px; border-radius: 30px; font-size: 0.78rem; color: #fff; display: none; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); z-index: 25; }
   .collab-badge.show { display: flex; }
   .collab-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #5bdf8d; animation: pulse 1.5s ease-in-out infinite; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
   .participants-bar { position: absolute; top: 16px; right: 16px; display: none; align-items: center; z-index: 25; }
   .participants-bar.show { display: flex; }
   .participant-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #5b8def; background: #2b2d33; object-fit: cover; margin-left: -10px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
   .participant-avatar:first-child { margin-left: 0; }
   .participant-count { margin-left: 6px; font-size: 0.7rem; color: #b6bcc7; background: #2b2d33; padding: 4px 8px; border-radius: 12px; border: 1px solid #383b42; }
+
+  /* ★ チャットパネル */
   .chat-panel { position: absolute; bottom: 16px; left: 16px; width: 280px; max-height: 420px; background: #2b2d33; border: 1px solid #383b42; border-radius: 14px; display: none; flex-direction: column; z-index: 30; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; }
   .chat-panel.show { display: flex; }
   .chat-header { padding: 10px 14px; background: #232529; border-bottom: 1px solid #383b42; display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; font-weight: 600; color: #e6e7ea; }
@@ -111,6 +122,7 @@
   .chat-input-row button { background: #5b8def; border: none; color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; font-weight: 600; }
   .chat-input-row button:disabled { opacity: 0.5; cursor: not-allowed; }
   .chat-empty { text-align: center; color: #6b7280; font-size: 0.75rem; padding: 20px 8px; }
+
   .image-edit-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; display: none; z-index: 50; }
   .image-edit-overlay.active { display: block; }
   .image-edit-box { position: absolute; border: 2px dashed #5b8def; pointer-events: auto; cursor: move; box-sizing: border-box; }
@@ -124,12 +136,15 @@
   .image-edit-toolbar button { width: 34px; height: 34px; border-radius: 6px; background: transparent; border: none; color: #c8cdd6; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .image-edit-toolbar button.confirm { color: #5bdf8d; }
   .image-edit-toolbar button.cancel { color: #ff8b7f; }
+
   .zoom-controls { position: absolute; bottom: 16px; right: 16px; display: flex; flex-direction: column; gap: 4px; background: #2b2d33; border-radius: 10px; padding: 4px; border: 1px solid #383b42; z-index: 20; }
   .zoom-btn { width: 34px; height: 34px; border-radius: 6px; background: transparent; border: none; color: #c8cdd6; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .zoom-btn:hover { background: #3b4048; color: #fff; }
+
   .right-panels { width: 280px; background: #26282e; border-left: 1px solid #2c2e34; overflow-y: auto; flex-shrink: 0; padding: 14px; display: flex; flex-direction: column; gap: 14px; z-index: 15; }
   .panel { background: #2b2d33; border-radius: 12px; border: 1px solid #383b42; padding: 14px; color: #d0d4dc; font-size: 0.82rem; }
   .panel-title { font-size: 0.72rem; font-weight: 600; color: #9aa1ad; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+
   .color-main-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
   .color-swatch-big { width: 48px; height: 48px; border-radius: 10px; border: 2px solid #454952; cursor: pointer; position: relative; overflow: hidden; flex-shrink: 0; }
   .color-swatch-big .checker { position: absolute; inset: 0; background: repeating-conic-gradient(#c8c8c8 0% 25%, #ffffff 0% 50%) 50% / 10px 10px; z-index: 0; }
@@ -138,6 +153,7 @@
   .color-hex-row .hash { color: #7e8694; font-size: 0.85rem; font-weight: 600; margin-right: 2px; }
   .color-hex-row input { flex: 1; background: transparent; border: none; color: #e6e7ea; font-size: 0.85rem; font-family: monospace; outline: none; text-transform: uppercase; }
   .eyedropper-btn { width: 40px; height: 40px; border-radius: 8px; background: #1e1f24; border: 1px solid #383b42; color: #c8cdd6; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+
   .picker-tabs { display: flex; gap: 4px; margin-bottom: 10px; background: #1e1f24; padding: 3px; border-radius: 8px; }
   .picker-tab { flex: 1; padding: 6px 8px; border-radius: 6px; background: transparent; border: none; color: #8592a3; cursor: pointer; font-size: 0.72rem; font-weight: 600; }
   .picker-tab.active { background: #3b4048; color: #fff; }
@@ -159,12 +175,14 @@
   .color-preset { aspect-ratio: 1; border-radius: 6px; border: 2px solid transparent; cursor: pointer; padding: 0; box-shadow: 0 0 0 1px #454952; position: relative; overflow: hidden; }
   .color-preset.active { border-color: #fff; }
   .color-preset .fill { position: absolute; inset: 0; }
+
   .slider-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
   .slider-label { width: 46px; font-size: 0.75rem; color: #b6bcc7; flex-shrink: 0; }
   .slider-row input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 3px; border-radius: 3px; background: #4a4e57; outline: none; }
   .slider-row input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #5b8def; border: 2px solid #2b2d33; cursor: pointer; }
   .size-preview { width: 44px; height: 36px; background: #1e1f24; border-radius: 6px; border: 1px solid #383b42; flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
   .tolerance-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+
   .layer-list { display: flex; flex-direction: column; gap: 5px; max-height: 260px; overflow-y: auto; margin-bottom: 10px; }
   .layer-item { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 8px; background: #232529; border: 1px solid transparent; cursor: pointer; touch-action: none; position: relative; }
   .layer-item.selected { background: #343b48; border-color: #5b8def; }
@@ -181,6 +199,7 @@
   .layer-item.insert-below::after { bottom: -3px; }
   .layer-controls { display: flex; gap: 6px; }
   .layer-controls button { flex: 1; height: 32px; border-radius: 8px; background: #232529; border: 1px solid #383b42; color: #d0d4dc; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.72rem; }
+
   .friend-list { display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto; }
   .friend-item { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 8px; background: #232529; border: 1px solid #383b42; }
   .friend-item img { width: 32px; height: 32px; border-radius: 50%; background: #1e1f24; flex-shrink: 0; }
@@ -198,6 +217,7 @@
   .add-friend-msg { font-size: 0.72rem; color: #8592a3; margin-top: 8px; min-height: 1em; }
   .add-friend-msg.error { color: #ff8b7f; }
   .add-friend-msg.success { color: #5bdf8d; }
+
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; z-index: 1000; }
   .modal-overlay.show { display: flex; }
   .modal { background: #2b2d33; border-radius: 16px; border: 1px solid #383b42; padding: 24px; min-width: 320px; max-width: 90vw; max-height: 80vh; overflow-y: auto; }
@@ -208,14 +228,17 @@
   .modal-btn.primary { background: #5b8def; color: #fff; }
   .modal-btn.secondary { background: #383b42; color: #d0d4dc; }
   .modal-btn.danger { background: #e74c3c; color: #fff; }
+
   .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(20px); background: #2b2d33; color: #fff; padding: 12px 24px; border-radius: 30px; font-size: 0.82rem; border: 1px solid #383b42; opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s; z-index: 2000; max-width: 90vw; text-align: center; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .toast.success { border-color: #5bdf8d; }
   .toast.error { border-color: #ff8b7f; }
+
   #loadingIndicator { position: fixed; inset: 0; background: rgba(20,21,26,0.85); display: none; align-items: center; justify-content: center; z-index: 3000; flex-direction: column; gap: 16px; color: #d0d4dc; }
   #loadingIndicator.show { display: flex; }
   .spinner { width: 44px; height: 44px; border: 3px solid #383b42; border-top-color: #5b8def; border-radius: 50%; animation: spin 0.9s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+
   @media (max-width: 700px) { .right-panels { display: none; } .chat-panel { width: calc(100vw - 32px); max-width: 320px; } }
 </style>
 </head>
@@ -255,7 +278,7 @@
       <span class="zoom-display" id="zoomDisplay">100%</span>
       <button class="top-btn" id="chatToggle" title="チャット" style="position:relative;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="notif-badge" id="chatNotifBadge" style="display:none;">0</span></button>
       <button class="top-btn" id="friendsBtn" style="position:relative;"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span class="notif-badge" id="friendNotifBadge" style="display:none;">0</span></button>
-      <button class="top-btn primary" id="inviteBtn" title="招待／追加招待"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></button>
+      <button class="top-btn primary" id="inviteBtn"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></button>
       <button class="top-btn" id="saveBtn"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
       <div class="user-avatar" id="userAvatar"><img id="userAvatarImg" src="" alt=""></div>
     </div>
@@ -319,10 +342,20 @@
         <button class="zoom-btn" id="zoomOutBtn">－</button>
         <button class="zoom-btn" id="zoomResetBtn">⛶</button>
       </div>
+
+      <!-- ★ チャットパネル -->
       <div class="chat-panel" id="chatPanel">
-        <div class="chat-header"><span>💬 チャット</span><button id="chatCloseBtn" title="閉じる">✕</button></div>
-        <div class="chat-messages" id="chatMessages"><div class="chat-empty">まだメッセージがありません</div></div>
-        <div class="chat-input-row"><input type="text" id="chatInput" placeholder="メッセージを入力..." maxlength="500"><button id="chatSendBtn">送信</button></div>
+        <div class="chat-header">
+          <span>💬 チャット</span>
+          <button id="chatCloseBtn" title="閉じる">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-empty">まだメッセージがありません</div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="メッセージを入力..." maxlength="500">
+          <button id="chatSendBtn">送信</button>
+        </div>
       </div>
     </div>
 
@@ -376,7 +409,7 @@
   <input type="file" id="fileInput" accept="image/*" style="display:none">
 </div>
 
-<div class="modal-overlay" id="inviteModal"><div class="modal"><h3 id="inviteModalTitle">友達を招待</h3><p id="inviteModalDesc">一緒に描く友達を選んでください（複数選択可）</p><div class="friend-list" id="inviteFriendList"></div><div class="modal-actions" style="margin-top:16px;"><button class="modal-btn secondary" id="inviteCancelBtn">キャンセル</button><button class="modal-btn primary" id="inviteSendBtn">招待する</button></div></div></div>
+<div class="modal-overlay" id="inviteModal"><div class="modal"><h3>友達を招待</h3><p>一緒に描く友達を選んでください（複数選択可）</p><div class="friend-list" id="inviteFriendList"></div><div class="modal-actions" style="margin-top:16px;"><button class="modal-btn secondary" id="inviteCancelBtn">キャンセル</button><button class="modal-btn primary" id="inviteSendBtn">招待する</button></div></div></div>
 <div class="modal-overlay" id="incomingInviteModal"><div class="modal"><h3>招待が届きました</h3><p id="incomingInviteBody"></p><div class="modal-actions"><button class="modal-btn secondary" id="inviteDeclineBtn">無視</button><button class="modal-btn primary" id="inviteAcceptBtn">参加</button></div></div></div>
 <div class="modal-overlay" id="logoutModal"><div class="modal"><h3>ログアウト</h3><p>ログアウトしますか？</p><div class="modal-actions"><button class="modal-btn secondary" id="logoutCancelBtn">キャンセル</button><button class="modal-btn danger" id="logoutConfirmBtn">ログアウト</button></div></div></div>
 
@@ -405,12 +438,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-const STORAGE_KEY_INDEX = 'drawingApp_works_index_v17';
-const STORAGE_KEY_LAST_ACTIVE = 'drawingApp_last_active_v17';
-const STORAGE_KEY_PENDING = 'drawingApp_pending_save_v17';
-const IDB_NAME = 'donguriPaintDB';
-const IDB_VERSION = 1;
-const IDB_STORE = 'works';
+const STORAGE_KEY_INDEX = 'drawingApp_works_index_v14';
+const STORAGE_KEY_WORK_PREFIX = 'drawingApp_work_v14_';
 const BASE_W = 900, BASE_H = 675;
 
 const $ = (id) => document.getElementById(id);
@@ -449,10 +478,10 @@ const friendsPanel = $('friendsPanel'), friendList = $('friendList'), friendCoun
 const friendEmailInput = $('friendEmailInput'), addFriendBtn = $('addFriendBtn'), addFriendMsg = $('addFriendMsg');
 const requestsPanel = $('requestsPanel'), requestList = $('requestList');
 const inviteBtn = $('inviteBtn'), inviteModal = $('inviteModal'), inviteFriendList = $('inviteFriendList'), inviteCancelBtn = $('inviteCancelBtn'), inviteSendBtn = $('inviteSendBtn');
-const inviteModalTitle = $('inviteModalTitle'), inviteModalDesc = $('inviteModalDesc');
 const incomingInviteModal = $('incomingInviteModal'), incomingInviteBody = $('incomingInviteBody');
 const inviteAcceptBtn = $('inviteAcceptBtn'), inviteDeclineBtn = $('inviteDeclineBtn');
 const logoutModal = $('logoutModal'), logoutCancelBtn = $('logoutCancelBtn'), logoutConfirmBtn = $('logoutConfirmBtn');
+// ★ チャット
 const chatToggle = $('chatToggle'), chatPanel = $('chatPanel'), chatCloseBtn = $('chatCloseBtn');
 const chatMessages = $('chatMessages'), chatInput = $('chatInput'), chatSendBtn = $('chatSendBtn');
 const chatNotifBadge = $('chatNotifBadge');
@@ -462,6 +491,7 @@ let layers = [];
 let activeLayerId = null;
 let layerCounter = 0;
 let W = BASE_W, H = BASE_H;
+
 let isDrawing = false;
 let lastX = 0, lastY = 0, lastLogicalX = 0, lastLogicalY = 0;
 let isEraser = false, isMoveMode = false, isEyedropperMode = false, isFillMode = false;
@@ -478,65 +508,52 @@ const MIN_ZOOM = 0.1, MAX_ZOOM = 16;
 let pinchState = null;
 const pointerState = new Map();
 let imageEditState = null;
+
+// 点線ペン用
 let dottedAccumulated = 0;
+
+// ★ 多人数対応
 let friends = {}, pendingRequests = {};
 let activeSessionId = null, activeSessionOwnerId = null, sessionRole = null;
 let sessionUnsubscribe = null, strokesUnsubscribe = null, layerEventsUnsubscribe = null, historyEventsUnsubscribe = null;
 let invitesUnsubscribe = null, requestsUnsubscribe = null, friendsUnsubscribe = null, resendRequestUnsubscribe = null;
 let selectedInviteUids = new Set();
+
+// ★ チャット
 let chatUnsubscribe = null;
 let chatMessagesCache = {};
 let chatPanelOpen = false;
 let unreadChatCount = 0;
 let chatAutoScroll = true;
+
 let remoteStrokesById = {};
 let isApplyingRemote = false;
 let isApplyingRemoteHistory = false;
 let myCurrentStrokeId = null, myCurrentStrokeSeed = null, myLastSentLogical = null;
 const STROKE_MIN_LOGICAL_DIST = 2;
-const processedInviteKeys = new Set();
+
+const shownInviteIds = new Set();
 let incomingInviteQueue = [];
 let isShowingInviteModal = false;
-let isUnloading = false;
-let dirty = false;
 
-// =====================================================
-// IndexedDB ユーティリティ
-// =====================================================
-let idbPromise = null;
-function openIDB() {
-  if (idbPromise) return idbPromise;
-  idbPromise = new Promise((resolve, reject) => {
-    const req = indexedDB.open(IDB_NAME, IDB_VERSION);
-    req.onupgradeneeded = (e) => {
-      const idb = e.target.result;
-      if (!idb.objectStoreNames.contains(IDB_STORE)) idb.createObjectStore(IDB_STORE, { keyPath: 'id' });
-    };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-  return idbPromise;
-}
-async function idbPut(record) {
-  try { const idb = await openIDB(); return new Promise((res, rej) => { const tx = idb.transaction(IDB_STORE, 'readwrite'); tx.objectStore(IDB_STORE).put(record); tx.oncomplete = () => res(true); tx.onerror = () => rej(tx.error); }); }
-  catch (e) { console.warn('[IDB] put failed', e); return false; }
-}
-async function idbGet(id) {
-  try { const idb = await openIDB(); return new Promise((res, rej) => { const tx = idb.transaction(IDB_STORE, 'readonly'); const r = tx.objectStore(IDB_STORE).get(id); r.onsuccess = () => res(r.result || null); r.onerror = () => rej(r.error); }); }
-  catch (e) { return null; }
-}
-async function idbGetAll() {
-  try { const idb = await openIDB(); return new Promise((res, rej) => { const tx = idb.transaction(IDB_STORE, 'readonly'); const r = tx.objectStore(IDB_STORE).getAll(); r.onsuccess = () => res(r.result || []); r.onerror = () => rej(r.error); }); }
-  catch (e) { return []; }
-}
-async function idbDelete(id) {
-  try { const idb = await openIDB(); return new Promise((res, rej) => { const tx = idb.transaction(IDB_STORE, 'readwrite'); tx.objectStore(IDB_STORE).delete(id); tx.oncomplete = () => res(true); tx.onerror = () => rej(tx.error); }); }
-  catch (e) { return false; }
+function mulberry32(seed) {
+  return function() {
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 }
 
-// =====================================================
-// ユーティリティ
-// =====================================================
+const PRESET_COLORS = ['#000000','#ffffff','#7f8c8d','#e74c3c','#e67e22','#f1c40f','#2ecc71','#3498db','#9b59b6','#e84393','#1e2b3c','#95a5a6','#e91e63','#00bcd4','#4caf50','#ff5722'];
+
+function showToast(msg, type = '') {
+  toastEl.textContent = msg;
+  toastEl.className = 'toast show ' + type;
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => { toastEl.className = 'toast ' + type; }, 2500);
+}
+function showLoading(show) { loadingIndicator.classList.toggle('show', show); }
 function generateId() { return 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 function formatDate(ts) { const d = new Date(ts); const pad = (n) => n.toString().padStart(2, '0'); return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`; }
 function formatTime(ts) { const d = new Date(ts); const pad = (n) => n.toString().padStart(2, '0'); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
@@ -548,117 +565,36 @@ function hslToRgb(h,s,l) { h/=360; s/=100; l/=100; let r, g, b; if (s === 0) { r
 function emailToKey(email) { return email.toLowerCase().replace(/\./g, ',').replace(/@/g, '_at_'); }
 function getScaleFactor() { return W / BASE_W; }
 function toInternal(lx, ly) { const s = getScaleFactor(); return { x: lx * s, y: ly * s }; }
-function showToast(msg, type = '') { toastEl.textContent = msg; toastEl.className = 'toast show ' + type; clearTimeout(showToast._t); showToast._t = setTimeout(() => { toastEl.className = 'toast ' + type; }, 2500); }
-function showLoading(show) { loadingIndicator.classList.toggle('show', show); }
 
-// =====================================================
-// 保存処理（IndexedDB メイン、localStorage は軽量メタのみ）
-// =====================================================
-function getWorksIndex() { try { const raw = localStorage.getItem(STORAGE_KEY_INDEX); return raw ? JSON.parse(raw) : []; } catch (e) { return []; } }
-function setWorksIndex(index) { try { if (index.length > 50) index = index.slice(0, 50); localStorage.setItem(STORAGE_KEY_INDEX, JSON.stringify(index)); } catch (e) { 
-  // 容量オーバー時は古いものを削除
-  try { const trimmed = index.slice(0, 20); localStorage.setItem(STORAGE_KEY_INDEX, JSON.stringify(trimmed)); } catch (e2) {}
-} }
-function serializeCurrentWork() {
-  const serializedLayers = layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, opacity: l.opacity, dataURL: l.canvas.toDataURL('image/png') }));
-  return { version: 17, baseWidth: BASE_W, baseHeight: BASE_H, width: W, height: H, layers: serializedLayers, activeLayerId, layerCounter, savedAt: Date.now(), title: artTitleEl.textContent || '無題の作品' };
+let isSyncingColor = false;
+function syncColorUI(source) {
+  if (isSyncingColor) return;
+  isSyncingColor = true;
+  const rgb = hexToRgb(currentColor);
+  if (!rgb) { isSyncingColor = false; return; }
+  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+  colorSwatchFill.style.background = currentColor;
+  hexInput.value = currentColor.replace('#','').toUpperCase();
+  if (source !== 'rgb') { sliderR.value = rgb.r; sliderG.value = rgb.g; sliderB.value = rgb.b; }
+  valR.textContent = Math.round(rgb.r); valG.textContent = Math.round(rgb.g); valB.textContent = Math.round(rgb.b);
+  if (source !== 'hsl') { sliderH.value = Math.round(hsl.h); sliderS.value = Math.round(hsl.s); sliderL.value = Math.round(hsl.l); }
+  valH.textContent = Math.round(hsl.h); valS.textContent = Math.round(hsl.s); valL.textContent = Math.round(hsl.l);
+  document.querySelectorAll('.color-preset').forEach(el => { el.classList.toggle('active', el.dataset.color.toLowerCase() === currentColor.toLowerCase()); });
+  updateSizePreview(); updateOpacityPreview();
+  isSyncingColor = false;
 }
-function generateThumbnail(maxSize) {
-  const tmp = document.createElement('canvas');
-  const ratio = BASE_W / BASE_H;
-  let tw, th;
-  if (ratio >= 1) { tw = maxSize; th = Math.round(maxSize / ratio); } else { th = maxSize; tw = Math.round(maxSize * ratio); }
-  tmp.width = tw; tmp.height = th;
-  const tctx = tmp.getContext('2d');
-  tctx.fillStyle = '#ffffff'; tctx.fillRect(0, 0, tw, th);
-  for (const layer of layers) { if (!layer.visible) continue; tctx.save(); tctx.globalAlpha = layer.opacity; tctx.drawImage(layer.canvas, 0, 0, tw, th); tctx.restore(); }
-  return tmp.toDataURL('image/png');
-}
-
-// ★ 同期保存（localStorage へ、軽量メタ情報のみ）
-function saveSyncToLocalStorage() {
-  if (isLoading) return;
-  try {
-    if (!currentWorkId) currentWorkId = generateId();
-    localStorage.setItem(STORAGE_KEY_LAST_ACTIVE, currentWorkId);
-    const index = getWorksIndex();
-    const existingIdx = index.findIndex(w => w.id === currentWorkId);
-    const entry = { id: currentWorkId, title: artTitleEl.textContent || '無題の作品', updatedAt: Date.now() };
-    if (existingIdx >= 0) index[existingIdx] = entry; else index.unshift(entry);
-    setWorksIndex(index);
-    dirty = false;
-  } catch (e) { console.warn('[save-sync] error', e); }
+function setColor(hex, source) {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return;
+  currentColor = rgbToHex(rgb.r, rgb.g, rgb.b);
+  if (isEraser) { isEraser = false; eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode'); }
+  syncColorUI(source);
 }
 
-// ★ 非同期保存（IndexedDB へ、本体データ）
-async function saveAsyncToIDB() {
-  if (isLoading) return;
-  try {
-    const data = serializeCurrentWork();
-    if (!currentWorkId) currentWorkId = generateId();
-    const thumb = generateThumbnail(360);
-    await idbPut({ id: currentWorkId, data, thumb, updatedAt: Date.now(), title: data.title });
-    const index = getWorksIndex();
-    const existingIdx = index.findIndex(w => w.id === currentWorkId);
-    const entry = { id: currentWorkId, title: data.title, updatedAt: Date.now(), thumbnail: thumb };
-    if (existingIdx >= 0) index[existingIdx] = entry; else index.unshift(entry);
-    setWorksIndex(index);
-    dirty = false;
-  } catch (e) { console.warn('[save-idb] error', e); }
-}
-
-// ★ 統合保存
-async function saveAll(silent) {
-  if (isLoading) return;
-  if (isSaving) { pendingSaveAgain = true; return; }
-  isSaving = true;
-  try {
-    await saveAsyncToIDB();
-    saveSyncToLocalStorage();
-    if (!silent) showToast('保存しました', 'success');
-  } finally {
-    isSaving = false;
-    if (pendingSaveAgain) { pendingSaveAgain = false; setTimeout(() => saveAll(true), 30); }
-  }
-}
-
-function scheduleAutoSave() {
-  if (isLoading || suppressAutoSave || isUnloading) return;
-  dirty = true;
-  clearTimeout(autoSaveTimer);
-  autoSaveTimer = setTimeout(() => saveAll(true), 500);
-}
-
-// ★ 強制保存
-async function forceSave() {
-  clearTimeout(autoSaveTimer);
-  await saveAsyncToIDB();
-  saveSyncToLocalStorage();
-}
-
-// =====================================================
-// 画面遷移
-// =====================================================
-async function showHomeScreen() {
-  if (isDrawing) { isDrawing = false; moveSnapshot = null; }
-  if (imageEditState) cancelImageEdit();
-  await forceSave();
-  editorScreen.classList.remove('active');
-  homeScreen.classList.remove('hidden');
-  renderGallery();
-}
-function showEditorScreen() {
-  homeScreen.classList.add('hidden');
-  editorScreen.classList.add('active');
-  requestAnimationFrame(() => requestAnimationFrame(() => { autoFitCanvas(); if (imageEditState) updateImageEditBox(); }));
-}
-
-// =====================================================
-// キャンバス基本
-// =====================================================
-function computeInternalSize() { const dpr = Math.min(window.devicePixelRatio || 1, 2); return { w: Math.round(BASE_W * dpr), h: Math.round(BASE_H * dpr) }; }
+function computeInternalSize() { const dpr = Math.min(window.devicePixelRatio || 1, 2); return { w: Math.round(BASE_W * dpr), h: Math.round(BASE_H * dpr), dpr }; }
 function applyCanvasCSSSize() { canvasFrame.style.width = BASE_W + 'px'; canvasFrame.style.height = BASE_H + 'px'; }
 function setInternalResolution() { const { w, h } = computeInternalSize(); W = w; H = h; canvas.width = w; canvas.height = h; applyCanvasCSSSize(); }
+
 function updateZoomUI() {
   canvasTransform.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
   zoomDisplay.textContent = Math.round(zoom * 100) + '%';
@@ -687,16 +623,65 @@ function setZoom(newZoom, clientX, clientY) {
   if (imageEditState) updateImageEditBox();
 }
 
-// =====================================================
-// 作品読み込み・削除
-// =====================================================
+function getWorksIndex() { try { const raw = localStorage.getItem(STORAGE_KEY_INDEX); return raw ? JSON.parse(raw) : []; } catch (e) { return []; } }
+function setWorksIndex(index) { try { localStorage.setItem(STORAGE_KEY_INDEX, JSON.stringify(index)); } catch (e) {} }
+function serializeCurrentWork() {
+  const serializedLayers = layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, opacity: l.opacity, dataURL: l.canvas.toDataURL('image/png') }));
+  return { version: 14, baseWidth: BASE_W, baseHeight: BASE_H, width: W, height: H, layers: serializedLayers, activeLayerId, layerCounter, savedAt: Date.now(), title: artTitleEl.textContent || '無題の作品' };
+}
+function generateThumbnail(maxSize) {
+  const tmp = document.createElement('canvas');
+  const ratio = BASE_W / BASE_H;
+  let tw, th;
+  if (ratio >= 1) { tw = maxSize; th = Math.round(maxSize / ratio); } else { th = maxSize; tw = Math.round(maxSize * ratio); }
+  tmp.width = tw; tmp.height = th;
+  const tctx = tmp.getContext('2d');
+  tctx.fillStyle = '#ffffff'; tctx.fillRect(0, 0, tw, th);
+  for (const layer of layers) { if (!layer.visible) continue; tctx.save(); tctx.globalAlpha = layer.opacity; tctx.drawImage(layer.canvas, 0, 0, tw, th); tctx.restore(); }
+  return tmp.toDataURL('image/png');
+}
+async function saveCurrentWork(silent, reason) {
+  if (isLoading || suppressAutoSave) return;
+  if (isSaving) { pendingSaveAgain = true; return; }
+  isSaving = true;
+  try {
+    const data = serializeCurrentWork();
+    if (!currentWorkId) currentWorkId = generateId();
+    localStorage.setItem(STORAGE_KEY_WORK_PREFIX + currentWorkId, JSON.stringify(data));
+    const index = getWorksIndex();
+    const existingIdx = index.findIndex(w => w.id === currentWorkId);
+    const thumb = generateThumbnail(360);
+    const entry = { id: currentWorkId, title: data.title, updatedAt: Date.now(), thumbnail: thumb };
+    if (existingIdx >= 0) index[existingIdx] = entry; else index.unshift(entry);
+    setWorksIndex(index);
+    if (!silent) showToast(reason === 'load' ? '自動保存しました' : '保存しました', 'success');
+  } catch (e) {}
+  finally { isSaving = false; if (pendingSaveAgain) { pendingSaveAgain = false; setTimeout(() => saveCurrentWork(true), 50); } }
+}
+function scheduleAutoSave() { if (isLoading || suppressAutoSave) return; clearTimeout(autoSaveTimer); autoSaveTimer = setTimeout(() => saveCurrentWork(true), 1000); }
+async function flushSave(reason) { if (isLoading || suppressAutoSave) return; clearTimeout(autoSaveTimer); await saveCurrentWork(true, reason); }
+function flushSaveSync() {
+  if (isLoading || suppressAutoSave) return;
+  clearTimeout(autoSaveTimer);
+  try {
+    const data = serializeCurrentWork();
+    if (!currentWorkId) currentWorkId = generateId();
+    localStorage.setItem(STORAGE_KEY_WORK_PREFIX + currentWorkId, JSON.stringify(data));
+    const index = getWorksIndex();
+    const existingIdx = index.findIndex(w => w.id === currentWorkId);
+    const thumb = generateThumbnail(360);
+    const entry = { id: currentWorkId, title: data.title, updatedAt: Date.now(), thumbnail: thumb };
+    if (existingIdx >= 0) index[existingIdx] = entry; else index.unshift(entry);
+    setWorksIndex(index);
+  } catch (e) {}
+}
 async function loadWork(workId) {
   isLoading = true; showLoading(true);
   try {
-    let data = null;
-    const idbRec = await idbGet(workId);
-    if (idbRec && idbRec.data) data = idbRec.data;
-    if (!data || !data.layers) { showToast('作品が見つかりません', 'error'); return false; }
+    const raw = localStorage.getItem(STORAGE_KEY_WORK_PREFIX + workId);
+    if (!raw) { showToast('作品が見つかりません', 'error'); return false; }
+    const data = JSON.parse(raw);
+    if (!data || !data.layers) { showToast('データ破損', 'error'); return false; }
     currentWorkId = workId; layerCounter = data.layerCounter || 0;
     setInternalResolution();
     const loadPromises = data.layers.map((layerData, idx) => new Promise((resolve) => {
@@ -718,30 +703,29 @@ async function loadWork(workId) {
     artTitleEl.textContent = data.title || '無題の作品';
     history = []; historyIndex = -1;
     renderLayerList(); composite(); pushHistory();
-    localStorage.setItem(STORAGE_KEY_LAST_ACTIVE, workId);
+    isLoading = false; showLoading(false);
+    requestAnimationFrame(() => requestAnimationFrame(() => autoFitCanvas()));
     return true;
-  } catch (e) { console.warn(e); return false; }
-  finally { isLoading = false; showLoading(false); requestAnimationFrame(() => requestAnimationFrame(() => autoFitCanvas())); }
+  } catch (e) { isLoading = false; showLoading(false); return false; }
 }
-async function deleteWork(workId) {
-  try { await idbDelete(workId); } catch(e){}
-  const index = getWorksIndex().filter(w => w.id !== workId);
-  setWorksIndex(index);
-  if (currentWorkId === workId) currentWorkId = null;
+function deleteWork(workId) { try { localStorage.removeItem(STORAGE_KEY_WORK_PREFIX + workId); const index = getWorksIndex().filter(w => w.id !== workId); setWorksIndex(index); if (currentWorkId === workId) currentWorkId = null; renderGallery(); } catch (e) {} }
+
+function showHomeScreen() {
+  if (isDrawing) { isDrawing = false; moveSnapshot = null; }
+  if (imageEditState) cancelImageEdit();
+  flushSave('home');
+  editorScreen.classList.remove('active');
+  homeScreen.classList.remove('hidden');
   renderGallery();
 }
-async function renderGallery() {
-  let index = getWorksIndex();
-  try {
-    const idbAll = await idbGetAll();
-    if (idbAll && idbAll.length > 0) {
-      const map = new Map();
-      index.forEach(w => map.set(w.id, w));
-      idbAll.forEach(rec => map.set(rec.id, { id: rec.id, title: rec.title, updatedAt: rec.updatedAt, thumbnail: rec.thumb }));
-      index = Array.from(map.values());
-      setWorksIndex(index);
-    }
-  } catch(e) {}
+function showEditorScreen() {
+  homeScreen.classList.add('hidden');
+  editorScreen.classList.add('active');
+  requestAnimationFrame(() => requestAnimationFrame(() => { autoFitCanvas(); if (imageEditState) updateImageEditBox(); }));
+}
+
+function renderGallery() {
+  const index = getWorksIndex();
   galleryEl.innerHTML = '';
   galleryCountEl.textContent = index.length > 0 ? `（${index.length}）` : '';
   if (index.length === 0) {
@@ -765,11 +749,7 @@ async function renderGallery() {
   });
 }
 
-// =====================================================
-// 新規作成・レイヤー
-// =====================================================
-async function createNewWork(backgroundImage) {
-  if (currentWorkId && layers.length > 0) await forceSave();
+function createNewWork(backgroundImage) {
   layers = []; layerCounter = 0; currentWorkId = null;
   artTitleEl.textContent = '無題の作品';
   history = []; historyIndex = -1;
@@ -792,8 +772,9 @@ async function createNewWork(backgroundImage) {
   }
   renderLayerList(); composite(); pushHistory(); updateUndoRedo();
   showEditorScreen();
-  setTimeout(() => forceSave(), 200);
+  setTimeout(() => saveCurrentWork(true), 100);
 }
+
 function addLayer(name, opts = {}) {
   const id = opts.id || ('layer_' + (++layerCounter));
   if (opts.id) { const num = parseInt(opts.id.replace('layer_', '')) || 0; if (num > layerCounter) layerCounter = num; }
@@ -839,10 +820,18 @@ function reorderLayers(fromId, toId, position) {
   layers.splice(insertIdx, 0, moved);
   renderLayerList(); composite(); scheduleAutoSave(); pushHistory();
 }
+
+// ★ 履歴管理（修正版）
+// 各履歴エントリに一意な stateId を付与。通信時も stateId で同期することで正確に1つずつ戻る。
 function pushHistory(options = {}) {
   if (isLoading || isApplyingRemoteHistory) return;
   const snapshot = layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, opacity: l.opacity, dataURL: l.canvas.toDataURL('image/png') }));
-  const state = { stateId: generateId(), layers: snapshot, activeLayerId, layerCounter, W, H };
+  const state = {
+    stateId: generateId(), // 一意なID
+    layers: snapshot,
+    activeLayerId, layerCounter, W, H
+  };
+  // 直前の状態と同じ内容ならスキップ（stateIdは除いて比較）
   if (historyIndex >= 0) {
     const prev = history[historyIndex];
     const prevComparable = { layers: prev.layers, activeLayerId: prev.activeLayerId, layerCounter: prev.layerCounter, W: prev.W, H: prev.H };
@@ -854,24 +843,59 @@ function pushHistory(options = {}) {
   if (history.length > MAX_HISTORY) history.shift();
   historyIndex = history.length - 1;
   updateUndoRedo();
+  // 他参加者に「この状態が履歴に追加された」ことを通知
   if (activeSessionId && !options.silent && !isApplyingRemoteHistory) {
-    sendHistoryEvent({ type: 'push', stateId: state.stateId, index: historyIndex, layersSnapshot: state.layers, activeLayerId: state.activeLayerId, layerCounter: state.layerCounter, W: state.W, H: state.H });
+    sendHistoryEvent({
+      type: 'push',
+      stateId: state.stateId,
+      index: historyIndex,
+      layersSnapshot: state.layers,
+      activeLayerId: state.activeLayerId,
+      layerCounter: state.layerCounter,
+      W: state.W, H: state.H
+    });
   }
 }
+
+// ★ Undo: 現在の履歴を1つ前に戻す。stateId で同期するので相手側も正確に1つ前に戻る。
 function performUndo() {
   if (historyIndex <= 0) return;
   const targetIdx = historyIndex - 1;
   const targetState = history[targetIdx];
   applyHistoryState(targetState, targetIdx);
-  if (activeSessionId) sendHistoryEvent({ type: 'jump', stateId: targetState.stateId, index: targetIdx, layersSnapshot: targetState.layers, activeLayerId: targetState.activeLayerId, layerCounter: targetState.layerCounter, W: targetState.W, H: targetState.H });
+  // 他参加者へ通知
+  if (activeSessionId) {
+    sendHistoryEvent({
+      type: 'jump',
+      stateId: targetState.stateId,
+      index: targetIdx,
+      layersSnapshot: targetState.layers,
+      activeLayerId: targetState.activeLayerId,
+      layerCounter: targetState.layerCounter,
+      W: targetState.W, H: targetState.H
+    });
+  }
 }
+// ★ Redo
 function performRedo() {
   if (historyIndex >= history.length - 1) return;
   const targetIdx = historyIndex + 1;
   const targetState = history[targetIdx];
   applyHistoryState(targetState, targetIdx);
-  if (activeSessionId) sendHistoryEvent({ type: 'jump', stateId: targetState.stateId, index: targetIdx, layersSnapshot: targetState.layers, activeLayerId: targetState.activeLayerId, layerCounter: targetState.layerCounter, W: targetState.W, H: targetState.H });
+  if (activeSessionId) {
+    sendHistoryEvent({
+      type: 'jump',
+      stateId: targetState.stateId,
+      index: targetIdx,
+      layersSnapshot: targetState.layers,
+      activeLayerId: targetState.activeLayerId,
+      layerCounter: targetState.layerCounter,
+      W: targetState.W, H: targetState.H
+    });
+  }
 }
+
+// 指定した履歴状態を適用（ローカル・リモート共通）
 async function applyHistoryState(state, idx) {
   if (!state) return;
   suppressAutoSave = true; isLoading = true;
@@ -892,6 +916,7 @@ async function applyHistoryState(state, idx) {
   renderLayerList(); composite(); updateUndoRedo();
   scheduleAutoSave();
 }
+
 function updateUndoRedo() { undoBtn.disabled = historyIndex <= 0; redoBtn.disabled = historyIndex >= history.length - 1; }
 function composite() {
   ctx.clearRect(0, 0, W, H);
@@ -901,6 +926,7 @@ function composite() {
     ctx.drawImage(layer.canvas, 0, 0); ctx.restore();
   }
 }
+
 function renderLayerList() {
   layerList.innerHTML = '';
   const reversed = [...layers].reverse();
@@ -932,7 +958,11 @@ function renderLayerList() {
     });
     const delBtn = document.createElement('button');
     delBtn.className = 'mini-btn danger'; delBtn.textContent = '✕';
-    delBtn.addEventListener('click', (e) => { e.stopPropagation(); deleteLayer(layer.id); sendLayerEvent({ type: 'delete', layerId: layer.id }); });
+    delBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteLayer(layer.id);
+      sendLayerEvent({ type: 'delete', layerId: layer.id });
+    });
     actions.appendChild(visBtn); actions.appendChild(delBtn);
     item.appendChild(thumb); item.appendChild(info); item.appendChild(actions);
     item.addEventListener('click', () => {
@@ -999,6 +1029,7 @@ function attachDragReorder(item, layerId) {
   }
   item.addEventListener('pointerdown', onPointerDown);
 }
+
 function updateSizePreview() {
   const pw = sizePreviewCanvas.width, ph = sizePreviewCanvas.height;
   sizePreviewCtx.clearRect(0, 0, pw, ph); sizePreviewCtx.fillStyle = '#1e1f24'; sizePreviewCtx.fillRect(0, 0, pw, ph);
@@ -1006,12 +1037,28 @@ function updateSizePreview() {
   const maxR = Math.min(pw, ph) / 2 - 2, r = Math.min(currentSize / 2, maxR);
   const color = isEraser ? '#8891a0' : currentColor;
   sizePreviewCtx.save();
-  if (isEraser) { sizePreviewCtx.beginPath(); sizePreviewCtx.arc(cx, cy, Math.max(1, r), 0, Math.PI*2); sizePreviewCtx.fillStyle = '#ffffff'; sizePreviewCtx.fill(); sizePreviewCtx.strokeStyle = '#8891a0'; sizePreviewCtx.stroke(); }
-  else if (currentBrush === 'blur') { const grad = sizePreviewCtx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(1, r)); grad.addColorStop(0, 'rgba(91,141,239,0.6)'); grad.addColorStop(0.5, 'rgba(91,141,239,0.25)'); grad.addColorStop(1, 'rgba(91,141,239,0)'); sizePreviewCtx.fillStyle = grad; sizePreviewCtx.beginPath(); sizePreviewCtx.arc(cx, cy, Math.max(1, r), 0, Math.PI*2); sizePreviewCtx.fill(); }
-  else if (currentBrush === 'marker') { const half = Math.max(1, r); sizePreviewCtx.globalAlpha = 0.85; sizePreviewCtx.fillStyle = color; sizePreviewCtx.fillRect(cx - half, cy - half * 0.75, half * 2, half * 1.5); }
-  else if (currentBrush === 'highlighter') { const half = Math.max(1, r); sizePreviewCtx.globalAlpha = 0.5; sizePreviewCtx.fillStyle = color; sizePreviewCtx.shadowColor = color; sizePreviewCtx.shadowBlur = half * 1.5; sizePreviewCtx.fillRect(cx - half, cy - half * 0.7, half * 2, half * 1.4); }
-  else if (currentBrush === 'dotted') { sizePreviewCtx.strokeStyle = color; sizePreviewCtx.lineWidth = Math.max(1, r * 0.7); sizePreviewCtx.setLineDash([Math.max(2, r * 0.8), Math.max(2, r * 0.8)]); sizePreviewCtx.beginPath(); sizePreviewCtx.moveTo(cx - maxR, cy); sizePreviewCtx.lineTo(cx + maxR, cy); sizePreviewCtx.stroke(); }
-  else { sizePreviewCtx.beginPath(); sizePreviewCtx.arc(cx, cy, Math.max(1, r), 0, Math.PI*2); sizePreviewCtx.fillStyle = color; sizePreviewCtx.fill(); }
+  if (isEraser) {
+    sizePreviewCtx.beginPath(); sizePreviewCtx.arc(cx, cy, Math.max(1, r), 0, Math.PI*2);
+    sizePreviewCtx.fillStyle = '#ffffff'; sizePreviewCtx.fill(); sizePreviewCtx.strokeStyle = '#8891a0'; sizePreviewCtx.stroke();
+  } else if (currentBrush === 'blur') {
+    const grad = sizePreviewCtx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(1, r));
+    grad.addColorStop(0, 'rgba(91,141,239,0.6)'); grad.addColorStop(0.5, 'rgba(91,141,239,0.25)'); grad.addColorStop(1, 'rgba(91,141,239,0)');
+    sizePreviewCtx.fillStyle = grad; sizePreviewCtx.beginPath(); sizePreviewCtx.arc(cx, cy, Math.max(1, r), 0, Math.PI*2); sizePreviewCtx.fill();
+  } else if (currentBrush === 'marker') {
+    const half = Math.max(1, r); sizePreviewCtx.globalAlpha = 0.85; sizePreviewCtx.fillStyle = color;
+    sizePreviewCtx.fillRect(cx - half, cy - half * 0.75, half * 2, half * 1.5);
+  } else if (currentBrush === 'highlighter') {
+    const half = Math.max(1, r); sizePreviewCtx.globalAlpha = 0.5; sizePreviewCtx.fillStyle = color;
+    sizePreviewCtx.shadowColor = color; sizePreviewCtx.shadowBlur = half * 1.5;
+    sizePreviewCtx.fillRect(cx - half, cy - half * 0.7, half * 2, half * 1.4);
+  } else if (currentBrush === 'dotted') {
+    sizePreviewCtx.strokeStyle = color; sizePreviewCtx.lineWidth = Math.max(1, r * 0.7);
+    sizePreviewCtx.setLineDash([Math.max(2, r * 0.8), Math.max(2, r * 0.8)]);
+    sizePreviewCtx.beginPath(); sizePreviewCtx.moveTo(cx - maxR, cy); sizePreviewCtx.lineTo(cx + maxR, cy); sizePreviewCtx.stroke();
+  } else {
+    sizePreviewCtx.beginPath(); sizePreviewCtx.arc(cx, cy, Math.max(1, r), 0, Math.PI*2);
+    sizePreviewCtx.fillStyle = color; sizePreviewCtx.fill();
+  }
   sizePreviewCtx.restore();
 }
 function updateOpacityPreview() {
@@ -1024,6 +1071,7 @@ function updateOpacityPreview() {
   opacityPreviewCtx.fillStyle = color; opacityPreviewCtx.fill();
   opacityPreviewCtx.restore();
 }
+
 function getCanvasCoords(e) {
   const rect = canvas.getBoundingClientRect();
   const scaleX = W / rect.width, scaleY = H / rect.height;
@@ -1034,6 +1082,7 @@ function getCanvasCoords(e) {
   const s = W / BASE_W;
   return { x: Math.min(Math.max(px, 0), W), y: Math.min(Math.max(py, 0), H), logicalX: Math.min(Math.max(px / s, 0), BASE_W), logicalY: Math.min(Math.max(py / s, 0), BASE_H) };
 }
+
 function pickColorAt(x, y) { const px = Math.floor(x), py = Math.floor(y); if (px < 0 || py < 0 || px >= W || py >= H) return null; try { const data = ctx.getImageData(px, py, 1, 1).data; if (data[3] === 0) return null; return rgbToHex(data[0], data[1], data[2]); } catch (e) { return null; } }
 async function pickColorFromScreen() { if (window.EyeDropper) { try { const ed = new EyeDropper(); const result = await ed.open(); if (result && result.sRGBHex) return result.sRGBHex; } catch (e) {} } return null; }
 function setEyedropperMode(on) {
@@ -1074,6 +1123,7 @@ function floodFill(layer, startX, startY, fillColorHex, tolerance) {
   if (count > 0) { c.putImageData(imgData, 0, 0); return true; }
   return false;
 }
+
 function drawPen(c, x0, y0, x1, y1, size, color, alpha) { c.save(); c.globalAlpha = alpha; c.lineCap = 'round'; c.lineJoin = 'round'; c.strokeStyle = color; c.lineWidth = size; c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke(); c.restore(); }
 function drawPencil(c, x0, y0, x1, y1, size, color, alpha, rng) {
   const dist = Math.hypot(x1-x0, y1-y0); const steps = Math.max(1, Math.floor(dist / 0.7));
@@ -1096,10 +1146,12 @@ function drawPencil(c, x0, y0, x1, y1, size, color, alpha, rng) {
   c.restore();
 }
 function drawMarker(c, x0, y0, x1, y1, size, color, alpha) {
-  c.save(); c.globalAlpha = alpha * 0.55; c.lineCap = 'square'; c.lineJoin = 'round'; c.strokeStyle = color; c.lineWidth = size * 1.15;
+  c.save(); c.globalAlpha = alpha * 0.55; c.lineCap = 'square'; c.lineJoin = 'round';
+  c.strokeStyle = color; c.lineWidth = size * 1.15;
   c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
   c.globalAlpha = alpha * 0.35; c.lineWidth = size * 0.55;
-  c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke(); c.restore();
+  c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
+  c.restore();
 }
 function drawChalk(c, x0, y0, x1, y1, size, color, alpha, rng) {
   const dist = Math.hypot(x1-x0, y1-y0); const steps = Math.max(1, Math.floor(dist / 0.8));
@@ -1111,7 +1163,9 @@ function drawChalk(c, x0, y0, x1, y1, size, color, alpha, rng) {
     const px = x0 + (x1-x0)*t, py = y0 + (y1-y0)*t;
     const count = Math.max(4, Math.floor(size * 0.6));
     for (let i = 0; i < count; i++) {
-      let off = 0; for (let k = 0; k < 3; k++) off += (rng()-0.5); off = off/3 * size * 1.3;
+      let off = 0;
+      for (let k = 0; k < 3; k++) off += (rng()-0.5);
+      off = off/3 * size * 1.3;
       const ox = px + nx*off + (dx/len)*(rng()-0.5)*1.5, oy = py + ny*off + (dy/len)*(rng()-0.5)*1.5;
       c.globalAlpha = alpha * (0.1 + rng()*0.55);
       const r = Math.max(0.35, size * 0.07 * (0.5 + rng()));
@@ -1128,8 +1182,11 @@ function drawSpray(c, x0, y0, x1, y1, size, color, alpha, rng) {
     const px = x0 + (x1-x0)*t, py = y0 + (y1-y0)*t;
     const count = Math.max(6, Math.floor(size * 1.4));
     for (let i = 0; i < count; i++) {
-      let rr = 0; for (let k = 0; k < 3; k++) rr += rng(); rr = rr/3;
-      const radius = size * rr; const angle = rng() * Math.PI * 2;
+      let rr = 0;
+      for (let k = 0; k < 3; k++) rr += rng();
+      rr = rr/3;
+      const radius = size * rr;
+      const angle = rng() * Math.PI * 2;
       const ox = px + Math.cos(angle)*radius, oy = py + Math.sin(angle)*radius;
       c.globalAlpha = alpha * (0.08 + rng()*0.22) * (1 - rr*0.6);
       const r = Math.max(0.25, size * 0.03 * (0.6 + rng()*0.8));
@@ -1139,21 +1196,38 @@ function drawSpray(c, x0, y0, x1, y1, size, color, alpha, rng) {
   c.restore();
 }
 function drawHighlighter(c, x0, y0, x1, y1, size, color, alpha) {
-  c.save(); c.lineCap = 'round'; c.lineJoin = 'round';
-  c.globalAlpha = alpha * 0.25; c.shadowColor = color; c.shadowBlur = size * 1.6; c.strokeStyle = color; c.lineWidth = size * 1.4;
+  c.save();
+  c.lineCap = 'round'; c.lineJoin = 'round';
+  c.globalAlpha = alpha * 0.25;
+  c.shadowColor = color;
+  c.shadowBlur = size * 1.6;
+  c.strokeStyle = color;
+  c.lineWidth = size * 1.4;
   c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
-  c.globalAlpha = alpha * 0.45; c.shadowBlur = size * 0.8; c.lineWidth = size * 1.0;
+  c.globalAlpha = alpha * 0.45;
+  c.shadowBlur = size * 0.8;
+  c.lineWidth = size * 1.0;
   c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
-  c.globalAlpha = alpha * 0.7; c.shadowBlur = 0; c.lineWidth = size * 0.55;
+  c.globalAlpha = alpha * 0.7;
+  c.shadowBlur = 0;
+  c.lineWidth = size * 0.55;
   c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
   c.restore();
 }
 function drawDottedSegment(c, x0, y0, x1, y1, size, color, alpha) {
-  c.save(); c.globalAlpha = alpha; c.lineCap = 'round'; c.lineJoin = 'round'; c.strokeStyle = color; c.lineWidth = size;
+  c.save();
+  c.globalAlpha = alpha;
+  c.lineCap = 'round';
+  c.lineJoin = 'round';
+  c.strokeStyle = color;
+  c.lineWidth = size;
   const dashLen = size * 1.8;
-  c.setLineDash([dashLen, dashLen]); c.lineDashOffset = -dottedAccumulated;
-  c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke(); c.restore();
+  c.setLineDash([dashLen, dashLen]);
+  c.lineDashOffset = -dottedAccumulated;
+  c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
+  c.restore();
 }
+
 function blurAt(c, cx, cy, radius) {
   const r = Math.max(2, Math.round(radius));
   const minX = Math.max(0, Math.floor(cx - r)), minY = Math.max(0, Math.floor(cy - r));
@@ -1192,14 +1266,7 @@ function blurAt(c, cx, cy, radius) {
   }
   c.putImageData(srcData, minX, minY);
 }
-function mulberry32(seed) {
-  return function() {
-    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+
 function drawStrokeToLayer(layer, lx0, ly0, lx1, ly1, params, seed) {
   const c = layer.ctx;
   const { color, size, brush, alpha, eraser } = params;
@@ -1207,7 +1274,12 @@ function drawStrokeToLayer(layer, lx0, ly0, lx1, ly1, params, seed) {
   const scale = getScaleFactor();
   const scaledSize = size * scale;
   const x0 = p0.x, y0 = p0.y, x1 = p1.x, y1 = p1.y;
-  if (eraser) { c.save(); c.globalCompositeOperation = 'destination-out'; c.lineCap = 'round'; c.lineJoin = 'round'; c.strokeStyle = 'rgba(0,0,0,1)'; c.lineWidth = scaledSize; c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke(); c.restore(); return; }
+  if (eraser) {
+    c.save(); c.globalCompositeOperation = 'destination-out'; c.lineCap = 'round'; c.lineJoin = 'round';
+    c.strokeStyle = 'rgba(0,0,0,1)'; c.lineWidth = scaledSize;
+    c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke(); c.restore();
+    return;
+  }
   if (brush === 'blur') { blurAt(c, x1, y1, scaledSize * 0.8); return; }
   const rng = (typeof seed === 'number') ? mulberry32(seed) : Math.random;
   c.save();
@@ -1217,9 +1289,13 @@ function drawStrokeToLayer(layer, lx0, ly0, lx1, ly1, params, seed) {
   else if (brush === 'chalk') drawChalk(c, x0, y0, x1, y1, scaledSize, color, alpha, rng);
   else if (brush === 'spray') drawSpray(c, x0, y0, x1, y1, scaledSize, color, alpha, rng);
   else if (brush === 'highlighter') drawHighlighter(c, x0, y0, x1, y1, scaledSize, color, alpha);
-  else if (brush === 'dotted') { drawDottedSegment(c, x0, y0, x1, y1, scaledSize, color, alpha); dottedAccumulated += Math.hypot(x1 - x0, y1 - y0); }
+  else if (brush === 'dotted') {
+    drawDottedSegment(c, x0, y0, x1, y1, scaledSize, color, alpha);
+    dottedAccumulated += Math.hypot(x1 - x0, y1 - y0);
+  }
   c.restore();
 }
+
 function startDrawing(e) {
   if (e.button !== undefined && e.button !== 0) return;
   e.preventDefault();
@@ -1234,8 +1310,10 @@ function startDrawing(e) {
   myCurrentStrokeId = strokeId; myCurrentStrokeSeed = seed; myLastSentLogical = { x: coords.logicalX, y: coords.logicalY };
   dottedAccumulated = 0;
   drawStrokeToLayer(layer, coords.logicalX, coords.logicalY, coords.logicalX + 0.01, coords.logicalY, { color: currentColor, size: currentSize, brush: currentBrush, alpha: currentOpacity, eraser: isEraser }, seed);
-  if (activeSessionId) sendStrokeEvent({ type: 'start', strokeId, layerId: layer.id, x: coords.logicalX, y: coords.logicalY, color: currentColor, size: currentSize, brush: currentBrush, opacity: currentOpacity, eraser: isEraser, seed });
-  composite();
+  if (activeSessionId) {
+    sendStrokeEvent({ type: 'start', strokeId, layerId: layer.id, x: coords.logicalX, y: coords.logicalY, color: currentColor, size: currentSize, brush: currentBrush, opacity: currentOpacity, eraser: isEraser, seed });
+  }
+  composite(); scheduleAutoSave();
 }
 function draw(e) {
   if (!isDrawing) return; e.preventDefault();
@@ -1246,24 +1324,27 @@ function draw(e) {
     if (dx === moveOffsetX && dy === moveOffsetY) return;
     moveOffsetX = dx; moveOffsetY = dy;
     layer.ctx.clearRect(0, 0, W, H); layer.ctx.putImageData(moveSnapshot, dx, dy);
-    composite(); return;
+    composite(); scheduleAutoSave(); return;
   }
   drawStrokeToLayer(layer, lastLogicalX, lastLogicalY, coords.logicalX, coords.logicalY, { color: currentColor, size: currentSize, brush: currentBrush, alpha: currentOpacity, eraser: isEraser }, myCurrentStrokeSeed);
   if (activeSessionId && myCurrentStrokeId) {
     const dist = Math.hypot(coords.logicalX - myLastSentLogical.x, coords.logicalY - myLastSentLogical.y);
-    if (dist >= STROKE_MIN_LOGICAL_DIST) { sendStrokeEvent({ type: 'move', strokeId: myCurrentStrokeId, x: coords.logicalX, y: coords.logicalY }); myLastSentLogical = { x: coords.logicalX, y: coords.logicalY }; }
+    if (dist >= STROKE_MIN_LOGICAL_DIST) {
+      sendStrokeEvent({ type: 'move', strokeId: myCurrentStrokeId, x: coords.logicalX, y: coords.logicalY });
+      myLastSentLogical = { x: coords.logicalX, y: coords.logicalY };
+    }
   }
   lastX = coords.x; lastY = coords.y; lastLogicalX = coords.logicalX; lastLogicalY = coords.logicalY;
-  composite();
+  composite(); scheduleAutoSave();
 }
 function stopDrawing(e) {
   if (e) e.preventDefault(); if (!isDrawing) return;
   isDrawing = false; moveSnapshot = null; moveOffsetX = 0; moveOffsetY = 0;
   if (activeSessionId && myCurrentStrokeId) sendStrokeEvent({ type: 'end', strokeId: myCurrentStrokeId });
   myCurrentStrokeId = null; myCurrentStrokeSeed = null; myLastSentLogical = null;
-  pushHistory();
-  saveAll(true);
+  scheduleAutoSave(); pushHistory();
 }
+
 function enterImageEditMode(img, layerId) {
   imageEditState = { layerId, img, x: 0, y: 0, w: BASE_W, h: BASE_H, rotation: 0 };
   const imgRatio = img.width / img.height, canvasRatio = BASE_W / BASE_H;
@@ -1349,8 +1430,8 @@ function loadImageFromFile(file) {
   reader.onload = (ev) => { const img = new Image(); img.onload = () => { const newLayer = addLayer('画像 ' + (layers.length + 1)); enterImageEditMode(img, newLayer.id); }; img.src = ev.target.result; };
   reader.readAsDataURL(file);
 }
+
 function renderColorPresets() {
-  const PRESET_COLORS = ['#000000','#ffffff','#7f8c8d','#e74c3c','#e67e22','#f1c40f','#2ecc71','#3498db','#9b59b6','#e84393','#1e2b3c','#95a5a6','#e91e63','#00bcd4','#4caf50','#ff5722'];
   colorPresets.innerHTML = '';
   PRESET_COLORS.forEach(c => {
     const b = document.createElement('button'); b.className = 'color-preset'; b.dataset.color = c;
@@ -1361,30 +1442,7 @@ function renderColorPresets() {
   });
   syncColorUI();
 }
-let isSyncingColor = false;
-function syncColorUI(source) {
-  if (isSyncingColor) return;
-  isSyncingColor = true;
-  const rgb = hexToRgb(currentColor);
-  if (!rgb) { isSyncingColor = false; return; }
-  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
-  colorSwatchFill.style.background = currentColor;
-  hexInput.value = currentColor.replace('#','').toUpperCase();
-  if (source !== 'rgb') { sliderR.value = rgb.r; sliderG.value = rgb.g; sliderB.value = rgb.b; }
-  valR.textContent = Math.round(rgb.r); valG.textContent = Math.round(rgb.g); valB.textContent = Math.round(rgb.b);
-  if (source !== 'hsl') { sliderH.value = Math.round(hsl.h); sliderS.value = Math.round(hsl.s); sliderL.value = Math.round(hsl.l); }
-  valH.textContent = Math.round(hsl.h); valS.textContent = Math.round(hsl.s); valL.textContent = Math.round(hsl.l);
-  document.querySelectorAll('.color-preset').forEach(el => { el.classList.toggle('active', el.dataset.color.toLowerCase() === currentColor.toLowerCase()); });
-  updateSizePreview(); updateOpacityPreview();
-  isSyncingColor = false;
-}
-function setColor(hex, source) {
-  const rgb = hexToRgb(hex);
-  if (!rgb) return;
-  currentColor = rgbToHex(rgb.r, rgb.g, rgb.b);
-  if (isEraser) { isEraser = false; eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode'); }
-  syncColorUI(source);
-}
+
 document.querySelectorAll('.picker-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.picker-tab').forEach(t => t.classList.remove('active'));
@@ -1406,6 +1464,7 @@ function toggleEyedropper() { if (window.EyeDropper) { pickColorFromScreen().the
 eyedropperBtn.addEventListener('click', toggleEyedropper); eyedropperToolBtn.addEventListener('click', toggleEyedropper);
 fillToggle.addEventListener('click', () => setFillMode(!isFillMode));
 toleranceSlider.addEventListener('input', (e) => { currentTolerance = parseInt(e.target.value, 10); toleranceValue.textContent = currentTolerance; });
+
 zoomInBtn.addEventListener('click', () => { const rect = canvasViewport.getBoundingClientRect(); setZoom(zoom * 1.25, rect.left + rect.width/2, rect.top + rect.height/2); });
 zoomOutBtn.addEventListener('click', () => { const rect = canvasViewport.getBoundingClientRect(); setZoom(zoom / 1.25, rect.left + rect.width/2, rect.top + rect.height/2); });
 zoomResetBtn.addEventListener('click', autoFitCanvas); zoomDisplay.addEventListener('click', autoFitCanvas);
@@ -1415,6 +1474,7 @@ canvasViewport.addEventListener('wheel', (e) => {
   else if (e.altKey) setZoom(zoom * (e.deltaY < 0 ? 1.1 : 1/1.1), e.clientX, e.clientY);
   else { panX -= e.deltaX; panY -= e.deltaY; updateZoomUI(); if (imageEditState) updateImageEditBox(); }
 }, { passive: false });
+
 canvas.addEventListener('pointerdown', (e) => {
   if (e.pointerType === 'mouse' && e.button !== 0) return;
   if (imageEditState) return;
@@ -1444,33 +1504,59 @@ canvas.addEventListener('pointerup', handlePointerUp);
 canvas.addEventListener('pointercancel', handlePointerUp);
 canvas.addEventListener('lostpointercapture', (e) => { if (activePointerId === e.pointerId) { activePointerId = null; stopDrawing(e); } });
 window.addEventListener('pointerup', (e) => { if (pointerState.has(e.pointerId)) handlePointerUp(e); });
+
 let viewportPanState = null;
 canvasViewport.addEventListener('pointerdown', (e) => {
   if (!isPanMode && !isZoomMode) return;
   if (e.pointerType === 'mouse' && e.button !== 0) return;
-  e.preventDefault(); e.stopPropagation();
+  e.preventDefault();
+  e.stopPropagation();
   const rect = canvasViewport.getBoundingClientRect();
-  viewportPanState = { pointerId: e.pointerId, mode: isPanMode ? 'pan' : 'zoom', startX: e.clientX, startY: e.clientY, startLocalX: e.clientX - rect.left, startLocalY: e.clientY - rect.top, startPanX: panX, startPanY: panY, startZoom: zoom };
+  viewportPanState = {
+    pointerId: e.pointerId,
+    mode: isPanMode ? 'pan' : 'zoom',
+    startX: e.clientX,
+    startY: e.clientY,
+    startLocalX: e.clientX - rect.left,
+    startLocalY: e.clientY - rect.top,
+    startPanX: panX,
+    startPanY: panY,
+    startZoom: zoom
+  };
   try { canvasViewport.setPointerCapture(e.pointerId); } catch (err) {}
 });
 canvasViewport.addEventListener('pointermove', (e) => {
   if (!viewportPanState || viewportPanState.pointerId !== e.pointerId) return;
-  e.preventDefault(); e.stopPropagation();
-  const dx = e.clientX - viewportPanState.startX; const dy = e.clientY - viewportPanState.startY;
-  if (viewportPanState.mode === 'pan') { panX = viewportPanState.startPanX + dx; panY = viewportPanState.startPanY + dy; updateZoomUI(); if (imageEditState) updateImageEditBox(); }
-  else {
+  e.preventDefault();
+  e.stopPropagation();
+  const dx = e.clientX - viewportPanState.startX;
+  const dy = e.clientY - viewportPanState.startY;
+  if (viewportPanState.mode === 'pan') {
+    panX = viewportPanState.startPanX + dx;
+    panY = viewportPanState.startPanY + dy;
+    updateZoomUI();
+    if (imageEditState) updateImageEditBox();
+  } else {
     const factor = Math.exp(-dy * 0.005);
     const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, viewportPanState.startZoom * factor));
     const logicalX = (viewportPanState.startLocalX - viewportPanState.startPanX) / viewportPanState.startZoom;
     const logicalY = (viewportPanState.startLocalY - viewportPanState.startPanY) / viewportPanState.startZoom;
-    zoom = newZoom; panX = viewportPanState.startLocalX - logicalX * zoom; panY = viewportPanState.startLocalY - logicalY * zoom;
-    updateZoomUI(); if (imageEditState) updateImageEditBox();
+    zoom = newZoom;
+    panX = viewportPanState.startLocalX - logicalX * zoom;
+    panY = viewportPanState.startLocalY - logicalY * zoom;
+    updateZoomUI();
+    if (imageEditState) updateImageEditBox();
   }
 });
-function handleViewportUp(e) { if (!viewportPanState || viewportPanState.pointerId !== e.pointerId) return; try { canvasViewport.releasePointerCapture(e.pointerId); } catch (err) {} viewportPanState = null; }
+function handleViewportUp(e) {
+  if (!viewportPanState || viewportPanState.pointerId !== e.pointerId) return;
+  try { canvasViewport.releasePointerCapture(e.pointerId); } catch (err) {}
+  viewportPanState = null;
+}
 canvasViewport.addEventListener('pointerup', handleViewportUp);
 canvasViewport.addEventListener('pointercancel', handleViewportUp);
 window.addEventListener('pointerup', (e) => { if (viewportPanState) handleViewportUp(e); });
+
 function startPinch() { const pts = Array.from(pointerState.values()); if (pts.length < 2) return; const [p1, p2] = pts; pinchState = { startDist: Math.hypot(p2.x-p1.x, p2.y-p1.y), startZoom: zoom, centerX: (p1.x+p2.x)/2, centerY: (p1.y+p2.y)/2, startPanX: panX, startPanY: panY }; }
 function restartPinch() { const pts = Array.from(pointerState.values()); if (pts.length < 2) { endPinch(); return; } startPinch(); }
 function updatePinch() {
@@ -1489,6 +1575,7 @@ function updatePinch() {
   if (imageEditState) updateImageEditBox();
 }
 function endPinch() { pinchState = null; }
+
 brushItems.forEach(btn => {
   btn.addEventListener('click', () => {
     brushItems.forEach(b => b.classList.remove('active'));
@@ -1516,14 +1603,27 @@ moveToggle.addEventListener('click', () => {
 });
 panToggle.addEventListener('click', () => {
   isPanMode = !isPanMode;
-  if (isPanMode) { isEraser = false; eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode'); isMoveMode = false; moveToggle.classList.remove('active'); canvas.classList.remove('move-mode'); setEyedropperMode(false); setFillMode(false); isZoomMode = false; zoomToggle.classList.remove('active'); canvasViewport.classList.remove('zoom-mode'); panToggle.classList.add('active'); canvasViewport.classList.add('pan-mode'); showToast('キャンバス移動モード'); }
-  else { panToggle.classList.remove('active'); canvasViewport.classList.remove('pan-mode'); }
+  if (isPanMode) {
+    isEraser = false; eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode');
+    isMoveMode = false; moveToggle.classList.remove('active'); canvas.classList.remove('move-mode');
+    setEyedropperMode(false); setFillMode(false);
+    isZoomMode = false; zoomToggle.classList.remove('active'); canvasViewport.classList.remove('zoom-mode');
+    panToggle.classList.add('active'); canvasViewport.classList.add('pan-mode');
+    showToast('キャンバス移動モード');
+  } else { panToggle.classList.remove('active'); canvasViewport.classList.remove('pan-mode'); }
 });
 zoomToggle.addEventListener('click', () => {
   isZoomMode = !isZoomMode;
-  if (isZoomMode) { isEraser = false; eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode'); isMoveMode = false; moveToggle.classList.remove('active'); canvas.classList.remove('move-mode'); setEyedropperMode(false); setFillMode(false); isPanMode = false; panToggle.classList.remove('active'); canvasViewport.classList.remove('pan-mode'); zoomToggle.classList.add('active'); canvasViewport.classList.add('zoom-mode'); showToast('ズームモード（上下ドラッグで拡大縮小）'); }
-  else { zoomToggle.classList.remove('active'); canvasViewport.classList.remove('zoom-mode'); }
+  if (isZoomMode) {
+    isEraser = false; eraserToggle.classList.remove('active'); canvas.classList.remove('eraser-mode');
+    isMoveMode = false; moveToggle.classList.remove('active'); canvas.classList.remove('move-mode');
+    setEyedropperMode(false); setFillMode(false);
+    isPanMode = false; panToggle.classList.remove('active'); canvasViewport.classList.remove('pan-mode');
+    zoomToggle.classList.add('active'); canvasViewport.classList.add('zoom-mode');
+    showToast('ズームモード（上下ドラッグで拡大縮小）');
+  } else { zoomToggle.classList.remove('active'); canvasViewport.classList.remove('zoom-mode'); }
 });
+
 sizeSlider.addEventListener('input', (e) => { currentSize = parseInt(e.target.value, 10); updateSizePreview(); });
 opacitySlider.addEventListener('input', (e) => { currentOpacity = parseInt(e.target.value, 10) / 100; updateOpacityPreview(); });
 clearBtn.addEventListener('click', () => { const layer = getActiveLayer(); if (!layer) return; if (!confirm('このレイヤーの内容を消去しますか？')) return; layer.ctx.clearRect(0, 0, W, H); renderLayerList(); composite(); scheduleAutoSave(); pushHistory(); });
@@ -1537,28 +1637,39 @@ saveBtn.addEventListener('click', async () => {
   const link = document.createElement('a');
   link.download = `お絵かき_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.png`;
   link.href = tmp.toDataURL('image/png'); link.click();
-  await forceSave(); showToast('保存しました', 'success');
+  await flushSave('save'); showToast('保存しました', 'success');
 });
-addLayerBtn.addEventListener('click', () => { const newLayer = addLayer('レイヤー ' + (layers.length + 1)); sendLayerEvent({ type: 'add', layerId: newLayer.id, name: newLayer.name }); });
+addLayerBtn.addEventListener('click', () => {
+  const newLayer = addLayer('レイヤー ' + (layers.length + 1));
+  sendLayerEvent({ type: 'add', layerId: newLayer.id, name: newLayer.name });
+});
 dupLayerBtn.addEventListener('click', () => { if (activeLayerId) duplicateLayer(activeLayerId); });
 mergeDownBtn.addEventListener('click', () => { if (activeLayerId) { if (getLayerIndex(activeLayerId) === 0) { showToast('一番下のレイヤーは結合できません', 'error'); return; } mergeDown(activeLayerId); } });
+// ★ Undo/Redo: performUndo/performRedo を使用
 undoBtn.addEventListener('click', () => { performUndo(); });
 redoBtn.addEventListener('click', () => { performRedo(); });
 artTitleEl.addEventListener('dblclick', () => { const newTitle = prompt('作品タイトルを入力', artTitleEl.textContent); if (newTitle !== null && newTitle.trim() !== '') { artTitleEl.textContent = newTitle.trim(); scheduleAutoSave(); } });
+
 newArtBtn.addEventListener('click', () => createNewWork(null));
 imageStartBtn.addEventListener('click', () => {
   const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
-  inp.onchange = (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (ev) => { const img = new Image(); img.onload = () => createNewWork(img); img.src = ev.target.result; }; reader.readAsDataURL(file); };
+  inp.onchange = (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => { const img = new Image(); img.onload = () => createNewWork(img); img.src = ev.target.result; };
+    reader.readAsDataURL(file);
+  };
   inp.click();
 });
-backHomeBtn.addEventListener('click', async () => {
+backHomeBtn.addEventListener('click', () => {
   if (imageEditState) { if (!confirm('編集中の画像は破棄されます。よろしいですか？')) return; cancelImageEdit(); }
-  if (activeSessionId) { if (!confirm('共同描画セッションを終了しますか？')) return; await cleanupSession(); }
-  await showHomeScreen();
+  if (activeSessionId) { if (!confirm('共同描画セッションを終了しますか？')) return; cleanupSession(); }
+  showHomeScreen();
 });
 window.addEventListener('paste', (e) => {
   if (!editorScreen.classList.contains('active')) return;
   if (imageEditState) return;
+  // チャット入力中はペースト画像処理しない
   if (document.activeElement === chatInput) return;
   const items = e.clipboardData && e.clipboardData.items;
   if (!items) return;
@@ -1567,64 +1678,135 @@ window.addEventListener('paste', (e) => {
 window.addEventListener('keydown', (e) => {
   if (!editorScreen.classList.contains('active')) return;
   if (imageEditState) { if (e.key === 'Escape') { e.preventDefault(); cancelImageEdit(); return; } if (e.key === 'Enter') { e.preventDefault(); confirmImageEdit(); return; } }
+  // チャット入力中はショートカット無効
   if (document.activeElement === chatInput) return;
   if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); if (e.shiftKey) { performRedo(); } else { performUndo(); } }
   else if ((e.ctrlKey || e.metaKey) && e.key === 'y') { e.preventDefault(); performRedo(); }
   else if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveBtn.click(); }
 });
-// ★ 離脱時の多重防御
-window.addEventListener('beforeunload', () => { isUnloading = true; if (editorScreen.classList.contains('active')) { saveSyncToLocalStorage(); try { localStorage.setItem(STORAGE_KEY_PENDING, currentWorkId || ''); } catch(e){} } });
-window.addEventListener('pagehide', () => { isUnloading = true; if (editorScreen.classList.contains('active')) { saveAsyncToIDB(); try { localStorage.setItem(STORAGE_KEY_PENDING, currentWorkId || ''); } catch(e){} } });
-window.addEventListener('freeze', () => { isUnloading = true; if (editorScreen.classList.contains('active')) { saveAsyncToIDB(); try { localStorage.setItem(STORAGE_KEY_PENDING, currentWorkId || ''); } catch(e){} } });
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && editorScreen.classList.contains('active')) { saveAsyncToIDB(); saveSyncToLocalStorage(); try { localStorage.setItem(STORAGE_KEY_PENDING, currentWorkId || ''); } catch(e){} } });
-window.addEventListener('blur', () => { if (editorScreen.classList.contains('active')) { saveSyncToLocalStorage(); } });
-setInterval(() => { if (editorScreen.classList.contains('active') && dirty) { saveAsyncToIDB(); } }, 5000);
+window.addEventListener('beforeunload', () => { if (editorScreen.classList.contains('active')) flushSaveSync(); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && editorScreen.classList.contains('active')) flushSaveSync(); });
+window.addEventListener('pagehide', () => { if (editorScreen.classList.contains('active')) flushSaveSync(); });
 window.addEventListener('resize', () => { if (editorScreen.classList.contains('active')) { updateZoomUI(); if (imageEditState) updateImageEditBox(); } });
 
 // =====================================================
-// チャット
+// ★ チャット
 // =====================================================
 chatToggle.addEventListener('click', () => {
-  chatPanelOpen = !chatPanelOpen; chatPanel.classList.toggle('show', chatPanelOpen);
-  if (chatPanelOpen) { unreadChatCount = 0; updateChatBadge(); chatAutoScroll = true; scrollChatToBottom(); setTimeout(() => chatInput.focus(), 100); }
+  chatPanelOpen = !chatPanelOpen;
+  chatPanel.classList.toggle('show', chatPanelOpen);
+  if (chatPanelOpen) {
+    // 未読リセット
+    unreadChatCount = 0;
+    updateChatBadge();
+    chatAutoScroll = true;
+    scrollChatToBottom();
+    setTimeout(() => chatInput.focus(), 100);
+  }
 });
-chatCloseBtn.addEventListener('click', () => { chatPanelOpen = false; chatPanel.classList.remove('show'); });
+chatCloseBtn.addEventListener('click', () => {
+  chatPanelOpen = false;
+  chatPanel.classList.remove('show');
+});
 chatSendBtn.addEventListener('click', sendChatMessage);
-chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); } });
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); }
+});
+
 async function sendChatMessage() {
   if (!activeSessionId) { showToast('共同描画セッション中のみチャットできます', 'error'); return; }
-  const text = chatInput.value.trim(); if (!text) return;
+  const text = chatInput.value.trim();
+  if (!text) return;
   if (text.length > 500) { showToast('メッセージが長すぎます（最大500文字）', 'error'); return; }
-  try { chatInput.value = ''; const msgRef = push(ref(db, 'chats/' + activeSessionId)); await set(msgRef, { uid: currentUser.uid, displayName: currentUser.displayName || '名無し', photoURL: currentUser.photoURL || '', text, timestamp: Date.now() }); }
-  catch (e) { showToast('送信に失敗: ' + e.message, 'error'); }
+  try {
+    chatInput.value = '';
+    const msgRef = push(ref(db, 'chats/' + activeSessionId));
+    await set(msgRef, {
+      uid: currentUser.uid,
+      displayName: currentUser.displayName || '名無し',
+      photoURL: currentUser.photoURL || '',
+      text: text,
+      timestamp: Date.now()
+    });
+  } catch (e) { showToast('送信に失敗: ' + e.message, 'error'); }
 }
+
 function startChatListener(sessionId) {
   if (chatUnsubscribe) { try { chatUnsubscribe(); } catch (e) {} chatUnsubscribe = null; }
   chatMessagesCache = {};
   const chatRef = ref(db, 'chats/' + sessionId);
   const existingKeys = new Set();
-  const initialLoad = get(chatRef).then((snap) => { if (snap.exists()) { const data = snap.val(); Object.keys(data).forEach(k => { existingKeys.add(k); chatMessagesCache[k] = data[k]; }); renderChatMessages(); } }).catch(() => {});
+  // 初回ロード完了フラグ
+  let initialLoadDone = false;
+  const initialLoad = get(chatRef).then((snap) => {
+    if (snap.exists()) {
+      const data = snap.val();
+      Object.keys(data).forEach(k => {
+        existingKeys.add(k);
+        chatMessagesCache[k] = data[k];
+      });
+      renderChatMessages();
+    }
+    initialLoadDone = true;
+  }).catch(() => { initialLoadDone = true; });
+
   chatUnsubscribe = onChildAdded(chatRef, async (childSnap) => {
     await initialLoad;
-    const key = childSnap.key; if (existingKeys.has(key)) return;
-    const msg = childSnap.val(); if (!msg) return;
-    existingKeys.add(key); chatMessagesCache[key] = msg; renderChatMessages();
-    if (msg.uid !== currentUser.uid && !chatPanelOpen) { unreadChatCount++; updateChatBadge(); }
-    if (chatAutoScroll || msg.uid === currentUser.uid) scrollChatToBottom();
+    const key = childSnap.key;
+    if (existingKeys.has(key)) return;
+    const msg = childSnap.val();
+    if (!msg) return;
+    existingKeys.add(key);
+    chatMessagesCache[key] = msg;
+    // 自分のメッセージは既に表示済みの可能性。重複しないよう再描画
+    renderChatMessages();
+    // 未読カウント（自分以外 かつ パネル閉じてる時）
+    if (msg.uid !== currentUser.uid && !chatPanelOpen) {
+      unreadChatCount++;
+      updateChatBadge();
+    }
+    // 自動スクロール
+    if (chatAutoScroll || msg.uid === currentUser.uid) {
+      scrollChatToBottom();
+    }
   });
 }
+
 function renderChatMessages() {
   const entries = Object.entries(chatMessagesCache).sort((a, b) => (a[1].timestamp || 0) - (b[1].timestamp || 0));
-  if (entries.length === 0) { chatMessages.innerHTML = '<div class="chat-empty">まだメッセージがありません</div>'; return; }
+  if (entries.length === 0) {
+    chatMessages.innerHTML = '<div class="chat-empty">まだメッセージがありません</div>';
+    return;
+  }
   chatMessages.innerHTML = entries.map(([key, m]) => {
     const mine = m.uid === currentUser.uid;
     const cls = mine ? 'chat-msg mine' : 'chat-msg';
-    return `<div class="${cls}"><div class="chat-name">${escapeHtml(m.displayName || '名無し')}</div><div class="chat-bubble">${escapeHtml(m.text)}</div><div class="chat-time">${formatTime(m.timestamp || Date.now())}</div></div>`;
+    return `<div class="${cls}">
+      <div class="chat-name">${escapeHtml(m.displayName || '名無し')}</div>
+      <div class="chat-bubble">${escapeHtml(m.text)}</div>
+      <div class="chat-time">${formatTime(m.timestamp || Date.now())}</div>
+    </div>`;
   }).join('');
 }
-function scrollChatToBottom() { requestAnimationFrame(() => { chatMessages.scrollTop = chatMessages.scrollHeight; }); }
-chatMessages.addEventListener('scroll', () => { const atBottom = chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight < 20; chatAutoScroll = atBottom; });
-function updateChatBadge() { if (unreadChatCount > 0) { chatNotifBadge.textContent = unreadChatCount > 99 ? '99+' : unreadChatCount; chatNotifBadge.style.display = 'flex'; } else { chatNotifBadge.style.display = 'none'; } }
+
+function scrollChatToBottom() {
+  requestAnimationFrame(() => {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
+}
+chatMessages.addEventListener('scroll', () => {
+  // 一番下から20px以内なら自動スクロールON
+  const atBottom = chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight < 20;
+  chatAutoScroll = atBottom;
+});
+function updateChatBadge() {
+  if (unreadChatCount > 0) {
+    chatNotifBadge.textContent = unreadChatCount > 99 ? '99+' : unreadChatCount;
+    chatNotifBadge.style.display = 'flex';
+  } else {
+    chatNotifBadge.style.display = 'none';
+  }
+}
 
 // =====================================================
 // 認証
@@ -1647,7 +1829,7 @@ async function handleLogin() {
 googleLoginBtn.addEventListener('click', handleLogin);
 userAvatar.addEventListener('click', () => { logoutModal.classList.add('show'); });
 logoutCancelBtn.addEventListener('click', () => { logoutModal.classList.remove('show'); });
-logoutConfirmBtn.addEventListener('click', async () => { logoutModal.classList.remove('show'); try { await forceSave(); await cleanupSession(); await signOut(auth); showToast('ログアウトしました', 'success'); } catch (e) {} });
+logoutConfirmBtn.addEventListener('click', async () => { logoutModal.classList.remove('show'); try { await cleanupSession(); await signOut(auth); showToast('ログアウトしました', 'success'); } catch (e) {} });
 
 onAuthStateChanged(auth, async (user) => {
   try {
@@ -1679,50 +1861,68 @@ function cleanupListeners() {
   if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e){} chatUnsubscribe = null; }
   friends = {}; pendingRequests = {};
   activeSessionId = null; activeSessionOwnerId = null; sessionRole = null;
-  processedInviteKeys.clear(); incomingInviteQueue = []; isShowingInviteModal = false;
-  remoteStrokesById = {}; selectedInviteUids.clear();
+  shownInviteIds.clear(); incomingInviteQueue = []; isShowingInviteModal = false;
+  remoteStrokesById = {};
+  selectedInviteUids.clear();
   participantsBar.classList.remove('show'); participantsBar.innerHTML = '';
   chatMessagesCache = {}; unreadChatCount = 0; chatPanelOpen = false;
   chatPanel.classList.remove('show'); updateChatBadge();
 }
-function startFriendsListener() { friendsUnsubscribe = onValue(ref(db, 'friends/' + currentUser.uid), (snap) => { friends = snap.val() || {}; renderFriendsList(); renderInviteFriendList(); }, () => { friends = {}; renderFriendsList(); }); }
+
+function startFriendsListener() {
+  friendsUnsubscribe = onValue(ref(db, 'friends/' + currentUser.uid), (snap) => { friends = snap.val() || {}; renderFriendsList(); renderInviteFriendList(); }, () => { friends = {}; renderFriendsList(); });
+}
 function startRequestsListener() {
   requestsUnsubscribe = onValue(ref(db, 'userFriendRequests/' + currentUser.uid), async (snap) => {
     try {
       const ids = snap.val() || {}; pendingRequests = {};
-      await Promise.all(Object.keys(ids).map(async (reqId) => { try { const r = await get(ref(db, 'friendRequests/' + reqId)); if (r.exists()) { const data = r.val(); if (data.status === 'pending' && data.to === currentUser.uid) pendingRequests[reqId] = data; } } catch (e) {} }));
+      await Promise.all(Object.keys(ids).map(async (reqId) => {
+        try { const r = await get(ref(db, 'friendRequests/' + reqId)); if (r.exists()) { const data = r.val(); if (data.status === 'pending' && data.to === currentUser.uid) pendingRequests[reqId] = data; } } catch (e) {}
+      }));
       renderRequestsPanel(); updateFriendBadge();
     } catch (e) {}
   });
 }
 function startInviteListener() {
   if (invitesUnsubscribe) { try { invitesUnsubscribe(); } catch(e){} invitesUnsubscribe = null; }
-  const invitesRef = ref(db, 'sessionInvites/' + currentUser.uid);
-  const initialLoad = get(invitesRef).then((snap) => { if (snap.exists()) { const data = snap.val(); Object.keys(data).forEach(inviteKey => { processedInviteKeys.add(inviteKey); }); } }).catch(() => {});
-  invitesUnsubscribe = onChildAdded(invitesRef, async (childSnap) => {
-    await initialLoad;
-    const inviteKey = childSnap.key;
-    if (processedInviteKeys.has(inviteKey)) return;
-    const inviteData = childSnap.val(); if (!inviteData || !inviteData.sessionId) return;
-    processedInviteKeys.add(inviteKey);
-    if (activeSessionId === inviteData.sessionId) return;
+  invitesUnsubscribe = onValue(ref(db, 'sessionInvites/' + currentUser.uid), async (snap) => {
     try {
-      const sSnap = await get(ref(db, 'sessions/' + inviteData.sessionId));
-      if (sSnap.exists()) { const s = sSnap.val(); if ((s.status === 'pending' || s.status === 'active') && s.guestIds && s.guestIds[currentUser.uid]) { incomingInviteQueue.push({ sessionId: inviteData.sessionId, session: s, inviteKey }); processInviteQueue(); } }
+      const invites = snap.val() || {}; const sessionIds = Object.keys(invites).filter(id => invites[id] === true);
+      for (const sid of sessionIds) {
+        if (shownInviteIds.has(sid)) continue;
+        try {
+          const sSnap = await get(ref(db, 'sessions/' + sid));
+          if (sSnap.exists()) { const s = sSnap.val(); if ((s.status === 'pending' || s.status === 'active') && s.guestIds && s.guestIds.includes(currentUser.uid)) { shownInviteIds.add(sid); incomingInviteQueue.push({ sessionId: sid, session: s }); } }
+        } catch (e) {}
+      }
+      processInviteQueue();
     } catch (e) {}
   });
 }
-function processInviteQueue() { if (isShowingInviteModal) return; if (incomingInviteQueue.length === 0) return; const next = incomingInviteQueue.shift(); showIncomingInvite(next.sessionId, next.session, next.inviteKey); }
+function processInviteQueue() { if (isShowingInviteModal) return; if (incomingInviteQueue.length === 0) return; const next = incomingInviteQueue.shift(); showIncomingInvite(next.sessionId, next.session); }
 function renderFriendsList() {
   const ids = Object.keys(friends); friendCount.textContent = ids.length + '人';
   if (ids.length === 0) { friendList.innerHTML = '<div class="friend-empty">まだ友達がいません。</div>'; return; }
-  friendList.innerHTML = ids.map(uid => { const f = friends[uid]; const photo = f.photoURL || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%23555%27%3E%3Ccircle cx=%2712%27 cy=%278%27 r=%274%27/%3E%3C/svg%3E'; return `<div class="friend-item"><img src="${photo}"><div class="friend-info"><div class="name">${escapeHtml(f.displayName || '名無し')}</div><div class="email">${escapeHtml(f.email || '')}</div></div></div>`; }).join('');
+  friendList.innerHTML = ids.map(uid => {
+    const f = friends[uid];
+    const photo = f.photoURL || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%23555%27%3E%3Ccircle cx=%2712%27 cy=%278%27 r=%274%27/%3E%3C/svg%3E';
+    return `<div class="friend-item"><img src="${photo}"><div class="friend-info"><div class="name">${escapeHtml(f.displayName || '名無し')}</div><div class="email">${escapeHtml(f.email || '')}</div></div></div>`;
+  }).join('');
 }
 function renderInviteFriendList() {
   const ids = Object.keys(friends);
   if (ids.length === 0) { inviteFriendList.innerHTML = '<div class="friend-empty">招待できる友達がいません。</div>'; return; }
-  inviteFriendList.innerHTML = ids.map(uid => { const f = friends[uid]; const checked = selectedInviteUids.has(uid) ? 'checked' : ''; return `<div class="friend-item"><input type="checkbox" class="invite-check" data-uid="${uid}" ${checked}><img src="${f.photoURL || ''}"><div class="friend-info"><div class="name">${escapeHtml(f.displayName || '名無し')}</div><div class="email">${escapeHtml(f.email || '')}</div></div></div>`; }).join('');
-  inviteFriendList.querySelectorAll('.invite-check').forEach(cb => { cb.addEventListener('change', () => { if (cb.checked) selectedInviteUids.add(cb.dataset.uid); else selectedInviteUids.delete(cb.dataset.uid); }); });
+  inviteFriendList.innerHTML = ids.map(uid => {
+    const f = friends[uid];
+    const checked = selectedInviteUids.has(uid) ? 'checked' : '';
+    return `<div class="friend-item"><input type="checkbox" class="invite-check" data-uid="${uid}" ${checked}><img src="${f.photoURL || ''}"><div class="friend-info"><div class="name">${escapeHtml(f.displayName || '名無し')}</div><div class="email">${escapeHtml(f.email || '')}</div></div></div>`;
+  }).join('');
+  inviteFriendList.querySelectorAll('.invite-check').forEach(cb => {
+    cb.addEventListener('change', () => {
+      if (cb.checked) selectedInviteUids.add(cb.dataset.uid);
+      else selectedInviteUids.delete(cb.dataset.uid);
+    });
+  });
 }
 function renderRequestsPanel() {
   const ids = Object.keys(pendingRequests);
@@ -1784,133 +1984,135 @@ addFriendBtn.addEventListener('click', async () => {
 });
 
 // =====================================================
-// 招待とセッション
+// 招待とセッション（多人数対応）
 // =====================================================
-inviteBtn.addEventListener('click', () => {
-  selectedInviteUids.clear();
-  if (activeSessionId) { inviteModalTitle.textContent = '追加招待'; inviteModalDesc.textContent = '同じセッションに追加する友達を選んでください（複数選択可）'; }
-  else { inviteModalTitle.textContent = '友達を招待'; inviteModalDesc.textContent = '一緒に描く友達を選んでください（複数選択可）'; }
-  renderInviteFriendList();
-  inviteModal.classList.add('show');
-});
+inviteBtn.addEventListener('click', () => { if (activeSessionId) { showToast('既に共同描画セッション中です', 'error'); return; } selectedInviteUids.clear(); renderInviteFriendList(); inviteModal.classList.add('show'); });
 inviteCancelBtn.addEventListener('click', () => { inviteModal.classList.remove('show'); });
 inviteSendBtn.addEventListener('click', async () => {
   const uids = Array.from(selectedInviteUids);
   if (uids.length === 0) { showToast('招待する友達を選択してください', 'error'); return; }
-  if (activeSessionId) await addGuestsToSession(uids);
-  else await inviteFriendsToCanvas(uids);
+  await inviteFriendsToCanvas(uids);
 });
-function captureLayersSnapshot() { return layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, opacity: l.opacity, dataURL: l.canvas.toDataURL('image/png') })); }
+
+function captureLayersSnapshot() {
+  return layers.map(l => ({ id: l.id, name: l.name, visible: l.visible, opacity: l.opacity, dataURL: l.canvas.toDataURL('image/png') }));
+}
+
 async function uploadLayersSnapshotToSession(sessionId, ownerId) {
   if (!sessionId || !ownerId) return false;
-  try { const layersData = captureLayersSnapshot(); await set(ref(db, 'sessionSnapshots/' + sessionId), { ownerId, layers: layersData, activeLayerId, layerCounter, updatedAt: Date.now() }); return true; } catch (e) { console.error('[snapshot] upload FAILED:', e); return false; }
+  try {
+    const layersData = captureLayersSnapshot();
+    await set(ref(db, 'sessionSnapshots/' + sessionId), { ownerId, layers: layersData, activeLayerId, layerCounter, updatedAt: Date.now() });
+    return true;
+  } catch (e) { console.error('[snapshot] upload FAILED:', e); return false; }
 }
+
 async function applyLayersSnapshot(snapshotData) {
   const layersData = snapshotData.layers;
   if (!Array.isArray(layersData) || layersData.length === 0) throw new Error('レイヤーデータが空です');
   setInternalResolution();
-  const newLayers = []; let maxCounter = 0;
+  const newLayers = [];
+  let maxCounter = 0;
   for (const ld of layersData) {
     const c = document.createElement('canvas'); c.width = W; c.height = H;
     const lctx = c.getContext('2d', { willReadFrequently: true });
-    await new Promise((res) => { const img = new Image(); img.onload = () => { lctx.drawImage(img, 0, 0, W, H); res(); }; img.onerror = () => res(); img.src = ld.dataURL; });
+    await new Promise((res) => {
+      const img = new Image();
+      img.onload = () => { lctx.drawImage(img, 0, 0, W, H); res(); };
+      img.onerror = () => res();
+      img.src = ld.dataURL;
+    });
     newLayers.push({ id: ld.id, name: ld.name || 'レイヤー', canvas: c, ctx: lctx, visible: ld.visible !== undefined ? ld.visible : true, opacity: ld.opacity !== undefined ? ld.opacity : 1 });
     const num = parseInt((ld.id || '').replace('layer_', '')) || 0;
     if (num > maxCounter) maxCounter = num;
   }
-  layers = newLayers; layerCounter = snapshotData.layerCounter || maxCounter;
+  layers = newLayers;
+  layerCounter = snapshotData.layerCounter || maxCounter;
   activeLayerId = snapshotData.activeLayerId || layers[layers.length - 1].id;
   if (!layers.some(l => l.id === activeLayerId)) activeLayerId = layers[layers.length - 1].id;
   renderLayerList(); composite();
-  history = []; historyIndex = -1; pushHistory();
+  history = []; historyIndex = -1;
+  pushHistory();
   requestAnimationFrame(() => requestAnimationFrame(() => autoFitCanvas()));
 }
+
 async function downloadLayersSnapshotFromSession(sessionId, maxRetries = 3) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try { const snap = await get(ref(db, 'sessionSnapshots/' + sessionId)); if (snap.exists()) { const data = snap.val(); if (data && Array.isArray(data.layers) && data.layers.length > 0) { await applyLayersSnapshot(data); return true; } } }
-    catch (e) { console.warn('[snapshot] attempt error:', e); }
+    try {
+      const snap = await get(ref(db, 'sessionSnapshots/' + sessionId));
+      if (snap.exists()) {
+        const data = snap.val();
+        if (data && Array.isArray(data.layers) && data.layers.length > 0) { await applyLayersSnapshot(data); return true; }
+      }
+    } catch (e) { console.warn('[snapshot] attempt error:', e); }
     if (attempt < maxRetries) await new Promise(r => setTimeout(r, 600 * attempt));
   }
   return false;
 }
+
 function startResendListener(sessionId, ownerId) {
   if (resendRequestUnsubscribe) { try { resendRequestUnsubscribe(); } catch(e){} resendRequestUnsubscribe = null; }
-  resendRequestUnsubscribe = onValue(ref(db, 'snapshotResendRequests/' + sessionId), async (snap) => { if (snap.exists() && snap.val() === true) { try { await uploadLayersSnapshotToSession(sessionId, ownerId); await remove(ref(db, 'snapshotResendRequests/' + sessionId)); } catch (e) {} } });
+  resendRequestUnsubscribe = onValue(ref(db, 'snapshotResendRequests/' + sessionId), async (snap) => {
+    if (snap.exists() && snap.val() === true) {
+      try { await uploadLayersSnapshotToSession(sessionId, ownerId); await remove(ref(db, 'snapshotResendRequests/' + sessionId)); } catch (e) {}
+    }
+  });
 }
+
 async function inviteFriendsToCanvas(friendUids) {
   if (activeSessionId) { showToast('既に共同描画セッション中です', 'error'); return; }
   try {
     showLoading(true);
     const sessionRef = push(ref(db, 'sessions')); const sessionId = sessionRef.key;
-    const participantsObj = {};
-    participantsObj[currentUser.uid] = { uid: currentUser.uid, displayName: currentUser.displayName || '名無し', photoURL: currentUser.photoURL || '', role: 'owner' };
-    friendUids.forEach(uid => { const f = friends[uid] || {}; participantsObj[uid] = { uid, displayName: f.displayName || '名無し', photoURL: f.photoURL || '', role: 'guest' }; });
-    const guestIdsObj = {}; friendUids.forEach(uid => { guestIdsObj[uid] = true; });
-    await set(sessionRef, { ownerId: currentUser.uid, ownerName: currentUser.displayName || '名無し', guestIds: guestIdsObj, participants: participantsObj, status: 'pending', createdAt: Date.now(), startedAt: null });
+    const participants = [
+      { uid: currentUser.uid, displayName: currentUser.displayName || '名無し', photoURL: currentUser.photoURL || '', role: 'owner' },
+      ...friendUids.map(uid => { const f = friends[uid] || {}; return { uid, displayName: f.displayName || '名無し', photoURL: f.photoURL || '', role: 'guest' }; })
+    ];
+    await set(sessionRef, { ownerId: currentUser.uid, ownerName: currentUser.displayName || '名無し', guestIds: friendUids, participants, status: 'pending', createdAt: Date.now(), startedAt: null });
     const ok = await uploadLayersSnapshotToSession(sessionId, currentUser.uid);
     if (!ok) { showToast('キャンバスの保存に失敗しました', 'error'); try { await remove(ref(db, 'sessions/' + sessionId)); } catch(e){} return; }
     const updates = {};
-    for (const uid of friendUids) { const inviteRef = push(ref(db, 'sessionInvites/' + uid)); updates[inviteRef.key] = { sessionId: sessionId, from: currentUser.uid, fromName: currentUser.displayName || '名無し', timestamp: Date.now() }; }
+    friendUids.forEach(uid => { updates['sessionInvites/' + uid + '/' + sessionId] = true; });
     await update(ref(db), updates);
     activeSessionId = sessionId; activeSessionOwnerId = currentUser.uid; sessionRole = 'owner';
     await attachSessionListener(sessionId);
     startResendListener(sessionId, currentUser.uid);
     showToast(`${friendUids.length}人に招待を送信しました`, 'success');
-    inviteModal.classList.remove('show'); selectedInviteUids.clear();
+    inviteModal.classList.remove('show');
+    selectedInviteUids.clear();
   } catch (e) { showToast('招待に失敗: ' + e.message, 'error'); }
   finally { showLoading(false); }
 }
-async function addGuestsToSession(friendUids) {
-  if (!activeSessionId) { showToast('セッションがありません', 'error'); return; }
-  try {
-    showLoading(true);
-    const sSnap = await get(ref(db, 'sessions/' + activeSessionId));
-    if (!sSnap.exists()) { showToast('セッションが見つかりません', 'error'); return; }
-    const s = sSnap.val();
-    if (s.ownerId !== currentUser.uid) { showToast('セッションのオーナーのみ追加招待できます', 'error'); return; }
-    const existing = new Set(Object.keys(s.participants || {}));
-    const newUids = friendUids.filter(uid => !existing.has(uid));
-    if (newUids.length === 0) { showToast('全員既に参加しています', 'error'); return; }
-    const updates = {};
-    newUids.forEach(uid => { const f = friends[uid] || {}; updates['sessions/' + activeSessionId + '/participants/' + uid] = { uid, displayName: f.displayName || '名無し', photoURL: f.photoURL || '', role: 'guest' }; updates['sessions/' + activeSessionId + '/guestIds/' + uid] = true; });
-    await update(ref(db), updates);
-    const inviteUpdates = {};
-    for (const uid of newUids) { const inviteRef = push(ref(db, 'sessionInvites/' + uid)); inviteUpdates[inviteRef.key] = { sessionId: activeSessionId, from: currentUser.uid, fromName: currentUser.displayName || '名無し', timestamp: Date.now() }; }
-    await update(ref(db), inviteUpdates);
-    showToast(`${newUids.length}人を追加招待しました`, 'success');
-    inviteModal.classList.remove('show'); selectedInviteUids.clear();
-  } catch (e) { showToast('追加招待に失敗: ' + e.message, 'error'); }
-  finally { showLoading(false); }
-}
+
 async function attachSessionListener(sessionId) {
   if (sessionUnsubscribe) { try { sessionUnsubscribe(); } catch(e){} sessionUnsubscribe = null; }
   sessionUnsubscribe = onValue(ref(db, 'sessions/' + sessionId), async (snap) => {
     if (!snap.exists()) { if (activeSessionId === sessionId) { await cleanupSession(); showToast('セッションが終了しました'); } return; }
     const s = snap.val();
     if (activeSessionId !== sessionId) { activeSessionId = sessionId; activeSessionOwnerId = s.ownerId; }
-    updateParticipantsBar(s.participants || {});
+    updateParticipantsBar(s.participants || []);
     if (s.status === 'active' || s.status === 'pending') {
       collabBadge.classList.add('show');
-      const list = Object.values(s.participants || {});
-      const otherNames = list.filter(p => p.uid !== currentUser.uid).map(p => p.displayName).join(', ');
+      const otherNames = (s.participants || []).filter(p => p.uid !== currentUser.uid).map(p => p.displayName).join(', ');
       collabBadgeText.textContent = `共同描画中: ${otherNames || '待機中'}`;
       if (!strokesUnsubscribe) startStrokesListener(sessionId);
       if (!layerEventsUnsubscribe) startLayerEventsListener(sessionId);
       if (!historyEventsUnsubscribe) startHistoryEventsListener(sessionId);
-      if (!chatUnsubscribe) startChatListener(sessionId);
+      if (!chatUnsubscribe) startChatListener(sessionId); // ★ チャット開始
     } else if (s.status === 'declined') { showToast('招待が拒否されました', 'error'); await cleanupSession(); }
     else if (s.status === 'ended') { showToast('セッションが終了しました'); await cleanupSession(); }
   });
 }
+
 function updateParticipantsBar(participants) {
-  const list = participants ? Object.values(participants) : [];
-  if (list.length <= 1) { participantsBar.classList.remove('show'); participantsBar.innerHTML = ''; return; }
+  if (!participants || participants.length <= 1) { participantsBar.classList.remove('show'); participantsBar.innerHTML = ''; return; }
   participantsBar.classList.add('show');
-  participantsBar.innerHTML = list.map(p => `<img class="participant-avatar" src="${p.photoURL || ''}" title="${escapeHtml(p.displayName)}">`).join('') + `<span class="participant-count">${list.length}人</span>`;
+  participantsBar.innerHTML = participants.map(p => `<img class="participant-avatar" src="${p.photoURL || ''}" title="${escapeHtml(p.displayName)}">`).join('') + `<span class="participant-count">${participants.length}人</span>`;
 }
-function showIncomingInvite(sessionId, session, inviteKey) {
+
+function showIncomingInvite(sessionId, session) {
   isShowingInviteModal = true;
-  const alreadyInSession = !!activeSessionId && activeSessionId !== sessionId;
+  const alreadyInSession = !!activeSessionId;
   incomingInviteBody.innerHTML = `<b>${escapeHtml(session.ownerName)}</b> さんが共同描画に招待しています。<br><span style="color:#5bdf8d;">相手のキャンバスと同じレイヤー構成で参加します。</span><br>` + (alreadyInSession ? '<span style="color:#ffb366;">※現在別のセッション中です。切り替わります。</span>' : '');
   const newAccept = inviteAcceptBtn.cloneNode(true), newDecline = inviteDeclineBtn.cloneNode(true);
   inviteAcceptBtn.parentNode.replaceChild(newAccept, inviteAcceptBtn);
@@ -1918,109 +2120,231 @@ function showIncomingInvite(sessionId, session, inviteKey) {
   newAccept.textContent = alreadyInSession ? '既存を終了して参加' : '参加';
   newAccept.addEventListener('click', async () => {
     incomingInviteModal.classList.remove('show'); isShowingInviteModal = false;
-    if (activeSessionId && activeSessionId !== sessionId) await cleanupSession();
+    if (activeSessionId) await cleanupSession();
     try {
       showLoading(true);
       await update(ref(db, 'sessions/' + sessionId), { status: 'active', startedAt: Date.now() });
-      if (inviteKey) { try { await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + inviteKey)); } catch(e){} }
+      await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId));
+      shownInviteIds.delete(sessionId);
       activeSessionId = sessionId; activeSessionOwnerId = session.ownerId; sessionRole = 'guest';
       showEditorScreen();
       await new Promise(r => setTimeout(r, 400));
       showToast('相手のキャンバスを読み込んでいます...', 'success');
       let applied = await downloadLayersSnapshotFromSession(sessionId, 3);
-      if (!applied) { showToast('再取得を試みています...', 'success'); try { await set(ref(db, 'snapshotResendRequests/' + sessionId), true); await new Promise(r => setTimeout(r, 1500)); applied = await downloadLayersSnapshotFromSession(sessionId, 5); } catch (e) {} }
-      if (applied) showToast('相手のキャンバスに参加しました', 'success'); else showToast('キャンバス読み込みに失敗しました', 'error');
+      if (!applied) {
+        showToast('再取得を試みています...', 'success');
+        try { await set(ref(db, 'snapshotResendRequests/' + sessionId), true); await new Promise(r => setTimeout(r, 1500)); applied = await downloadLayersSnapshotFromSession(sessionId, 5); } catch (e) {}
+      }
+      if (applied) showToast('相手のキャンバスに参加しました', 'success');
+      else showToast('キャンバス読み込みに失敗しました', 'error');
       await attachSessionListener(sessionId);
       collabBadge.classList.add('show'); collabBadgeText.textContent = '共同描画中';
       startStrokesListener(sessionId); startLayerEventsListener(sessionId);
-      startHistoryEventsListener(sessionId); startChatListener(sessionId);
+      startHistoryEventsListener(sessionId); startChatListener(sessionId); // ★ チャット開始
     } catch (e) { showToast('参加に失敗: ' + e.message, 'error'); }
     finally { showLoading(false); processInviteQueue(); }
   });
   newDecline.addEventListener('click', async () => {
     incomingInviteModal.classList.remove('show'); isShowingInviteModal = false;
-    if (inviteKey) { try { await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + inviteKey)); } catch(e){} }
-    try { await update(ref(db, 'sessions/' + sessionId), { status: 'declined' }); } catch (e) {}
+    try { await update(ref(db, 'sessions/' + sessionId), { status: 'declined' }); await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + sessionId)); shownInviteIds.delete(sessionId); } catch (e) {}
     processInviteQueue();
   });
   incomingInviteModal.classList.add('show');
 }
-async function sendStrokeEvent(event) { if (!activeSessionId) return; try { const r = push(ref(db, 'strokes/' + activeSessionId)); await set(r, { ...event, uid: currentUser.uid, timestamp: Date.now() }); } catch (e) {} }
+
+async function sendStrokeEvent(event) {
+  if (!activeSessionId) return;
+  try { const r = push(ref(db, 'strokes/' + activeSessionId)); await set(r, { ...event, uid: currentUser.uid, timestamp: Date.now() }); } catch (e) {}
+}
 function startStrokesListener(sessionId) {
   if (strokesUnsubscribe) { try { strokesUnsubscribe(); } catch(e){} strokesUnsubscribe = null; }
   const strokesRef = ref(db, 'strokes/' + sessionId);
   const existingKeys = new Set();
-  const initialLoad = new Promise((resolve) => { get(strokesRef).then((snap) => { if (snap.exists()) Object.keys(snap.val()).forEach(k => existingKeys.add(k)); resolve(); }).catch(() => resolve()); });
-  strokesUnsubscribe = onChildAdded(strokesRef, async (childSnap) => { await initialLoad; const key = childSnap.key; if (existingKeys.has(key)) return; const ev = childSnap.val(); if (!ev) return; if (ev.uid === currentUser.uid) return; applyRemoteStrokeEvent(ev); });
+  const initialLoad = new Promise((resolve) => {
+    get(strokesRef).then((snap) => { if (snap.exists()) Object.keys(snap.val()).forEach(k => existingKeys.add(k)); resolve(); }).catch(() => resolve());
+  });
+  strokesUnsubscribe = onChildAdded(strokesRef, async (childSnap) => {
+    await initialLoad;
+    const key = childSnap.key; if (existingKeys.has(key)) return;
+    const ev = childSnap.val(); if (!ev) return;
+    if (ev.uid === currentUser.uid) return;
+    applyRemoteStrokeEvent(ev);
+  });
 }
 function applyRemoteStrokeEvent(ev) {
   isApplyingRemote = true;
   try {
-    let layer = null; if (ev.layerId) layer = layers.find(l => l.id === ev.layerId); if (!layer) layer = getActiveLayer(); if (!layer || !layer.visible) return;
-    if (ev.type === 'start') { remoteStrokesById[ev.strokeId] = { lastLogicalX: ev.x, lastLogicalY: ev.y, layerId: ev.layerId, color: ev.color, size: ev.size, brush: ev.brush, opacity: ev.opacity, eraser: ev.eraser, seed: ev.seed }; drawStrokeToLayer(layer, ev.x, ev.y, ev.x + 0.01, ev.y, { color: ev.color, size: ev.size, brush: ev.brush, alpha: ev.opacity || 1, eraser: ev.eraser }, ev.seed); composite(); }
-    else if (ev.type === 'move') { const s = remoteStrokesById[ev.strokeId]; if (!s) return; let targetLayer = layers.find(l => l.id === s.layerId) || layer; if (!targetLayer || !targetLayer.visible) return; drawStrokeToLayer(targetLayer, s.lastLogicalX, s.lastLogicalY, ev.x, ev.y, { color: s.color, size: s.size, brush: s.brush, alpha: s.opacity || 1, eraser: s.eraser }, s.seed); s.lastLogicalX = ev.x; s.lastLogicalY = ev.y; composite(); }
-    else if (ev.type === 'end') { delete remoteStrokesById[ev.strokeId]; }
+    let layer = null;
+    if (ev.layerId) layer = layers.find(l => l.id === ev.layerId);
+    if (!layer) layer = getActiveLayer();
+    if (!layer || !layer.visible) return;
+    if (ev.type === 'start') {
+      remoteStrokesById[ev.strokeId] = { lastLogicalX: ev.x, lastLogicalY: ev.y, layerId: ev.layerId, color: ev.color, size: ev.size, brush: ev.brush, opacity: ev.opacity, eraser: ev.eraser, seed: ev.seed };
+      drawStrokeToLayer(layer, ev.x, ev.y, ev.x + 0.01, ev.y, { color: ev.color, size: ev.size, brush: ev.brush, alpha: ev.opacity || 1, eraser: ev.eraser }, ev.seed);
+      composite();
+    } else if (ev.type === 'move') {
+      const s = remoteStrokesById[ev.strokeId]; if (!s) return;
+      let targetLayer = layers.find(l => l.id === s.layerId) || layer;
+      if (!targetLayer || !targetLayer.visible) return;
+      drawStrokeToLayer(targetLayer, s.lastLogicalX, s.lastLogicalY, ev.x, ev.y, { color: s.color, size: s.size, brush: s.brush, alpha: s.opacity || 1, eraser: s.eraser }, s.seed);
+      s.lastLogicalX = ev.x; s.lastLogicalY = ev.y;
+      composite();
+    } else if (ev.type === 'end') { delete remoteStrokesById[ev.strokeId]; }
   } finally { isApplyingRemote = false; }
 }
-async function sendLayerEvent(event) { if (!activeSessionId) return; try { const r = push(ref(db, 'layerEvents/' + activeSessionId)); await set(r, { ...event, uid: currentUser.uid, timestamp: Date.now() }); } catch (e) {} }
+
+async function sendLayerEvent(event) {
+  if (!activeSessionId) return;
+  try { const r = push(ref(db, 'layerEvents/' + activeSessionId)); await set(r, { ...event, uid: currentUser.uid, timestamp: Date.now() }); } catch (e) {}
+}
 function startLayerEventsListener(sessionId) {
   if (layerEventsUnsubscribe) { try { layerEventsUnsubscribe(); } catch(e){} layerEventsUnsubscribe = null; }
   const layerEventsRef = ref(db, 'layerEvents/' + sessionId);
   const existingKeys = new Set();
-  const initialLoad = new Promise((resolve) => { get(layerEventsRef).then((snap) => { if (snap.exists()) Object.keys(snap.val()).forEach(k => existingKeys.add(k)); resolve(); }).catch(() => resolve()); });
-  layerEventsUnsubscribe = onChildAdded(layerEventsRef, async (childSnap) => { await initialLoad; const key = childSnap.key; if (existingKeys.has(key)) return; const ev = childSnap.val(); if (!ev) return; if (ev.uid === currentUser.uid) return; applyRemoteLayerEvent(ev); });
+  const initialLoad = new Promise((resolve) => {
+    get(layerEventsRef).then((snap) => { if (snap.exists()) Object.keys(snap.val()).forEach(k => existingKeys.add(k)); resolve(); }).catch(() => resolve());
+  });
+  layerEventsUnsubscribe = onChildAdded(layerEventsRef, async (childSnap) => {
+    await initialLoad;
+    const key = childSnap.key; if (existingKeys.has(key)) return;
+    const ev = childSnap.val(); if (!ev) return;
+    if (ev.uid === currentUser.uid) return;
+    applyRemoteLayerEvent(ev);
+  });
 }
 function applyRemoteLayerEvent(ev) {
   isApplyingRemote = true;
   try {
-    if (ev.type === 'add') { if (layers.some(l => l.id === ev.layerId)) return; const c = document.createElement('canvas'); c.width = W; c.height = H; const lctx = c.getContext('2d', { willReadFrequently: true }); layers.push({ id: ev.layerId, name: ev.name || 'レイヤー', canvas: c, ctx: lctx, visible: true, opacity: 1 }); const num = parseInt((ev.layerId || '').replace('layer_', '')) || 0; if (num > layerCounter) layerCounter = num; renderLayerList(); composite(); }
-    else if (ev.type === 'delete') { const idx = layers.findIndex(l => l.id === ev.layerId); if (idx === -1 || layers.length <= 1) return; layers.splice(idx, 1); if (activeLayerId === ev.layerId) activeLayerId = layers[Math.min(idx, layers.length-1)].id; renderLayerList(); composite(); }
-    else if (ev.type === 'visibility') { const layer = layers.find(l => l.id === ev.layerId); if (layer) { layer.visible = ev.visible; renderLayerList(); composite(); } }
-    else if (ev.type === 'reorder') { const fromIdx = layers.findIndex(l => l.id === ev.layerId); if (fromIdx === -1) return; const [moved] = layers.splice(fromIdx, 1); let newToIdx = layers.findIndex(l => l.id === ev.targetId); if (newToIdx === -1) newToIdx = layers.length - 1; let insertIdx = ev.position === 'above' ? newToIdx + 1 : newToIdx; insertIdx = Math.max(0, Math.min(insertIdx, layers.length)); layers.splice(insertIdx, 0, moved); renderLayerList(); composite(); }
+    if (ev.type === 'add') {
+      if (layers.some(l => l.id === ev.layerId)) return;
+      const c = document.createElement('canvas'); c.width = W; c.height = H;
+      const lctx = c.getContext('2d', { willReadFrequently: true });
+      layers.push({ id: ev.layerId, name: ev.name || 'レイヤー', canvas: c, ctx: lctx, visible: true, opacity: 1 });
+      const num = parseInt((ev.layerId || '').replace('layer_', '')) || 0;
+      if (num > layerCounter) layerCounter = num;
+      renderLayerList(); composite();
+    } else if (ev.type === 'delete') {
+      const idx = layers.findIndex(l => l.id === ev.layerId);
+      if (idx === -1 || layers.length <= 1) return;
+      layers.splice(idx, 1);
+      if (activeLayerId === ev.layerId) activeLayerId = layers[Math.min(idx, layers.length-1)].id;
+      renderLayerList(); composite();
+    } else if (ev.type === 'visibility') {
+      const layer = layers.find(l => l.id === ev.layerId);
+      if (layer) { layer.visible = ev.visible; renderLayerList(); composite(); }
+    } else if (ev.type === 'reorder') {
+      const fromIdx = layers.findIndex(l => l.id === ev.layerId);
+      if (fromIdx === -1) return;
+      const [moved] = layers.splice(fromIdx, 1);
+      let newToIdx = layers.findIndex(l => l.id === ev.targetId);
+      if (newToIdx === -1) newToIdx = layers.length - 1;
+      let insertIdx = ev.position === 'above' ? newToIdx + 1 : newToIdx;
+      insertIdx = Math.max(0, Math.min(insertIdx, layers.length));
+      layers.splice(insertIdx, 0, moved);
+      renderLayerList(); composite();
+    }
   } finally { isApplyingRemote = false; }
 }
-async function sendHistoryEvent(event) { if (!activeSessionId) return; try { const r = push(ref(db, 'historyEvents/' + activeSessionId)); await set(r, { ...event, uid: currentUser.uid, timestamp: Date.now() }); } catch (e) {} }
+
+// ★ 履歴同期
+async function sendHistoryEvent(event) {
+  if (!activeSessionId) return;
+  try { const r = push(ref(db, 'historyEvents/' + activeSessionId)); await set(r, { ...event, uid: currentUser.uid, timestamp: Date.now() }); } catch (e) {}
+}
 function startHistoryEventsListener(sessionId) {
   if (historyEventsUnsubscribe) { try { historyEventsUnsubscribe(); } catch(e){} historyEventsUnsubscribe = null; }
   const historyEventsRef = ref(db, 'historyEvents/' + sessionId);
   const existingKeys = new Set();
-  const initialLoad = new Promise((resolve) => { get(historyEventsRef).then((snap) => { if (snap.exists()) Object.keys(snap.val()).forEach(k => existingKeys.add(k)); resolve(); }).catch(() => resolve()); });
-  historyEventsUnsubscribe = onChildAdded(historyEventsRef, async (childSnap) => { await initialLoad; const key = childSnap.key; if (existingKeys.has(key)) return; const ev = childSnap.val(); if (!ev) return; if (ev.uid === currentUser.uid) return; await applyRemoteHistoryEvent(ev); });
+  const initialLoad = new Promise((resolve) => {
+    get(historyEventsRef).then((snap) => { if (snap.exists()) Object.keys(snap.val()).forEach(k => existingKeys.add(k)); resolve(); }).catch(() => resolve());
+  });
+  historyEventsUnsubscribe = onChildAdded(historyEventsRef, async (childSnap) => {
+    await initialLoad;
+    const key = childSnap.key; if (existingKeys.has(key)) return;
+    const ev = childSnap.val(); if (!ev) return;
+    if (ev.uid === currentUser.uid) return;
+    await applyRemoteHistoryEvent(ev);
+  });
 }
+
+// ★ リモート履歴イベント適用（修正版：stateId ベースで正確に1つずつ戻る）
 async function applyRemoteHistoryEvent(ev) {
   if (ev.type === 'push') {
+    // 相手が新しい操作をした → 自分の履歴にもその状態を追加
     isApplyingRemoteHistory = true;
     try {
-      const snapshot = ev.layersSnapshot; if (!Array.isArray(snapshot) || snapshot.length === 0) return;
-      const existingIds = new Set(history.map(h => h.stateId)); if (existingIds.has(ev.stateId)) return;
+      const snapshot = ev.layersSnapshot;
+      if (!Array.isArray(snapshot) || snapshot.length === 0) return;
+      // ローカルの履歴と重複しないよう、stateId でチェック
+      const existingIds = new Set(history.map(h => h.stateId));
+      if (existingIds.has(ev.stateId)) return;
+      // 履歴を現在位置まで切り、新しい状態を追加
       history = history.slice(0, historyIndex + 1);
+      // 現在のレイヤー状態も反映（相手の操作を自分のキャンバスに反映）
       if (ev.W && ev.H && (ev.W !== W || ev.H !== H)) { W = ev.W; H = ev.H; canvas.width = W; canvas.height = H; applyCanvasCSSSize(); }
       isLoading = true;
-      const loadPromises = snapshot.map(layerData => new Promise(resolve => { const c = document.createElement('canvas'); c.width = W; c.height = H; const lctx = c.getContext('2d', { willReadFrequently: true }); const img = new Image(); const finalize = () => resolve({ id: layerData.id, name: layerData.name, canvas: c, ctx: lctx, visible: layerData.visible, opacity: layerData.opacity }); img.onload = () => { lctx.drawImage(img, 0, 0, W, H); finalize(); }; img.onerror = finalize; img.src = layerData.dataURL; }));
+      const loadPromises = snapshot.map(layerData => new Promise(resolve => {
+        const c = document.createElement('canvas'); c.width = W; c.height = H;
+        const lctx = c.getContext('2d', { willReadFrequently: true });
+        const img = new Image();
+        const finalize = () => resolve({ id: layerData.id, name: layerData.name, canvas: c, ctx: lctx, visible: layerData.visible, opacity: layerData.opacity });
+        img.onload = () => { lctx.drawImage(img, 0, 0, W, H); finalize(); };
+        img.onerror = finalize;
+        img.src = layerData.dataURL;
+      }));
       layers = await Promise.all(loadPromises);
-      activeLayerId = ev.activeLayerId || layers[layers.length - 1].id; layerCounter = ev.layerCounter || layerCounter;
+      activeLayerId = ev.activeLayerId || layers[layers.length - 1].id;
+      layerCounter = ev.layerCounter || layerCounter;
       isLoading = false;
-      const newState = { stateId: ev.stateId, layers: snapshot, activeLayerId: ev.activeLayerId, layerCounter: ev.layerCounter, W: ev.W || W, H: ev.H || H };
-      history.push(newState); if (history.length > MAX_HISTORY) history.shift(); historyIndex = history.length - 1;
+      // 新しい履歴エントリを追加（stateIdは相手のものを使う）
+      const newState = {
+        stateId: ev.stateId,
+        layers: snapshot,
+        activeLayerId: ev.activeLayerId,
+        layerCounter: ev.layerCounter,
+        W: ev.W || W, H: ev.H || H
+      };
+      history.push(newState);
+      if (history.length > MAX_HISTORY) history.shift();
+      historyIndex = history.length - 1;
       renderLayerList(); composite(); updateUndoRedo();
-    } catch (e) { console.error('[remote push]', e); isLoading = false; } finally { isApplyingRemoteHistory = false; }
+    } catch (e) { console.error('[remote push]', e); isLoading = false; }
+    finally { isApplyingRemoteHistory = false; }
   } else if (ev.type === 'jump') {
+    // 相手がUndo/Redoした → 自分の history 配列から該当 stateId を探して適用
     isApplyingRemoteHistory = true;
     try {
-      const snapshot = ev.layersSnapshot; if (!Array.isArray(snapshot) || snapshot.length === 0) return;
+      const snapshot = ev.layersSnapshot;
+      if (!Array.isArray(snapshot) || snapshot.length === 0) return;
+      // 自分の履歴に同じ stateId があるか探す
       let targetIdx = history.findIndex(h => h.stateId === ev.stateId);
-      if (targetIdx !== -1) { await applyHistoryState(history[targetIdx], targetIdx); }
-      else {
+      if (targetIdx !== -1) {
+        // 見つかった → その位置に移動（レイヤーは既に同期されているはずだが念のため適用）
+        await applyHistoryState(history[targetIdx], targetIdx);
+      } else {
+        // 見つからない → 相手の状態をそのまま適用し、履歴に追加
         if (ev.W && ev.H && (ev.W !== W || ev.H !== H)) { W = ev.W; H = ev.H; canvas.width = W; canvas.height = H; applyCanvasCSSSize(); }
         isLoading = true;
-        const loadPromises = snapshot.map(layerData => new Promise(resolve => { const c = document.createElement('canvas'); c.width = W; c.height = H; const lctx = c.getContext('2d', { willReadFrequently: true }); const img = new Image(); const finalize = () => resolve({ id: layerData.id, name: layerData.name, canvas: c, ctx: lctx, visible: layerData.visible, opacity: layerData.opacity }); img.onload = () => { lctx.drawImage(img, 0, 0, W, H); finalize(); }; img.onerror = finalize; img.src = layerData.dataURL; }));
+        const loadPromises = snapshot.map(layerData => new Promise(resolve => {
+          const c = document.createElement('canvas'); c.width = W; c.height = H;
+          const lctx = c.getContext('2d', { willReadFrequently: true });
+          const img = new Image();
+          const finalize = () => resolve({ id: layerData.id, name: layerData.name, canvas: c, ctx: lctx, visible: layerData.visible, opacity: layerData.opacity });
+          img.onload = () => { lctx.drawImage(img, 0, 0, W, H); finalize(); };
+          img.onerror = finalize;
+          img.src = layerData.dataURL;
+        }));
         layers = await Promise.all(loadPromises);
-        activeLayerId = ev.activeLayerId || layers[layers.length - 1].id; layerCounter = ev.layerCounter || layerCounter; isLoading = false;
+        activeLayerId = ev.activeLayerId || layers[layers.length - 1].id;
+        layerCounter = ev.layerCounter || layerCounter;
+        isLoading = false;
         renderLayerList(); composite();
       }
-    } catch (e) { console.error('[remote jump]', e); isLoading = false; } finally { isApplyingRemoteHistory = false; }
+    } catch (e) { console.error('[remote jump]', e); isLoading = false; }
+    finally { isApplyingRemoteHistory = false; }
   }
 }
+
 async function cleanupSession() {
   if (sessionUnsubscribe) { try { sessionUnsubscribe(); } catch(e){} sessionUnsubscribe = null; }
   if (strokesUnsubscribe) { try { strokesUnsubscribe(); } catch(e){} strokesUnsubscribe = null; }
@@ -2028,51 +2352,34 @@ async function cleanupSession() {
   if (historyEventsUnsubscribe) { try { historyEventsUnsubscribe(); } catch(e){} historyEventsUnsubscribe = null; }
   if (resendRequestUnsubscribe) { try { resendRequestUnsubscribe(); } catch(e){} resendRequestUnsubscribe = null; }
   if (chatUnsubscribe) { try { chatUnsubscribe(); } catch(e){} chatUnsubscribe = null; }
-  remoteStrokesById = {}; chatMessagesCache = {};
-  collabBadge.classList.remove('show'); participantsBar.classList.remove('show'); participantsBar.innerHTML = '';
-  chatPanel.classList.remove('show'); chatPanelOpen = false; unreadChatCount = 0; updateChatBadge();
+  remoteStrokesById = {};
+  chatMessagesCache = {};
+  collabBadge.classList.remove('show');
+  participantsBar.classList.remove('show'); participantsBar.innerHTML = '';
+  chatPanel.classList.remove('show'); chatPanelOpen = false;
+  unreadChatCount = 0; updateChatBadge();
   if (activeSessionId) {
     try {
       await update(ref(db, 'sessions/' + activeSessionId), { status: 'ended' });
-      const myInvitesRef = ref(db, 'sessionInvites/' + currentUser.uid);
-      const snap = await get(myInvitesRef);
-      if (snap.exists()) { const updates = {}; Object.keys(snap.val()).forEach(k => { updates[k] = null; }); await update(myInvitesRef, updates); }
+      await remove(ref(db, 'sessionInvites/' + currentUser.uid + '/' + activeSessionId));
       await remove(ref(db, 'strokes/' + activeSessionId));
       await remove(ref(db, 'layerEvents/' + activeSessionId));
       await remove(ref(db, 'historyEvents/' + activeSessionId));
       await remove(ref(db, 'sessionSnapshots/' + activeSessionId));
       await remove(ref(db, 'snapshotResendRequests/' + activeSessionId));
+      // チャットは履歴として残す場合もあるが、ここではセッション終了時に削除
       await remove(ref(db, 'chats/' + activeSessionId));
     } catch (e) {}
   }
   activeSessionId = null; activeSessionOwnerId = null; sessionRole = null;
 }
 
-// =====================================================
-// 起動時：前回の未保存データを復元
-// =====================================================
-async function bootRestore() {
-  try {
-    const pendingId = localStorage.getItem(STORAGE_KEY_PENDING);
-    if (pendingId) {
-      const rec = await idbGet(pendingId);
-      if (rec && rec.data) {
-        // 復元できた → 次回起動で開くようマーク
-        localStorage.setItem(STORAGE_KEY_LAST_ACTIVE, pendingId);
-      }
-      localStorage.removeItem(STORAGE_KEY_PENDING);
-    }
-  } catch (e) {}
-}
-
-// 初期化
 renderColorPresets();
 syncColorUI();
 updateSizePreview();
 updateOpacityPreview();
 setupImageEditInteractions();
 canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-bootRestore();
 </script>
 </body>
 </html>
